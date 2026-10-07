@@ -18,7 +18,10 @@ claude/
 │   └── promote/                 # /promote <feature> <level>, manual only
 ├── agents/
 │   └── stability-reviewer.md    # read-only review against a stability level
-└── install.sh                   # symlinks the above into ~/.claude
+├── install.sh                   # symlinks the above into ~/.claude
+├── stacks/
+│   └── go-http/rules/           # general rules for Go HTTP API projects
+└── apply.sh                     # copies a stack's rules into a project
 ```
 
 ### Using it in your personal Claude config (optional)
@@ -60,6 +63,23 @@ Start a new Claude Code session afterwards. To uninstall, remove the links:
 ```bash
 find ~/.claude -maxdepth 2 -type l -lname '*/forge/claude/*' -print -delete
 ```
+
+### Project stacks
+
+A stack is a set of rules for one kind of project, applied per repository
+rather than globally. `go-http` holds general conventions for Go HTTP API
+projects: preferred packages, layers and boundaries, repositories, service
+errors, REST API design, configuration, and tests. Each rule loads only when
+Claude works on files it applies to.
+
+```bash
+./claude/apply.sh go-http path/to/repo
+```
+
+This copies the rules into `path/to/repo/.claude/rules/go-http/`. Commit them
+with the project so everyone working on it gets them. To change a rule, edit it
+here and re-apply. Don't hand-edit the copies. Re-running is safe: it reports
+each file as `added`, `updated`, or `ok`, and never deletes anything.
 
 Project-specific architecture and domain rules don't belong here. Keep them in
 each project's own `CLAUDE.md` or `.claude/`. A project should also say where it
