@@ -13,7 +13,8 @@ for validating the real workflow, not for hardening every edge.
 
 - the primary workflow works end-to-end, and users can actually complete it
 - real persistence and integrations replace mocks where necessary
-- the main path has automated tests
+- common paths have high-level end-to-end or black-box automated tests; that
+  is all the testing Alpha needs
 - failures are visible, not swallowed
 - reasonable input validation
 - database and schema changes use migrations
@@ -28,6 +29,9 @@ for validating the real workflow, not for hardening every edge.
 
 Don't automatically introduce:
 
+- authentication and authorization (permissions); they are first required at
+  Beta
+- unit and integration tests; deeper testing starts at Beta
 - exhaustive error-path tests
 - comprehensive dashboards, sophisticated alerting, or elaborate SLOs
 - large-scale load testing or production-scale capacity planning

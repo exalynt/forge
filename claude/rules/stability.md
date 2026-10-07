@@ -23,7 +23,9 @@ Prototype → Alpha → Beta → GA
   both when designing, modifying, or reviewing a feature.
 - Never promote or demote a feature unless explicitly instructed. Promotion is
   a deliberate decision, made with `/promote`.
-- The security and privacy baseline applies at every level, including Prototype.
+- The security and privacy baseline applies at every level, including
+  Prototype: one tenant or client cannot see or interact with another's real
+  data, and real secrets are never leaked anywhere.
 
 ## Prototype the uncertainty
 

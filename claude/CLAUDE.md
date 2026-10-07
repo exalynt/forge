@@ -18,7 +18,9 @@ When a feature's level is known, treat it as both:
 - Do not harden, generalize, productionize, scale, or future-proof a feature
   beyond its current level.
 - Never change a feature's stability level unless explicitly instructed.
-- Security and privacy requirements apply at every level.
+- At every level, one tenant or client cannot see or interact with another
+  tenant's or client's real data, and real secrets are never leaked anywhere.
+  That is the security and privacy baseline.
 - Use the `stability` skill whenever stability materially affects a design,
   implementation, or review decision.
 

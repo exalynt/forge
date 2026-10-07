@@ -69,15 +69,21 @@ intentionally incomplete. Don't "fix" those gaps opportunistically.
 
 ## Security and privacy
 
-Security and privacy apply at every level. The baseline never relaxes:
+The security and privacy baseline applies at every level and never relaxes. It
+is only this:
 
-- authentication and authorization on anything touching real users or data
-- no secrets in code, logs, or client bundles
-- input validation at trust boundaries
-- personal data collected minimally and kept out of logs and unintended third parties
-- prototype or unfinished behavior not unintentionally exposed to real users or data
+- one tenant or client cannot see or interact with another tenant's or
+  client's real data
+- real secrets are never leaked anywhere: not in code, version control, logs,
+  error messages, client bundles, or third-party services
 
-The depth of security review grows with the level, but the baseline does not.
+At Prototype and Alpha, isolation can be as simple as separate deployments or
+having only one tenant's real data present. Sample, mock, or fake data and
+throwaway placeholder credentials are not covered by the baseline.
+
+Authentication and authorization (permissions) are required only at Beta and
+above. They are not part of the Prototype or Alpha baseline, so don't flag
+their absence there as REQUIRED NOW or SECURITY/PRIVACY.
 
 ## Classifying work
 

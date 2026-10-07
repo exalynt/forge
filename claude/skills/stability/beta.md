@@ -14,6 +14,8 @@ operating it responsibly.
 Testing and correctness:
 
 - primary and important secondary workflows are tested
+- deeper unit and integration tests are added where they're useful, beyond
+  Alpha's end-to-end tests
 - important failure paths are handled
 - meaningful edge cases are handled
 - concurrency and race behavior have been considered
@@ -37,6 +39,8 @@ Scale and performance:
 Review and documentation:
 
 - accessibility receives meaningful review
+- authentication and authorization (permissions) are in place; they are first
+  required at Beta
 - security receives deeper review
 - operational documentation exists
 - architecture and meaningful tradeoffs are documented

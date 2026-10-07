@@ -59,7 +59,8 @@ point that out instead of extending the pattern.
 
 ## Not negotiable at any level
 
-- Security and privacy are never speculative. Authentication, authorization,
-  validation at trust boundaries, secret handling, and protection of personal
-  data meet an appropriate baseline from the first line of code.
+- Security and privacy are never speculative. From the first line of code, one
+  tenant or client cannot see or interact with another tenant's or client's
+  real data, and real secrets are never leaked anywhere. Authentication and
+  authorization are required from Beta onward.
 - Simple does not mean sloppy. What we do build should be correct and clear.

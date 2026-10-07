@@ -41,7 +41,9 @@ as simple as reasonably possible:
 - known gaps are documented
 - it is clear what is real and what is sample, mock, or fake
 - performance is sufficient for the experiment or demo
-- the security and privacy baseline is respected
+- the security and privacy baseline is respected: one tenant or client cannot
+  see or interact with another's real data, and real secrets are never leaked
+  anywhere (authentication and authorization are not required until Beta)
 - prototype behavior is not unintentionally exposed as production behavior
 - experimental code is reasonably isolated from stable production behavior
 

@@ -1,6 +1,7 @@
 ---
 paths:
   - "**/*.go"
+  - "tests/**"
 ---
 
 # Go HTTP projects: tests
@@ -13,18 +14,22 @@ CLAUDE.md differs, follow the project.
 Write tests only when the user explicitly asks, or when the feature's
 stability level requires them (see the `stability` skill). Then add only the
 kinds and depth that the request or level calls for. For example, Alpha asks
-for main-path tests, not exhaustive error paths. Otherwise, don't add tests on
+only for feature / end-to-end tests of common paths. Unit and integration
+tests start at Beta. Otherwise, don't add tests on
 your own initiative. Existing tests must still pass after any change.
 
-## Three kinds, separated by build tags
+## Three kinds
 
-Build tags let each suite run on its own.
+Unit and integration tests are Go, separated by build tags so each suite runs
+on its own. Feature and end-to-end tests use Playwright, in a top-level
+`tests/` directory with `tests/feature/` and `tests/e2e/` subdirectories as
+needed.
 
-| Kind | Build tag | Run with | Covers |
+| Kind | Tool and location | Run with | Covers |
 | --- | --- | --- | --- |
-| Unit | none | `go test ./...` | Table-driven tests (`tests := []struct{…}` with `t.Run`), dependencies mocked with moq: service logic, validation, error mapping. |
-| Integration | `//go:build integration` | `go test -tags integration ./...` | A specific piece of happy-path functionality against real dependencies such as Postgres, for example a repository against a real database. |
-| Feature / end-to-end | `//go:build e2e` | `go test -tags e2e ./...` | Black box: calls the API endpoints over HTTP against the running app and its real dependencies, asserting only on responses. Happy paths. |
+| Unit | Go, no build tag, next to the code | `go test ./...` | Table-driven tests (`tests := []struct{…}` with `t.Run`), dependencies mocked with moq: service logic, validation, error mapping. |
+| Integration | Go, `//go:build integration`, next to the code | `go test -tags integration ./...` | A specific piece of happy-path functionality against real dependencies such as Postgres, for example a repository against a real database. |
+| Feature / end-to-end | Playwright, `tests/feature/` or `tests/e2e/` | `npx playwright test` | Black box: calls the API endpoints over HTTP against the running app and its real dependencies, asserting only on responses. Happy paths. |
 
 ## Mocks
 
