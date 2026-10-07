@@ -1,6 +1,6 @@
 ---
 name: stability
-description: Feature stability model (Prototype → Alpha → Beta → GA) for deciding how much engineering a feature warrants. Use when designing, implementing, modifying, or reviewing a feature whose stability level is declared or matters to the decision; when deciding whether work such as tests, hardening, abstraction, observability, scaling, or documentation is appropriate now; or when discussing whether something is Prototype, Alpha, Beta, or GA work.
+description: Feature stability model (Prototype → Alpha → Beta → GA) for deciding how much engineering a feature warrants. Use when designing, implementing, modifying, or reviewing a feature; when adding to, changing, or removing from an existing feature, since its level decides whether the change must be non-breaking; when deciding whether work such as tests, hardening, abstraction, observability, scaling, or documentation is appropriate now; or when discussing whether something is Prototype, Alpha, Beta, or GA work.
 ---
 
 # Feature Stability
@@ -37,9 +37,9 @@ with no schema has no migrations).
 1. **The project's declaration.** The project's `CLAUDE.md` should say where
    feature stability is recorded. Use that.
 2. **The user's statement** in the current conversation.
-3. **Otherwise**, if the level materially affects the decision, ask. Don't
-   infer it from how polished the code looks. Mature-looking code may be an
-   over-built prototype.
+3. **Otherwise, the feature is GA.** No declared level means GA. Don't infer a
+   lower level from how rough the code looks, or a higher one from how polished
+   it looks.
 
 A simple convention some projects use is one YAML file per feature, such as
 `.exalynt/features/conversations.yaml`. Follow whatever the project uses. Don't
@@ -66,6 +66,30 @@ known_gaps:
 When a declaration has them, `purpose` and `learning` say what the feature is
 for right now, which is essential for prototypes. `known_gaps` lists what is
 intentionally incomplete. Don't "fix" those gaps opportunistically.
+
+## Changing existing features
+
+Adding to, adjusting, or removing from an existing feature is governed by that
+feature's level. Find the level before changing anything. When the change
+touches something several features share, such as a table or an endpoint, the
+strictest of their levels applies.
+
+| Level             | Changes                                                                      |
+| ----------------- | ---------------------------------------------------------------------------- |
+| Prototype, Alpha  | No compatibility guarantee. Take the quickest path, breaking or not.         |
+| Beta              | Prefer non-breaking. Make a breaking change only when the user directs it.   |
+| GA                | Non-breaking only. If the request seems to need a breaking change, clarify the direction with the user before making it. |
+
+A breaking change is anything that makes existing clients, data, or
+deployments fail or behave differently. Examples: removing or renaming an
+endpoint, field, or column; changing a type or meaning; tightening validation;
+editing a database migration that has already run instead of adding a new one.
+
+At Prototype and Alpha, the quickest path is often the breaking one: edit the
+existing migration and reset the database, or change the endpoint in place.
+The security and privacy baseline still applies.
+
+The stack's rules say how to make specific kinds of changes non-breaking.
 
 ## Security and privacy
 

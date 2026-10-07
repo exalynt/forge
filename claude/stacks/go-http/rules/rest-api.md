@@ -59,3 +59,18 @@ with a `Link` header.
   is unconfigured or unreachable.
 - Every error has the same body: `{"error": "<human-readable message>"}`.
 - 5xx responses never expose internals.
+
+## Changing endpoints
+
+How to change an endpoint depends on the stability of the feature it belongs
+to (see the `stability` skill).
+
+- **Prototype and Alpha**: change, rename, or remove endpoints and fields in
+  place.
+- **Beta and GA**: keep changes non-breaking. Adding endpoints, optional request
+  fields, and response fields is fine. Removing or renaming endpoints or
+  fields, changing a field's type or meaning, making an optional field
+  required, tightening validation, or changing status codes is breaking.
+- A breaking change at Beta needs the user's direction. At GA, clarify the
+  direction with the user first, for example a new endpoint alongside the old
+  one or a new version under `/v2`.

@@ -36,5 +36,21 @@ CLAUDE.md differs, follow the project.
 - Hand-written, parameterized SQL. No ORMs.
 - Schema changes are goose SQL migrations (`NNNNN_description.sql`), embedded
   in the binary.
-- Never edit a migration that may already have run. Add a new one.
 - Migrations run from an explicit command or deploy step, never on startup.
+
+## Changing the schema
+
+How to change it depends on the stability of the features that use the tables
+involved (see the `stability` skill). The strictest of them applies.
+
+- **Prototype and Alpha**: take the quickest path. Editing an existing
+  migration in place and resetting the database is fine.
+- **Beta and GA**: never edit a migration that may already have run. Add a new
+  one, and keep it non-breaking for the code already deployed:
+  - add columns as nullable or with a default
+  - don't drop or rename a column or table the deployed code still uses.
+    Expand, then contract: add the new shape, move the code over and backfill,
+    and remove the old shape in a later migration
+  - don't tighten a constraint until existing rows meet it
+- A breaking schema change at Beta needs the user's direction. At GA, clarify
+  the direction with the user first.

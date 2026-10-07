@@ -39,7 +39,19 @@ do what we need.
 ## Where levels are declared
 
 Each project records stability in its own way, and its `CLAUDE.md` should say
-where. If a feature has no declared level and the level materially affects the
-work, ask rather than assume one.
+where. A feature with no declared level is GA.
+
+## Changing existing features
+
+Before adding to, adjusting, or removing from a feature, find its level. It
+decides whether the change must be non-breaking:
+
+- **Prototype and Alpha**: no compatibility guarantee. Take the quickest path.
+- **Beta**: prefer non-breaking changes. Break only when the user directs it.
+- **GA**: non-breaking only. Clarify the direction with the user when a change
+  would otherwise break something.
+
+When a change touches something several features share, the strictest level
+applies.
 
 The detailed expectations for each level are in the `stability` skill.

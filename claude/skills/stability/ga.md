@@ -40,6 +40,12 @@ Quality and documentation:
 - documentation is sufficient for users, operators, and developers
 - significant architectural tradeoffs are documented
 
+## Changing it
+
+Changes must be non-breaking. If a request seems to need a breaking change,
+clarify the direction with the user before making it. A feature with no
+declared level is GA.
+
 ## What GA is not
 
 GA does not mean perfect, defect-free, or that every conceivable edge case is

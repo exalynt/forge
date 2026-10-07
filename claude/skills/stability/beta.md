@@ -48,9 +48,15 @@ Review and documentation:
 - architecture and meaningful tradeoffs are documented
 - someone other than the original author can understand and support it
 
+## Changing it
+
+Prefer non-breaking changes. Make a breaking change only when the user directs
+it.
+
 ## Still avoid
 
 Beta is not an excuse to implement hypothetical enterprise requirements. Avoid
 complexity not tied to real usage: scale beyond realistic projections, resilience
 for failure modes that can't plausibly occur, configurability nobody needs,
-compatibility commitments before anyone depends on the feature (that's GA).
+formal compatibility commitments such as versioning or deprecation policies
+(that's GA).

@@ -32,6 +32,11 @@ for validating the real workflow, not for hardening every edge.
 - changes receive normal code review
 - known limitations are documented
 
+## Changing it
+
+No compatibility guarantee. Take the quickest path, even if it breaks existing
+behavior, data, or clients.
+
 ## Avoid (premature Beta/GA work)
 
 Don't automatically introduce:

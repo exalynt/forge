@@ -47,6 +47,11 @@ as simple as reasonably possible:
 - prototype behavior is not unintentionally exposed as production behavior
 - experimental code is reasonably isolated from stable production behavior
 
+## Changing it
+
+No compatibility guarantee. Take the quickest path, even if it breaks existing
+behavior, data, or clients.
+
 ## Avoid unless it is what we're learning about
 
 Don't add these merely because they'd be useful later:

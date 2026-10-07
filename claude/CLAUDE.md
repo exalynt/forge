@@ -18,6 +18,11 @@ When a feature's level is known, treat it as both:
 - Do not harden, generalize, productionize, scale, or future-proof a feature
   beyond its current level.
 - Never change a feature's stability level unless explicitly instructed.
+- A feature with no declared level is GA.
+- Before adding to, changing, or removing from a feature, check its level.
+  Prototype and Alpha changes may break things; Beta changes should be
+  non-breaking unless the user directs otherwise; GA changes must be
+  non-breaking.
 - At every level, one tenant or client cannot see or interact with another
   tenant's or client's real data, and real secrets are never leaked anywhere.
   That is the security and privacy baseline.
