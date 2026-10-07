@@ -43,7 +43,10 @@ The script creates these links and nothing else:
 ~/.claude/skills    -> forge/claude/skills
 ```
 
-It never overwrites or deletes anything, and it's safe to re-run. If you
+It never overwrites or deletes anything, and it's safe to re-run. It reports
+each link as `added`, `ok`, `STALE` (it points at something no longer in forge),
+or `CONFLICT`, then prints a summary. Edits to linked files take effect
+immediately, with no re-run needed. If you
 already have one of these as a real file or directory:
 
 - **Directories** (`rules/`, `skills/`, `agents/`): it links each entry inside
