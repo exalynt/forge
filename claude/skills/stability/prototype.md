@@ -62,4 +62,5 @@ Don't add these merely because they'd be useful later:
 - long-term compatibility mechanisms or public API stability guarantees
 - exhaustive documentation
 - elaborate deployment infrastructure
+- CI workflows (they start at Alpha)
 - abstraction to support future implementations

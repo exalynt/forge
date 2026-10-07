@@ -22,6 +22,13 @@ for validating the real workflow, not for hardening every edge.
 - basic application logging
 - dependencies are reasonably maintained
 - normal linting, type checking, and static analysis pass
+- a CI workflow (`.github/workflows/ci.yml`) runs on pushes and pull requests
+  with:
+  - the language's standard checks: linting, formatting, static analysis, and
+    a build, plus a container image build if the project uses one. CI only
+    checks; it never commits fixes
+  - a feature-test job that starts the needed dependencies and runs the
+    black-box feature tests
 - changes receive normal code review
 - known limitations are documented
 
@@ -31,7 +38,8 @@ Don't automatically introduce:
 
 - authentication and authorization (permissions); they are first required at
   Beta
-- unit and integration tests; deeper testing starts at Beta
+- unit and integration tests, or CI jobs for them; deeper testing starts at
+  Beta
 - exhaustive error-path tests
 - comprehensive dashboards, sophisticated alerting, or elaborate SLOs
 - large-scale load testing or production-scale capacity planning

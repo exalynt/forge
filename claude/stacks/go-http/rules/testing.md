@@ -16,7 +16,8 @@ stability level requires them (see the `stability` skill). Then add only the
 kinds and depth that the request or level calls for. For example, Alpha asks
 only for feature / end-to-end tests of common paths. Unit and integration
 tests start at Beta. Otherwise, don't add tests on
-your own initiative. Existing tests must still pass after any change.
+your own initiative. Existing tests must still pass after any change. The CI
+rule covers which CI job runs each kind.
 
 ## Three kinds
 

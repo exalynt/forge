@@ -16,6 +16,8 @@ Testing and correctness:
 - primary and important secondary workflows are tested
 - deeper unit and integration tests are added where they're useful, beyond
   Alpha's end-to-end tests
+- CI adds a unit-test job and an integration-test job; the integration job
+  starts the dependencies it needs
 - important failure paths are handled
 - meaningful edge cases are handled
 - concurrency and race behavior have been considered
