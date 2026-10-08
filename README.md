@@ -75,8 +75,9 @@ rather than globally. `go-http` holds general conventions for Go HTTP API
 projects: preferred packages, layers and boundaries, repositories, service
 errors, REST API design, configuration, and tests. `react` holds conventions
 for React + MUI frontends: page and component layout, reusing MUI and existing
-components, mobile responsiveness, and services for external APIs and SDKs.
-Each rule loads only when Claude works on files it applies to.
+components, mobile responsiveness, light and dark mode, services for external
+APIs and SDKs, and CI. Each rule loads only when Claude works on files it
+applies to.
 
 ```bash
 ./claude/apply.sh go-http path/to/repo
