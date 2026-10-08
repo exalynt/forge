@@ -20,7 +20,8 @@ claude/
 │   └── stability-reviewer.md    # read-only review against a stability level
 ├── install.sh                   # symlinks the above into ~/.claude
 ├── stacks/
-│   └── go-http/rules/           # general rules for Go HTTP API projects
+│   ├── go-http/rules/           # general rules for Go HTTP API projects
+│   └── react/rules/             # general rules for React + MUI frontends
 └── apply.sh                     # copies a stack's rules into a project
 ```
 
@@ -72,8 +73,10 @@ find ~/.claude -maxdepth 2 -type l -lname '*/forge/claude/*' -print -delete
 A stack is a set of rules for one kind of project, applied per repository
 rather than globally. `go-http` holds general conventions for Go HTTP API
 projects: preferred packages, layers and boundaries, repositories, service
-errors, REST API design, configuration, and tests. Each rule loads only when
-Claude works on files it applies to.
+errors, REST API design, configuration, and tests. `react` holds conventions
+for React + MUI frontends: page and component layout, reusing MUI and existing
+components, mobile responsiveness, and services for external APIs and SDKs.
+Each rule loads only when Claude works on files it applies to.
 
 ```bash
 ./claude/apply.sh go-http path/to/repo
