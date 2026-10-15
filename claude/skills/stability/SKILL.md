@@ -77,7 +77,7 @@ strictest of their levels applies.
 | Level             | Changes                                                                      |
 | ----------------- | ---------------------------------------------------------------------------- |
 | Prototype, Alpha  | No compatibility guarantee. Take the quickest path, breaking or not.         |
-| Beta              | Prefer non-breaking. Make a breaking change only when the user directs it.   |
+| Beta              | Prefer non-breaking. Make a breaking change only when the user directs it, and aim to announce it ahead of time (a goal, not a guarantee). |
 | GA                | Non-breaking only. If the request seems to need a breaking change, clarify the direction with the user before making it. |
 
 A breaking change is anything that makes existing clients, data, or

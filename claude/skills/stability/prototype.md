@@ -39,7 +39,8 @@ as simple as reasonably possible:
 
 - the primary demo path works when manually exercised
 - known gaps are documented
-- it is clear what is real and what is sample, mock, or fake
+- it is clear what is real and what is sample, mock, or fake, including to the
+  people trying it: a Prototype tells them its data may be fake
 - performance is sufficient for the experiment or demo
 - the security and privacy baseline is respected: one tenant or client cannot
   see or interact with another's real data, and real secrets are never leaked

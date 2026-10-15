@@ -4,7 +4,8 @@ Features may declare a stability level:
 
 Prototype → Alpha → Beta → GA
 
-- **Prototype**: learn and answer a specific unknown. It may be rewritten or deleted.
+- **Prototype**: learn and answer a specific unknown. It may be rewritten or deleted,
+  and its data may be fake.
 - **Alpha**: the primary workflow is real and usable, though the shape may still change.
 - **Beta**: the shape has settled. Harden the edges and operate it responsibly.
 - **GA**: people may depend on it. We commit to reliability, compatibility, and
@@ -47,7 +48,9 @@ Before adding to, adjusting, or removing from a feature, find its level. It
 decides whether the change must be non-breaking:
 
 - **Prototype and Alpha**: no compatibility guarantee. Take the quickest path.
-- **Beta**: prefer non-breaking changes. Break only when the user directs it.
+- **Beta**: prefer non-breaking changes. Break only when the user directs it,
+  and aim to announce the break to the people using it ahead of time. That's
+  the goal, not a guarantee.
 - **GA**: non-breaking only. Clarify the direction with the user when a change
   would otherwise break something.
 

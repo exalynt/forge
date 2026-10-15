@@ -15,7 +15,8 @@ claude/
 │   └── stability.md
 ├── skills/
 │   ├── stability/               # level definitions and review classification
-│   └── promote/                 # /promote <feature> <level>, manual only
+│   ├── promote/                 # /promote <feature> <level>, manual only
+│   └── commit/                  # /commit [session|all], grouped commits, manual only
 ├── agents/
 │   └── stability-reviewer.md    # read-only review against a stability level
 ├── install.sh                   # symlinks the above into ~/.claude

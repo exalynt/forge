@@ -51,7 +51,9 @@ Review and documentation:
 ## Changing it
 
 Prefer non-breaking changes. Make a breaking change only when the user directs
-it.
+it, and aim to announce it to the people using the feature ahead of time. That's
+the goal, not a promise: Beta tells people breaking changes are announced ahead
+of time when we can, so don't claim more than that in release notes or copy.
 
 ## Still avoid
 
