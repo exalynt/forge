@@ -21,7 +21,8 @@ the project. Steps 6–7 fix only what the user confirms.
 ## 1. Understand the feature
 
 - Find its stability level and declaration as the `stability` skill describes.
-  Read `purpose`, `learning`, and `known_gaps` if the declaration has them.
+  Read `purpose`, `learning`, and `known_gaps` if the declaration has them,
+  and note any mock or stub it explicitly allows.
 - Find where it lives: pages, routes, endpoints, services, tables, jobs,
   external integrations, and the tests that cover it.
 - Find what it's supposed to do. Sources, most authoritative first: the user
@@ -78,6 +79,8 @@ Typically:
 - **Primary workflow**: the happy path end to end, with realistic data.
 - **Rules**: each rule exercised at least once.
 - **Edge cases**: checked explicitly, not just when they come up (below).
+- **Real data**: nothing mocked or stubbed without an explicit exception
+  (below).
 - **Access**: each role, signed out, and another tenant's data.
 - **Presentation**, for UI: light and dark, on a phone (below), keyboard, and
   whatever the project's rules ask for.
@@ -116,6 +119,34 @@ report. Work through:
 Skip categories that don't apply, and say so in one line. Dig deeper around
 rules marked assumed and around the open questions, where the rules are
 least certain.
+
+### Real data, no mocks
+
+The feature must run on its real data and integrations. Check that nothing in
+its runtime path is mocked, stubbed, faked, or hard-coded:
+
+- **In the code**: search the feature's non-test code for mocks, stubs,
+  fakes, fixtures, sample or placeholder data; hard-coded users, IDs, or
+  responses; functions that return a fixed value or resolve literal data;
+  simulated delays; "not implemented" and TODO paths; and flags or environment
+  switches that turn mocks on, such as mock service workers or dev-only
+  branches. Check what the build actually ships, not just the defaults.
+- **At runtime**: confirm the UI's network requests reach the real API.
+  Create or change something through the UI and confirm it's stored and
+  survives a reload. Change something in storage and confirm the UI shows it.
+  Confirm external services are actually called, in their test or sandbox
+  mode.
+
+Test doubles inside tests are fine, and so is the test data QA sets up. This
+check is about the feature's own code paths.
+
+A mock or stub is allowed only when an exception names it explicitly: the
+user says so in this conversation, or the feature declaration lists it, for
+example in `known_gaps`. A Prototype's general allowance for fake data isn't
+an exception by itself. List each allowed exception under Verified with its
+source. Any other mock or stub is an issue: Major, or Critical when it makes
+the primary workflow look like it works when it doesn't, such as a save that
+stores nothing or a send that sends nothing.
 
 ### Through the UI
 
@@ -177,7 +208,8 @@ feature's level:
 - **Beta** and **GA**: the full set of checks, including breaking changes.
 
 Edge cases are checked at every level. The level decides which failures count
-as issues, not whether to look.
+as issues, not whether to look. Mocks and stubs need an explicit exception at
+every level.
 
 Something only a later level expects isn't an issue. Neither is anything in
 `known_gaps`. List it under "Not issues at <level>" only when someone could
@@ -212,6 +244,8 @@ Not issues at <level>
 Verified
 - <check>: passed
 - Edge cases: <each one checked that passed, grouped by rule or step>
+- Real data: <what was confirmed real; each allowed mock or stub and its
+  exception's source>
 
 Not verified
 - <check>: why (couldn't run, no access, out of scope)
@@ -236,6 +270,10 @@ if there are many), recommending Critical and Major. Ask any open questions
 whose answer changes an issue. An issue that hinges on an unanswered question
 can't be fixed yet.
 
+For a mock or stub, the user can make an explicit exception instead of a fix.
+Offer to record it in the feature declaration, such as in `known_gaps`, so the
+next QA run knows.
+
 If the user picks nothing, stop.
 
 ## 7. Fix and re-verify
@@ -246,9 +284,9 @@ If the user picks nothing, stop.
 - Fixes may run in parallel subagents only when they touch disjoint files.
   Re-verify in the main conversation once they're all in.
 - Where the level expects tests, add one that pins the rule the issue broke.
-- Re-run each fixed issue's steps through the same path it was found on,
-  in the UI and at the width where it showed, and the checks around it, to confirm
-  the fix and catch regressions. Run the project's checks.
+- Re-run each fixed issue's steps through the same path it was found on, in
+  the UI and at the width where it showed, and the checks around it, to
+  confirm the fix and catch regressions. Run the project's checks.
 - Anything new found while fixing goes in the report. Don't fix it without
   asking.
 - Offer to record confirmed rules where the project keeps them: the feature
