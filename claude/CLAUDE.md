@@ -29,5 +29,10 @@ When a feature's level is known, treat it as both:
 - Use the `stability` skill whenever stability materially affects a design,
   implementation, or review decision.
 
+## Git
+
+- Do not create a new git branch unless specifically asked to. Work on the
+  current branch.
+
 Project-specific architecture, domain rules, and where a repository declares
 feature stability belong in that project's own `CLAUDE.md` or `.claude/`.
