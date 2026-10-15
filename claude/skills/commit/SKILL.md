@@ -18,6 +18,9 @@ Arguments: `$ARGUMENTS`. Expected format: `session` or `all`, for example
 The goal is a history someone can read: each commit is one related change with
 a message that says what it is. Grouping well matters more than speed.
 
+Do this in the main conversation, without subagents. Staging and committing
+share the git index, and grouping needs the whole diff in view.
+
 ## 1. Read the state
 
 Run `git status`, `git diff`, `git diff --cached`, and `git log --oneline -15`.

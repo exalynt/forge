@@ -121,6 +121,9 @@ When reviewing or planning, classify each item:
   level allows.
 - **SECURITY/PRIVACY**: required regardless of level.
 
+When reviewing several features, run one `stability-reviewer` per feature in
+parallel (see the subagents rule).
+
 ## Rules
 
 - Never change a feature's level as a side effect of other work. Promotion is

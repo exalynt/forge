@@ -12,7 +12,8 @@ claude/
 ├── CLAUDE.md                    # short global philosophy, always loaded
 ├── rules/
 │   ├── engineering-philosophy.md
-│   └── stability.md
+│   ├── stability.md
+│   └── subagents.md             # when to parallelize work with subagents
 ├── skills/
 │   ├── stability/               # level definitions and review classification
 │   ├── promote/                 # /promote <feature> <level>, manual only

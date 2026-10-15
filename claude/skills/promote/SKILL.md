@@ -68,6 +68,9 @@ Otherwise, proceed.
 - Don't redesign unrelated parts of the feature or fix unrelated issues.
 - Don't implement requirements from levels beyond the target.
 - If you discover another required change, add it to the delta and say so.
+- Delta items in disjoint files that don't depend on each other may run in
+  parallel subagents (see the subagents rule). Anything touching shared files,
+  migrations, or installs stays in the main conversation.
 
 ## 5. Verify
 
