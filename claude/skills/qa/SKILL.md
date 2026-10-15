@@ -31,7 +31,9 @@ the project. Steps 6–7 fix only what the user confirms.
   rule just because it's implemented.
 - Work out what end to end means here: the primary workflow from a user's
   first action to the result they want, across every layer it crosses (UI,
-  API, storage, background jobs, external services).
+  API, storage, background jobs, external services). When the feature has a
+  UI, end to end starts there: the user's path is through its screens, not
+  its endpoints.
 
 With a `focus`, go deep on that part but still run the primary workflow once.
 
@@ -74,21 +76,81 @@ Plan checks against the rules, scaled to the stability level (next section).
 Typically:
 
 - **Primary workflow**: the happy path end to end, with realistic data.
-- **Rules**: each rule exercised at least once, including its boundaries
-  (zero, one, the maximum, just over, empty, missing, duplicate).
-- **Errors and recovery**: invalid input, failing dependencies, double
-  submits, going back, reloading mid-flow.
-- **States**: first use, empty, many items, long text, concurrent edits where
-  they can happen.
+- **Rules**: each rule exercised at least once.
+- **Edge cases**: checked explicitly, not just when they come up (below).
 - **Access**: each role, signed out, and another tenant's data.
-- **Presentation**, for UI: light and dark, phone width, keyboard, and
+- **Presentation**, for UI: light and dark, on a phone (below), keyboard, and
   whatever the project's rules ask for.
 
 Run them against the real thing as far as the project allows: the test
-suites, lint, type checks, and build; the UI through whichever browser tools
-are available; the API; the database. Follow the project's instructions on
-what may be run. If it says not to start a dev server, don't, and report what
-that left unverified.
+suites, lint, type checks, and build; the UI; the API; the database. Follow the
+project's instructions on what may be run. If it says not to start a dev
+server, don't, and report what that left unverified.
+
+### Edge cases
+
+For each rule and each step of the workflow, list the edge cases that apply,
+then check every one. Write the list down before running it. It goes in the
+report. Work through:
+
+- **Boundaries**: zero, one, the maximum, just under and just over each limit,
+  negative numbers, the first and last item, the ends of a date range.
+- **Input**: empty, whitespace only, missing, very long, special characters
+  and emoji, non-Latin text, leading and trailing spaces, different case, the
+  wrong type or format, pasted content, HTML or script in text fields.
+- **Duplicates and conflicts**: creating the same thing twice, double clicks
+  and double submits, two users or tabs editing the same item, acting on
+  something that was just deleted or changed elsewhere.
+- **State**: first use with no data, one item, many items (pagination, long
+  lists), an item in every status the feature has, and transitions that
+  shouldn't be allowed, such as skipping a step or acting after completion.
+- **Time**: time zones, daylight saving changes, midnight and month and year
+  ends, past and far-future dates, expiry exactly at the limit, a session
+  timing out mid-flow.
+- **Interruption and failure**: reloading, going back, or leaving and
+  returning mid-flow; losing the network; a slow or failing dependency; a
+  multi-step action failing partway; retrying after a failure.
+- **Numbers and money**, where the feature has them: rounding, precision,
+  currency, very large values, division by zero.
+
+Skip categories that don't apply, and say so in one line. Dig deeper around
+rules marked assumed and around the open questions, where the rules are
+least certain.
+
+### Through the UI
+
+When the feature has a UI, run the primary workflow and the rules through it,
+as a user would, with whichever browser tools are available. Use the API and
+database to set up data and to confirm what the UI did, not instead of it. An
+API that behaves correctly doesn't mean the screen does. In the UI, check:
+
+- **What it shows**: values, labels, formatting, counts, dates and times, and
+  that they match what's stored, including after a reload.
+- **How it responds**: loading, empty, and error states; validation messages
+  and where they appear; disabled and hidden actions; confirmation and success
+  feedback.
+- **Where it goes**: navigation, links, back and forward, deep links, and what
+  a signed-out user or a user without access sees.
+- **How it looks**: the presentation checks above, plus text that overflows,
+  truncates, or overlaps.
+- **On a phone**: run the primary workflow again at phone width (360px and
+  375px), not just a glance at each screen. Check the page never scrolls
+  sideways, nothing is cut off or overlapping, tables and grids still read,
+  dialogs and menus fit, navigation is reachable, touch targets stay usable,
+  and fixed headers, footers, and action bars don't cover content. Check
+  desktop width too, and a tablet width when the layout changes there. The
+  project's responsive rule, such as the React stack's, says what's expected;
+  where it applies at every level, so does this check.
+
+A rule the UI enforces must also hold at the API. Hiding a button doesn't
+control access, so call the API directly for each access rule. Capture a
+screenshot as evidence for each UI issue, and note the width it was taken at.
+
+If no browser tools are available or the app can't be run, say so. Don't
+report the UI as verified because the API passed. List it under "Not
+verified".
+
+### Rules for this phase
 
 - Don't change project files in this phase. Throwaway scripts, test data, and
   scratch tests go in the scratchpad.
@@ -110,9 +172,12 @@ feature's level:
 
 - **Prototype**: does it answer its learning question? Rough edges outside
   that question aren't issues.
-- **Alpha**: the primary workflow must work for real. Edge-case polish can
-  wait.
+- **Alpha**: the primary workflow must work for real. An edge case that breaks
+  it, or loses or corrupts data, is an issue. Other edge-case polish can wait.
 - **Beta** and **GA**: the full set of checks, including breaking changes.
+
+Edge cases are checked at every level. The level decides which failures count
+as issues, not whether to look.
 
 Something only a later level expects isn't an issue. Neither is anything in
 `known_gaps`. List it under "Not issues at <level>" only when someone could
@@ -124,7 +189,7 @@ level, and a problem there is always Critical.
 ```
 Feature: <name>
 Stability: <level> (source: <declaration | user | none declared, so GA>)
-Scope: <what was QA'd, environment, commit>
+Scope: <what was QA'd, environment, commit; through UI | API | code only>
 
 Business rules
 R1. <rule> (stated | assumed | confirmed; source)
@@ -134,7 +199,7 @@ Issues
    Rule: R<n>
    Expected: ...
    Actual: ...
-   Steps: 1. ... 2. ...
+   Steps: 1. ... 2. ... (as a user's actions in the UI, where there is one)
    Evidence: <output, screenshot path, file:line of the cause if known>
    Suggested fix: <one line, sized to the level>
 
@@ -146,6 +211,7 @@ Not issues at <level>
 
 Verified
 - <check>: passed
+- Edge cases: <each one checked that passed, grouped by rule or step>
 
 Not verified
 - <check>: why (couldn't run, no access, out of scope)
@@ -160,8 +226,8 @@ Severities:
 - **Minor**: wrong, but there's a workaround or it's on an uncommon path.
 - **Polish**: presentation, wording, consistency.
 
-Order issues by severity. Omit empty sections. Don't pad the report with
-things that work or with style preferences presented as issues.
+Order issues by severity. Omit empty sections. Keep things that work and
+style preferences out of Issues. What passed belongs under Verified.
 
 ## 6. Confirm what to fix
 
@@ -180,8 +246,9 @@ If the user picks nothing, stop.
 - Fixes may run in parallel subagents only when they touch disjoint files.
   Re-verify in the main conversation once they're all in.
 - Where the level expects tests, add one that pins the rule the issue broke.
-- Re-run each fixed issue's steps and the checks around it to confirm the fix
-  and catch regressions. Run the project's checks.
+- Re-run each fixed issue's steps through the same path it was found on,
+  in the UI and at the width where it showed, and the checks around it, to confirm
+  the fix and catch regressions. Run the project's checks.
 - Anything new found while fixing goes in the report. Don't fix it without
   asking.
 - Offer to record confirmed rules where the project keeps them: the feature
