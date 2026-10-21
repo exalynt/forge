@@ -15,10 +15,10 @@ deliberate commitment. Use the `stability` skill for the level definitions.
 
 ## 1. Establish current and target levels
 
-- Find the feature's stability declaration as described in the `stability`
-  skill. If there isn't one, the feature is GA and can't be promoted. Stop and
-  say so. If the user says it's actually at a lower level, ask where to record
-  that level, then continue.
+- Find the feature's current level as described in the `stability` skill:
+  the user's word, then the declaration, then what the repository shows. Tell
+  the user the level you found and where it came from. Step 6 records the new
+  level as a declaration. If the project has no convention for where, ask.
 - The target must be one of `prototype`, `alpha`, `beta`, `ga`. If it is
   missing or invalid, ask.
 - If the target is not above the current level, stop. This isn't a promotion.

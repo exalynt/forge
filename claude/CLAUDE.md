@@ -18,7 +18,9 @@ When a feature's level is known, treat it as both:
 - Do not harden, generalize, productionize, scale, or future-proof a feature
   beyond its current level.
 - Never change a feature's stability level unless explicitly instructed.
-- A feature with no declared level is GA.
+- The user's word on a feature's level wins, then the project's declaration.
+  Without either, infer the level from the repository's code and docs, and
+  tell the user what you inferred.
 - Before adding to, changing, or removing from a feature, check its level.
   Prototype and Alpha changes may break things; Beta changes should be
   non-breaking unless the user directs otherwise; GA changes must be

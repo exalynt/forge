@@ -34,12 +34,28 @@ with no schema has no migrations).
 
 ## Determining the level
 
-1. **The project's declaration.** The project's `CLAUDE.md` should say where
+1. **The user's statement** in the current conversation. The user's word
+   wins. If it differs from the project's declaration, say so, and offer to
+   update the declaration.
+2. **The project's declaration.** The project's `CLAUDE.md` should say where
    feature stability is recorded. Use that.
-2. **The user's statement** in the current conversation.
-3. **Otherwise, the feature is GA.** No declared level means GA. Don't infer a
-   lower level from how rough the code looks, or a higher one from how polished
-   it looks.
+3. **Otherwise, infer it from the repository.** Look at what its code and
+   docs say about the feature:
+   - **Where a level is stated**: a stability mark or level in the UI code,
+     the project's docs, README, or `CLAUDE.md`, code comments, and the
+     `stability:` labels on pull requests that changed its files (find them
+     with `git log` on those files, then `gh pr view <number> --json labels`).
+   - **What the code shows about its use**: mock or fake data, a feature flag
+     or preview gate, versioned public APIs, and whether real users or
+     clients depend on it.
+
+   A stated level outweighs what the code suggests. How rough or polished the
+   code looks is the weakest signal, and never decides the level alone.
+
+   Tell the user the level you inferred and what it rests on, including any
+   evidence that pointed elsewhere, then go on with it. The user can correct
+   it, and their word then wins. A subagent puts this in its report. Offer to
+   record the level as a declaration where the project keeps them.
 
 A simple convention some projects use is one YAML file per feature, such as
 `.exalynt/features/conversations.yaml`. Follow whatever the project uses. Don't

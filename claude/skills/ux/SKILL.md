@@ -155,7 +155,7 @@ Ask them with the report in step 6, not before.
 
 ```
 Feature: <name>
-Stability: <level> (source: <declaration | user | none declared, so GA>)
+Stability: <level> (source: <declaration | user | inferred from <what>>)
 User: <type of user>. Goal: <goal>
 Scope: <the flow walked, the variations, environment, commit; through UI at
         <widths> | API | from code only>

@@ -40,7 +40,9 @@ do what we need.
 ## Where levels are declared
 
 Each project records stability in its own way, and its `CLAUDE.md` should say
-where. A feature with no declared level is GA.
+where. The user's word on a feature's level wins over the declaration. Without
+either, infer the level from the repository's code and docs, as the
+`stability` skill describes, and tell the user what you inferred.
 
 ## Changing existing features
 

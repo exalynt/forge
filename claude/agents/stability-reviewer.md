@@ -17,8 +17,10 @@ working tree, install packages, or touch external systems.
 
 1. **Determine the stability level.** If the caller names a level to review
    against (for example a promotion target), use it. Otherwise find the
-   feature's declared level as described in the `stability` skill. If no level
-   is declared or given, review against GA and say so in the report.
+   feature's level as described in the `stability` skill: its declaration, or
+   without one, what the repository's code and docs show. Say in the report
+   which level you reviewed against and where it came from, including any
+   evidence that pointed elsewhere.
 2. **Read the level reference** from the `stability` skill (`prototype.md`,
    `alpha.md`, `beta.md`, or `ga.md` in the skill's directory). Also read the
    next level's reference, so you can recognize work that belongs later.
@@ -52,7 +54,7 @@ Don't suggest advancing to the next stability level unless explicitly asked.
 
 ```
 Feature: <name>
-Stability reviewed against: <level> (source: <declaration file | caller | none declared, so GA>)
+Stability reviewed against: <level> (source: <declaration file | caller | inferred from <what>>)
 Scope: <files, diff, or commit range reviewed>
 
 REQUIRED NOW

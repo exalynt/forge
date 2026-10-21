@@ -220,7 +220,7 @@ level, and a problem there is always Critical.
 
 ```
 Feature: <name>
-Stability: <level> (source: <declaration | user | none declared, so GA>)
+Stability: <level> (source: <declaration | user | inferred from <what>>)
 Scope: <what was QA'd, environment, commit; through UI | API | code only>
 
 Business rules

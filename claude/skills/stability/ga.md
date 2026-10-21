@@ -43,8 +43,7 @@ Quality and documentation:
 ## Changing it
 
 Changes must be non-breaking. If a request seems to need a breaking change,
-clarify the direction with the user before making it. A feature with no
-declared level is GA.
+clarify the direction with the user before making it.
 
 ## What GA is not
 
