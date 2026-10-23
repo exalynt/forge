@@ -25,6 +25,26 @@ tracing. Whatever is added follows this.
 - Propagate context with W3C Trace Context: across HTTP calls, into queued
   messages and job payloads, and through the code (Go's `ctx`, for example).
 
+## Telemetry never breaks the app
+
+Collecting or exporting telemetry must never cause an error, a failed request
+or job, or noticeable slowness in the application.
+
+- Export asynchronously, in the background: OTel's batch span and log
+  processors, and a periodic metric reader. Never export inline with the work
+  being measured.
+- Keep export timeouts short, a few seconds, and queues bounded. When the
+  queue is full or the backend is down, drop telemetry rather than block or
+  retry indefinitely.
+- The app starts and runs without a reachable collector. If the SDK fails to
+  set up, log a warning at startup and run without telemetry.
+- Still make telemetry problems visible. Write setup and export errors to the
+  console (stderr) at Warn, directly rather than through the OTel log bridge,
+  so they show up even when export is what's failing. They're never returned
+  from a request or job.
+- On shutdown, flush pending telemetry with a short timeout, and don't let a
+  failed flush hold up or fail the shutdown.
+
 ## Traces
 
 Every unit of work someone might need to investigate gets a span, with the kind
