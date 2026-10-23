@@ -13,6 +13,7 @@ claude/
 ├── rules/
 │   ├── engineering-philosophy.md
 │   ├── stability.md
+│   ├── observability.md         # OTel traces, logs, and metrics in any language
 │   └── subagents.md             # when to parallelize work with subagents
 ├── skills/
 │   ├── stability/               # level definitions and review classification
