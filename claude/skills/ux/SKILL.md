@@ -80,7 +80,8 @@ S1. Trying to: <intent>
 data for this user, such as their volume of items, their names, and their
 statuses. Run it at their device's width: 360px or 375px for a phone user,
 desktop otherwise. Take screenshots at the moments that matter and note the
-width.
+width. Save them by absolute path in the scratchpad, never in the project:
+browser tools may resolve a bare filename against the project's root.
 
 **Through an API**: start from the public docs, as the integrator would.
 Write the client a developer would write, with curl or a short script in the

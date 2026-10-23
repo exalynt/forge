@@ -26,7 +26,9 @@ claude/
 │   └── ux/                      # /ux <feature> [as <user>], main-flow walkthrough, manual only
 ├── agents/
 │   └── stability-reviewer.md    # read-only review against a stability level
-├── install.sh                   # symlinks the above into ~/.claude
+├── settings.json                # permissions, merged into ~/.claude/settings.json
+├── install.sh                   # symlinks the above into ~/.claude, merges settings.json
+├── setup-playwright.sh          # installs and registers Playwright MCP for /qa and /ux
 ├── stacks/
 │   ├── go-http/rules/           # general rules for Go HTTP API projects
 │   └── react/rules/             # general rules for React + MUI frontends
@@ -43,7 +45,7 @@ across all your projects, symlink it there. Your copy then stays in sync with
 ./claude/install.sh
 ```
 
-The script creates these links and nothing else:
+The script creates these links:
 
 ```text
 ~/.claude/CLAUDE.md -> forge/claude/CLAUDE.md
@@ -52,9 +54,15 @@ The script creates these links and nothing else:
 ~/.claude/skills    -> forge/claude/skills
 ```
 
+It also merges `settings.json` into `~/.claude/settings.json`, or copies it
+there if you don't have one. It doesn't link it, because Claude Code saves
+your "always allow" approvals to that file, and those shouldn't end up in
+forge. The merge adds forge's keys and list entries, such as its permission
+rules, and never changes or removes yours. It needs `jq`.
+
 It never overwrites or deletes anything, and it's safe to re-run. It reports
-each link as `added`, `ok`, `STALE` (it points at something no longer in forge),
-or `CONFLICT`, then prints a summary. Edits to linked files take effect
+each item as `added`, `updated` (settings merged in), `ok`, `STALE` (a link to
+something no longer in forge), or `CONFLICT`, then prints a summary. Edits to linked files take effect
 immediately, with no re-run needed. If you
 already have one of these as a real file or directory:
 
@@ -75,6 +83,44 @@ Start a new Claude Code session afterwards. To uninstall, remove the links:
 ```bash
 find ~/.claude -maxdepth 2 -type l -lname '*/forge/claude/*' -print -delete
 ```
+
+### Browser tools for /qa and /ux (optional)
+
+`/qa` and `/ux` drive a feature through its UI with whichever browser tools
+the session has. Without any, they report the UI as not verified. To give them
+[Playwright MCP](https://github.com/microsoft/playwright-mcp), set it up once
+per machine:
+
+```bash
+./claude/setup-playwright.sh
+```
+
+It installs `@playwright/mcp` globally with npm, installs Google Chrome if it's
+missing (the server's default browser; this step may ask for `sudo`), and
+registers the server for all projects with `claude mcp add --scope user`.
+`install.sh` can't do this part, because Claude Code keeps MCP servers in
+`~/.claude.json`, not in a directory it can link. It finds `claude` on your
+PATH, or the CLI bundled with the VS Code extension. Set `CLAUDE_BIN` to use
+another one.
+
+- Arguments are passed to the server. The browser is headed by default, which
+  works under WSLg, so add `--headless` where there's no display. Pass
+  `--browser firefox` to use Firefox instead of Chrome. Playwright's bundled
+  Chromium isn't one of the server's options.
+- The server always gets `--isolated`, so each session starts with a fresh,
+  in-memory profile. A sign-in from an earlier run doesn't carry into
+  first-use, signed-out, or other-tenant checks. The cost is signing in again
+  each session.
+- It registers Node and the package by absolute path, so the server starts even
+  when Claude Code's environment lacks nvm's PATH. Re-run it after switching
+  Node versions. Re-running also updates the package and applies any new flags.
+- Forge's `settings.json`, merged in by `install.sh`, lets the browser tools run
+  without asking each time. It still asks before `browser_run_code_unsafe`,
+  which runs arbitrary code on your machine, and before `browser_file_upload`
+  and `browser_drop`, which can send local files to a page.
+
+Start a new Claude Code session afterwards. `claude mcp list` should show
+`playwright` as connected.
 
 ### Project stacks
 

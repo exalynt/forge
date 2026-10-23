@@ -176,6 +176,8 @@ API that behaves correctly doesn't mean the screen does. In the UI, check:
 A rule the UI enforces must also hold at the API. Hiding a button doesn't
 control access, so call the API directly for each access rule. Capture a
 screenshot as evidence for each UI issue, and note the width it was taken at.
+Save screenshots by absolute path in the scratchpad, never in the project:
+browser tools may resolve a bare filename against the project's root.
 
 If no browser tools are available or the app can't be run, say so. Don't
 report the UI as verified because the API passed. List it under "Not
