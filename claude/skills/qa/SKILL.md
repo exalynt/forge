@@ -190,6 +190,13 @@ verified".
 - Use local or test environments and test data. Never touch production or
   real customer data, and never send real emails, messages, or payments. Ask
   before anything destructive or outward-facing in a shared environment.
+- When you start a dev server, use a port that's neither the framework's
+  default (Vite's 5173) nor one the project sets anywhere: in its config, dev
+  scripts, `.env` files, or Compose files, including the ports of other apps
+  it runs beside. The user's own instances run there. Pick a free port outside
+  all of them, pass it explicitly (`npm run dev -- --port <port>
+  --strictPort`), point the browser at it, and stop the server when you're
+  done.
 - Reproduce each issue before reporting it, and narrow it to the fewest steps
   that show it.
 - When you find an issue, keep going. One bug doesn't mean the rest works.

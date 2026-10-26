@@ -124,6 +124,13 @@ Look at each step through these lenses:
 - Follow the project's instructions on what may be run. If the UI or API
   can't be run, say so. A walkthrough read from code is a guess at the
   experience. Label any finding that comes from one as "from code, not tried".
+- When you start a dev server, use a port that's neither the framework's
+  default (Vite's 5173) nor one the project sets anywhere: in its config, dev
+  scripts, `.env` files, or Compose files, including the ports of other apps
+  it runs beside. The user's own instances run there. Pick a free port outside
+  all of them, pass it explicitly (`npm run dev -- --port <port>
+  --strictPort`), point the browser at it, and stop the server when you're
+  done.
 - The flow shares a browser session or a server, so run it in the main
   conversation. When walking as several user types, do them one at a time and
   report each separately.
