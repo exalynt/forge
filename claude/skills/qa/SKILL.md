@@ -1,6 +1,6 @@
 ---
 name: qa
-description: QA a feature end to end against its business rules and stability level, report the issues found, clarify ambiguous rules and assumptions, then confirm which issues to fix before fixing them.
+description: QA a feature end to end against its business rules and stability level, verifying primarily through its acceptance tests and exploring by hand what they don't cover, report the issues found, clarify ambiguous rules and assumptions, then confirm which issues to fix and which business rules to record as acceptance tests before doing either.
 argument-hint: "[low|medium|high] <feature> [focus]"
 disable-model-invocation: true
 ---
@@ -17,8 +17,16 @@ QA checks that the feature does what it's supposed to, through the paths
 people actually take. It judges behavior. Read code to understand or explain
 behavior, not to review it. For code review, use `/code-review`.
 
-There are two phases. Steps 1–5 find and report issues and change nothing in
-the project. Steps 6–7 fix only what the user confirms.
+The feature's acceptance tests are its specification (see the testing rule),
+and QA's primary form of verification. QA runs them rather than repeating by
+hand what they cover, uses their scenarios to know the rules and what to click
+through, and explores by hand the happy path and what they leave out. Business
+rules QA clarifies or finds uncovered are recorded as acceptance tests, with
+the user's approval.
+
+There are two phases. Steps 1–5 find and report issues, propose acceptance
+tests, and change nothing in the project. Steps 6–7 fix only the issues the
+user confirms and write only the acceptance tests the user approves.
 
 ## 1. Understand the feature
 
@@ -27,9 +35,14 @@ the project. Steps 6–7 fix only what the user confirms.
   and note any mock or stub it explicitly allows.
 - Find where it lives: pages, routes, endpoints, services, tables, jobs,
   external integrations, and the tests that cover it.
+- Find its acceptance tests: the `.feature` files for it, the level each
+  scenario runs at, and the command that runs them, from the stack's testing
+  rule or the project's CI. Read the scenarios. They state the rules, and
+  their steps show the flows to click through and the data to set up.
 - Find what it's supposed to do. Sources, most authoritative first: the user
-  in this conversation, the feature declaration and project docs, specs or
-  issues the project links to, existing tests, then the code. Code shows what
+  in this conversation, the feature's acceptance tests (its approved
+  specification), the feature declaration and project docs, specs or issues
+  the project links to, other existing tests, then the code. Code shows what
   the feature does, not what it should do. Don't treat current behavior as the
   rule just because it's implemented.
 - Work out what end to end means here: the primary workflow from a user's
@@ -51,13 +64,15 @@ reporting what it found and where.
 List the rules the feature should follow, each with its source:
 
 ```
-R1. <rule> (stated | assumed; source: <user | declaration | doc | test | code path>)
+R1. <rule> (stated | assumed; source: <user | acceptance test | declaration | doc | test | code path>; acceptance test: <file › Rule | none>; core | edge case)
 ```
 
 Cover who can do what, valid and invalid inputs, states and transitions,
 limits, calculations, what the user sees and when, and what happens on
 failure. A rule is **stated** when a source says so, and **assumed** when you
-inferred it from the code or common sense.
+inferred it from the code or common sense. Note whether each rule has an
+acceptance test, and whether it's a core rule or an edge case (see the testing
+rule), since that decides whether the level requires one.
 
 Then list the ambiguities: where sources disagree, where they're silent on a
 case that matters, or where the code does something a reasonable person could
@@ -73,16 +88,30 @@ from the code, the docs, or by trying it.
 
 For ambiguities that don't block testing, or that the user would rather leave
 for now, state your assumption, carry on, and list them in the report. Rules
-the user answers become **confirmed**.
+the user answers become **confirmed**. An answer that contradicts an
+acceptance test changes the specification, so it needs that test updated
+(step 5), and it's not an issue in the code until then.
 
 ## 4. Plan and run the checks
 
 Plan checks against the rules, cut to the effort and judged by the stability
-level (the sections after this one). At high effort:
+level (the sections after this one). Start with the acceptance tests:
 
-- **Primary workflow**: the happy path end to end, with realistic data.
-- **Rules**: each rule exercised at least once.
-- **Edge cases**: checked explicitly, not just when they come up (below).
+- **Run the acceptance suite** for the feature first. A rule whose acceptance
+  tests pass is verified. Don't check it again by hand.
+- A failing acceptance test is an issue in the code, rated like any other
+  broken rule, unless the user has said the specification is what's wrong.
+  Don't change the test.
+
+Then check by hand what the suite doesn't. At high effort:
+
+- **Primary workflow**: the happy path end to end, with realistic data,
+  following the core rules' scenarios through the UI where there is one.
+  Passing acceptance tests don't replace this walk: it's what shows the
+  pieces work together for a user.
+- **Rules**: each rule without an acceptance test exercised at least once.
+- **Edge cases**: those the acceptance tests don't cover, checked explicitly,
+  not just when they come up (below).
 - **Real data**: nothing mocked or stubbed without an explicit exception
   (below).
 - **Access**: each role, signed out, and another tenant's data.
@@ -96,9 +125,9 @@ server, don't, and report what that left unverified.
 
 ### Edge cases
 
-For each rule and each step of the workflow, list the edge cases that apply,
-then check every one. Write the list down before running it. It goes in the
-report. Work through:
+For each rule and each step of the workflow, list the edge cases that apply
+and aren't already covered by an acceptance test, then check every one. Write
+the list down before running it. It goes in the report. Work through:
 
 - **Boundaries**: zero, one, the maximum, just under and just over each limit,
   negative numbers, the first and last item, the ends of a date range.
@@ -251,19 +280,21 @@ everything GA expects, so it can't say the feature meets GA.
 
 The steps in this skill describe **high**. **Medium** and **low** do less:
 
-| Part                       | Low                                                                                   | Medium                                                                                               |
-| -------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| Understand (1)             | The declaration and the primary workflow's path through the code.                     | Every layer the feature crosses.                                                                     |
-| Rules and questions (2, 3) | The rules the primary workflow touches. Ask only what blocks running it.              | All the rules. Ask what decides whether something is a bug.                                          |
-| Workflows                  | The primary workflow, once.                                                           | The primary workflow and the important secondary ones.                                               |
-| Rules exercised            | Those the primary workflow hits.                                                      | Each rule once.                                                                                      |
-| Edge cases                 | Those the primary workflow runs into. No separate list.                               | Boundaries, input, and state for each rule, and any case around an assumed rule or an open question. |
-| Real data                  | Search the primary workflow's path for mocks, and confirm its save survives a reload. | Search the feature's code, and run the runtime checks on the primary workflow.                       |
-| Presentation               | Desktop and 375px, light mode, on the primary workflow's screens.                     | The primary workflow at desktop, 360px, and 375px, in light and dark.                                |
-| Subagents                  | None.                                                                                 | Only for separate repositories, or test suites that run long.                                        |
+| Part                       | Low                                                                                   | Medium                                                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Understand (1)             | The declaration and the primary workflow's path through the code.                     | Every layer the feature crosses.                                                                                                           |
+| Rules and questions (2, 3) | The rules the primary workflow touches. Ask only what blocks running it.              | All the rules. Ask what decides whether something is a bug.                                                                                |
+| Workflows                  | The primary workflow, once.                                                           | The primary workflow and the important secondary ones.                                                                                     |
+| Rules exercised by hand    | Those the primary workflow hits that no acceptance test covers.                       | Each rule without an acceptance test, once.                                                                                                |
+| Edge cases by hand         | Those the primary workflow runs into. No separate list.                               | Boundaries, input, and state for each rule, where no acceptance test covers them, and any case around an assumed rule or an open question. |
+| Acceptance tests proposed  | For rules clarified or changed in this run.                                           | Also for every rule the level requires one for that has none.                                                                              |
+| Real data                  | Search the primary workflow's path for mocks, and confirm its save survives a reload. | Search the feature's code, and run the runtime checks on the primary workflow.                                                             |
+| Presentation               | Desktop and 375px, light mode, on the primary workflow's screens.                     | The primary workflow at desktop, 360px, and 375px, in light and dark.                                                                      |
+| Subagents                  | None.                                                                                 | Only for separate repositories, or test suites that run long.                                                                              |
 
 At every effort:
 
+- Run the feature's acceptance tests.
 - Run the primary workflow end to end, through the UI where there is one.
 - Check tenant isolation: try the primary workflow's data from another tenant,
   at the API. The security and privacy baseline isn't a matter of effort.
@@ -284,7 +315,11 @@ Effort: <low | medium | high>
 Scope: <what was QA'd, environment, commit; through UI | API | code only>
 
 Business rules
-R1. <rule> (stated | assumed | confirmed; source)
+R1. <rule> (stated | assumed | confirmed; source; acceptance test: <file › Rule | none>)
+
+Acceptance tests
+- Ran: <command>: <passed / failed counts>
+- Failing: <scenario>: Rule R<n>, listed as issue <n>
 
 Issues
 1. [<severity>] <title>
@@ -297,6 +332,10 @@ Issues
 
 Open questions
 Q1. <ambiguity>. Options: A (current behavior), B. Assumed: A.
+
+Proposed acceptance tests
+A1. <add | update | remove> R<n>, <file>: <why: clarified | changed | uncovered>
+    <the Gherkin: the Rule and its Examples, or the diff to an existing one>
 
 Not issues at <level>
 - <item>: the level it belongs to
@@ -321,6 +360,14 @@ Severities:
 - **Minor**: wrong, but there's a workaround or it's on an uncommon path.
 - **Polish**: presentation, wording, consistency.
 
+Propose acceptance tests for rules the user clarified or changed in this run,
+and for rules the level requires one for that have none: core rules from
+Alpha, edge-case rules from Beta. Prototype has no automated tests, so propose
+none there. Bug fixes, performance, and presentation issues don't get
+acceptance tests of their own: fixing them restores behavior the
+specification already describes. Write the Gherkin as the testing rule
+describes, in the domain's language.
+
 Order issues by severity. Omit empty sections. Keep things that work and
 style preferences out of Issues. What passed belongs under Verified.
 
@@ -331,29 +378,37 @@ if there are many), recommending Critical and Major. Ask any open questions
 whose answer changes an issue. An issue that hinges on an unanswered question
 can't be fixed yet.
 
+Ask separately which proposed acceptance tests to write, with the Gherkin in
+front of the user. That answer is the explicit approval the testing rule
+requires, for those tests as shown. One the user wants reworded gets shown
+again before it's written.
+
 For a mock or stub, the user can make an explicit exception instead of a fix.
 Offer to record it in the feature declaration, such as in `known_gaps`, so the
 next QA run knows.
 
-If the user picks nothing, stop.
+If the user picks no issues and no acceptance tests, stop.
 
-## 7. Fix and re-verify
+## 7. Fix, record the rules, and re-verify
 
+- Write the approved acceptance tests, as shown, in the place the stack's
+  testing rule names. Each should pass once the confirmed fixes are in. One
+  that still fails is a new issue: report it, and don't fix it without
+  asking.
 - Fix only the confirmed issues, sized to the stability level. Follow the
   `stability` skill on breaking changes.
 - If a fix needs a decision that's the user's to make, ask.
 - Fixes may run in parallel subagents only when they touch disjoint files.
   Re-verify in the main conversation once they're all in.
-- Where the level expects tests, add one that pins the rule the issue broke.
 - Re-run each fixed issue's steps through the same path it was found on, in
   the UI and at the width where it showed, and the checks around it, to
-  confirm the fix and catch regressions. Run the project's checks.
+  confirm the fix and catch regressions. Run the acceptance tests and the
+  project's checks.
 - Anything new found while fixing goes in the report. Don't fix it without
   asking.
-- Offer to record confirmed rules where the project keeps them: the feature
-  declaration, its docs, or a test. Don't invent a new place without asking.
 - Don't commit unless asked.
 
 Report each confirmed issue as fixed (and how the fix was verified) or not
-fixed (and why), then the checks you ran with their results, and any new
-issues found.
+fixed (and why), each approved acceptance test as written and passing or
+failing, then the checks you ran with their results, and any new issues
+found.
