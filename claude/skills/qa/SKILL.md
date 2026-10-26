@@ -171,7 +171,9 @@ API that behaves correctly doesn't mean the screen does. In the UI, check:
   and fixed headers, footers, and action bars don't cover content. Check
   desktop width too, and a tablet width when the layout changes there. The
   project's responsive rule, such as the React stack's, says what's expected;
-  where it applies at every level, so does this check.
+  where it applies at every level, so does this check. Set each width with the
+  browser's resize tool, desktop at 1280px or wider. The browser window is
+  sized to fit the user's screen, so its own width isn't a test width.
 
 A rule the UI enforces must also hold at the API. Hiding a button doesn't
 control access, so call the API directly for each access rule. Capture a

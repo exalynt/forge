@@ -79,7 +79,9 @@ S1. Trying to: <intent>
 **Through the UI**: use whichever browser tools are available, with realistic
 data for this user, such as their volume of items, their names, and their
 statuses. Run it at their device's width: 360px or 375px for a phone user,
-desktop otherwise. Take screenshots at the moments that matter and note the
+desktop otherwise, at 1280px or wider. Set it with the browser's resize tool:
+the window is sized to fit the user's screen, so its own width isn't a test
+width. Take screenshots at the moments that matter and note the
 width. Save them in the QA folder (below).
 
 **Through an API**: start from the public docs, as the integrator would.

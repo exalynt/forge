@@ -3,13 +3,15 @@
 #
 # Installs @playwright/mcp globally with npm, installs Google Chrome (the
 # browser it launches) if it's missing, and registers the server for every
-# project at user scope. Arguments are passed on to the server, for example
+# project at user scope, started through playwright-mcp.sh so its window opens
+# out of the way. Arguments are passed on to the server, for example
 # --headless where there's no display.
 #
 # Usage: setup-playwright.sh [server flags...]
 #
 # Safe to re-run: it updates the package and re-registers the server with the
-# current Node and flags. Re-run it after switching Node versions.
+# current Node and flags. Re-run it after switching Node versions or moving
+# this repository.
 set -euo pipefail
 
 # The VS Code extension bundles its own CLI and doesn't put `claude` on PATH.
@@ -44,7 +46,8 @@ if [[ ! -f $cli ]]; then
 fi
 
 "$claude" mcp remove --scope user playwright >/dev/null 2>&1 || true
-"$claude" mcp add --scope user playwright -- "$node" "$cli" --isolated ${1+"$@"}
+launcher="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/playwright-mcp.sh"
+"$claude" mcp add --scope user playwright -- "$launcher" "$node" "$cli" --isolated ${1+"$@"}
 
 echo
 echo "Done. Start a new Claude Code session, then check it with: $claude mcp list"

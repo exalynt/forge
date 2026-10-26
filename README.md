@@ -29,6 +29,7 @@ claude/
 ├── settings.json                # permissions, merged into ~/.claude/settings.json
 ├── install.sh                   # symlinks the above into ~/.claude, merges settings.json
 ├── setup-playwright.sh          # installs and registers Playwright MCP for /qa and /ux
+├── playwright-mcp.sh            # starts it with the browser window out of the way
 ├── stacks/
 │   ├── go-http/rules/           # general rules for Go HTTP API projects
 │   └── react/rules/             # general rules for React + MUI frontends
@@ -107,6 +108,15 @@ another one.
   works under WSLg, so add `--headless` where there's no display. Pass
   `--browser firefox` to use Firefox instead of Chrome. Playwright's bundled
   Chromium isn't one of the server's options.
+- The browser window opens out of the way, so you can follow along without it
+  covering your work. `playwright-mcp.sh`, which the setup registers as the
+  server, reads the monitors each time the server starts, with `xrandr` on
+  Linux and WSLg or AppKit on macOS. It sizes the window to about a quarter of
+  a monitor, at most 1280×900, and puts it in the bottom-right corner of a
+  secondary monitor, or of the only one. Where it can't read the monitors, or
+  with `--headless` or Firefox, the browser opens as it otherwise would.
+  `/qa` and `/ux` set each test width with the browser's resize tool, which
+  doesn't move the window.
 - The server always gets `--isolated`, so each session starts with a fresh,
   in-memory profile. A sign-in from an earlier run doesn't carry into
   first-use, signed-out, or other-tenant checks. The cost is signing in again
