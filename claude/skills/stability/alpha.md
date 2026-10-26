@@ -13,9 +13,9 @@ for validating the real workflow, not for hardening every edge.
 
 - the primary workflow works end-to-end, and users can actually complete it
 - real persistence and integrations replace mocks where necessary
-- common paths have black-box end-to-end automated tests, and the core
-  business rules have acceptance tests (in Gherkin, run with Cucumber); that
-  is all the testing Alpha needs
+- each endpoint's happy path has a black-box end-to-end test, and the core
+  business rules, the primary workflow included, have acceptance tests (in
+  Gherkin, run with Cucumber); that is all the testing Alpha needs
 - failures are visible, not swallowed
 - reasonable input validation
 - database and schema changes use migrations

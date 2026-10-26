@@ -14,8 +14,8 @@ CLAUDE.md differs, follow the project.
 Write tests only when the user explicitly asks, or when the feature's
 stability level requires them (see the `stability` skill). Then add only the
 kinds and depth that the request or level calls for. For example, Alpha asks
-only for end-to-end tests of common paths and acceptance tests of core
-business rules. Unit and integration tests, and acceptance tests of edge-case
+only for end-to-end tests of each endpoint's happy path and acceptance tests
+of core business rules. Unit and integration tests, and acceptance tests of edge-case
 rules, start at Beta. Otherwise, don't add tests on your own initiative.
 Existing tests must still pass after any change. The CI rule covers which CI
 job runs each kind.
@@ -30,7 +30,7 @@ directory.
 | --- | --- | --- | --- |
 | Unit | Go, no build tag, next to the code | `go test ./...` | Table-driven tests (`tests := []struct{…}` with `t.Run`), dependencies mocked with moq: service logic, validation, error mapping. |
 | Integration | Go, `//go:build integration`, next to the code | `go test -tags integration ./...` | A specific piece of happy-path functionality against real dependencies such as Postgres, for example a repository against a real database. |
-| End-to-end | Playwright, `tests/e2e/` | `npx playwright test` | Black box: calls the API endpoints over HTTP against the running app and its real dependencies, asserting only on responses. Happy paths. |
+| End-to-end | Playwright, `tests/e2e/` | `npx playwright test` | Black box: one endpoint's happy path per test, called over HTTP against the running app and its real dependencies, asserting only on its response. Setup calls are fine, but a series of calls that verifies a flow is an acceptance test in `tests/acceptance/`. |
 
 ## Acceptance tests
 
@@ -47,7 +47,7 @@ every level (see the testing rule):
   next to that package, usually the service. Step definitions call it, with
   moq mocks for its boundaries, or real dependencies where the rule needs
   them.
-- Rules proved only across a whole flow go in `tests/acceptance/`, a Go
+- Rules proved only across a flow of calls go in `tests/acceptance/`, a Go
   package with its own `features/` directory, whose step definitions call the
   running app's API over HTTP.
 

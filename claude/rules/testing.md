@@ -14,11 +14,11 @@ initiative otherwise. Existing tests must still pass after any change.
 
 ## Three levels
 
-| Level       | Granularity                                   | Dependencies                       | Required from |
-| ----------- | --------------------------------------------- | ---------------------------------- | ------------- |
-| Unit        | Lowest: one function, method, or component    | All mocked or stubbed              | Beta          |
-| Integration | Middle: one piece of code and a real system   | Real database or external system   | Beta          |
-| End-to-end  | Highest: a whole flow, through the public API | The running app, all of them real  | Alpha         |
+| Level       | Granularity                                         | Dependencies                      | Required from |
+| ----------- | --------------------------------------------------- | --------------------------------- | ------------- |
+| Unit        | Lowest: one function, method, or component          | All mocked or stubbed             | Beta          |
+| Integration | Middle: one piece of code and a real system         | Real database or external system  | Beta          |
+| End-to-end  | Highest: one endpoint's happy path, through the app | The running app, all of them real | Alpha         |
 
 ### Unit
 
@@ -46,15 +46,20 @@ initiative otherwise. Existing tests must still pass after any change.
 
 ### End-to-end
 
-- Black box. Drives the running app only through its public interface, the
-  API over HTTP or the UI in a browser, exactly as a caller would, with its
-  real dependencies.
-- Exercises a whole flow from start to finish, such as signing up, then
-  signing in, then booking.
-- Asserts only on what a caller can see: responses, the UI, and the results of
-  follow-up calls. Never on database rows or internals.
-- Mostly happy paths: the main workflows working end to end. Edge cases belong
-  in unit tests.
+- Black box. Calls the running app only through its public interface, the API
+  over HTTP (or, where that's a UI, a page in a browser), exactly as a caller
+  would, with its real dependencies.
+- One endpoint's happy path per test: a valid request to that endpoint gets
+  the response it should, through every layer and the real dependencies. It
+  shows the endpoint is wired up and works, nothing more.
+- Not a series of calls that verifies a feature or a flow, such as signing up,
+  then signing in, then booking. Flows and features are acceptance tests
+  (below). A test may set up the data its endpoint needs first, but it checks
+  only the one endpoint.
+- Asserts only on what a caller can see: the response, or the page. Never on
+  database rows or internals.
+- Happy paths only. Rules and their edge cases are acceptance tests, and other
+  edge cases are unit tests.
 - Third-party services run in their sandbox or test mode, not mocked.
 
 ## Acceptance tests
@@ -69,7 +74,9 @@ the software working as it should.
   prove its rule. Most test the domain or service layer with its boundaries
   mocked, as a unit test would. A rule that only the real system enforces,
   such as uniqueness through a database constraint, needs real dependencies.
-  A rule only visible across a whole flow goes through the public interface.
+  A rule only visible across a flow, a series of calls such as signing up,
+  then signing in, then booking, goes through the public interface. That's
+  where flows and features are verified, not in end-to-end tests.
 - Its own suite and CI job. Acceptance tests are written with one tool,
   whatever level each one sits at, so they run together, apart from the
   unit, integration, and end-to-end suites. The suite starts whatever its
@@ -149,14 +156,17 @@ Test each case at the lowest level that can prove it, and only once:
   level.
 - Other logic or an edge case → unit.
 - Behavior that depends on the real database or system → integration.
-- A workflow a user or client depends on working → end-to-end.
+- A workflow or flow a user or client depends on working → acceptance test,
+  through the public interface.
+- An endpoint working at all, through the running app → end-to-end.
 
 ## By stability level
 
 - **Prototype**: no automated tests. The primary demo path works when
   exercised by hand.
-- **Alpha**: end-to-end tests for the common paths, and acceptance tests for
-  the core business rules. That's all Alpha needs.
+- **Alpha**: an end-to-end test of each endpoint's happy path, and acceptance
+  tests for the core business rules, the primary workflow included. That's
+  all Alpha needs.
 - **Beta**: adds acceptance tests for the edge-case business rules, and unit
   and integration tests where they're useful. Primary and important secondary
   workflows are tested, and so are important failure paths.
