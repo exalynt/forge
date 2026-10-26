@@ -176,8 +176,7 @@ API that behaves correctly doesn't mean the screen does. In the UI, check:
 A rule the UI enforces must also hold at the API. Hiding a button doesn't
 control access, so call the API directly for each access rule. Capture a
 screenshot as evidence for each UI issue, and note the width it was taken at.
-Save screenshots by absolute path in the scratchpad, never in the project:
-browser tools may resolve a bare filename against the project's root.
+Save it in the QA folder (below).
 
 If no browser tools are available or the app can't be run, say so. Don't
 report the UI as verified because the API passed. List it under "Not
@@ -185,8 +184,19 @@ verified".
 
 ### Rules for this phase
 
-- Don't change project files in this phase. Throwaway scripts, test data, and
-  scratch tests go in the scratchpad.
+- Don't change project files in this phase, except to git-ignore the QA
+  folder.
+- The QA folder is `.playwright-mcp/` at the project root. Everything you
+  create goes there: screenshots, snapshots, console logs, throwaway scripts,
+  test data, and scratch tests. Playwright MCP writes its own files there, and
+  it refuses paths outside the project or that folder, so a scratchpad path
+  fails. Include the folder in every file name you pass, such as
+  `.playwright-mcp/qa-<what>-375.png`. A bare name lands in the project root.
+- Before creating anything, check that the folder is ignored with
+  `git check-ignore -q .playwright-mcp/`. If it isn't, add `/.playwright-mcp/`
+  to the root `.gitignore`, and say so in the report. When you're done,
+  `git status` should show nothing new besides that line. Move anything else
+  you created into the folder, or delete it.
 - Use local or test environments and test data. Never touch production or
   real customer data, and never send real emails, messages, or payments. Ask
   before anything destructive or outward-facing in a shared environment.

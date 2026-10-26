@@ -80,12 +80,11 @@ S1. Trying to: <intent>
 data for this user, such as their volume of items, their names, and their
 statuses. Run it at their device's width: 360px or 375px for a phone user,
 desktop otherwise. Take screenshots at the moments that matter and note the
-width. Save them by absolute path in the scratchpad, never in the project:
-browser tools may resolve a bare filename against the project's root.
+width. Save them in the QA folder (below).
 
 **Through an API**: start from the public docs, as the integrator would.
 Write the client a developer would write, with curl or a short script in the
-scratchpad. Work through getting credentials, making the first successful
+QA folder. Work through getting credentials, making the first successful
 call, and finishing the whole outcome. Count the calls and the round trips the
 outcome takes. Make the mistakes a newcomer would make, such as a missing
 field, the wrong type, or an expired token, and read the error messages as
@@ -117,8 +116,19 @@ Look at each step through these lenses:
 
 ### Rules for this phase
 
-- Don't change project files in this phase. Scripts and test data go in the
-  scratchpad.
+- Don't change project files in this phase, except to git-ignore the QA
+  folder.
+- The QA folder is `.playwright-mcp/` at the project root. Everything you
+  create goes there: screenshots, snapshots, console logs, scripts, and test
+  data. Playwright MCP writes its own files there, and it refuses paths
+  outside the project or that folder, so a scratchpad path fails. Include the
+  folder in every file name you pass, such as
+  `.playwright-mcp/ux-<step>-375.png`. A bare name lands in the project root.
+- Before creating anything, check that the folder is ignored with
+  `git check-ignore -q .playwright-mcp/`. If it isn't, add `/.playwright-mcp/`
+  to the root `.gitignore`, and say so in the report. When you're done,
+  `git status` should show nothing new besides that line. Move anything else
+  you created into the folder, or delete it.
 - Use local or test environments and test data. Never touch production or
   real customer data, and never send real emails, messages, or payments.
 - Follow the project's instructions on what may be run. If the UI or API

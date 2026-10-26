@@ -111,6 +111,10 @@ another one.
   in-memory profile. A sign-in from an earlier run doesn't carry into
   first-use, signed-out, or other-tenant checks. The cost is signing in again
   each session.
+- The server writes screenshots, snapshots, and console logs to
+  `.playwright-mcp/` in the project, and refuses paths outside the project or
+  that folder. `/qa` and `/ux` keep everything they create there and add
+  `/.playwright-mcp/` to the project's `.gitignore` if it's missing.
 - It registers Node and the package by absolute path, so the server starts even
   when Claude Code's environment lacks nvm's PATH. Re-run it after switching
   Node versions. Re-running also updates the package and applies any new flags.
