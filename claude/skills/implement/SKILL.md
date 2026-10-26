@@ -132,7 +132,8 @@ When the work is done:
   branch's changes
   (`git diff $(git merge-base <base> HEAD)` from the worktree, which
   includes uncommitted work)
-  against the target level. Resolve its REQUIRED NOW and SECURITY/PRIVACY
+  against the target level, at the effort the user asked for, or `medium`.
+  Resolve its REQUIRED NOW and SECURITY/PRIVACY
   findings. Remove work this change added that it flags UNNECESSARY NOW.
   Findings about code this change didn't touch go in the report, not in the
   change. For a move, `../promote/SKILL.md` already has this review.

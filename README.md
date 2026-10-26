@@ -18,7 +18,7 @@ claude/
 │   └── subagents.md             # when to parallelize work with subagents
 ├── skills/
 │   ├── stability/               # level definitions and review classification
-│   ├── promote/                 # /promote <feature> <level>, manual only
+│   ├── promote/                 # /promote [low|medium|high] <feature> <level>, manual only
 │   ├── commit/                  # /commit [session|all], grouped commits, manual only
 │   ├── implement/               # /implement [level] <task>, own branch and worktree, ends in a PR, manual only
 │   ├── pr/                      # /pr [level] [draft], commit, push, open or update a labeled PR, manual only

@@ -1,14 +1,17 @@
 ---
 name: promote
 description: Deliberately promote a feature to a higher stability level (Prototype → Alpha → Beta → GA), implementing only the delta the target level requires.
-argument-hint: <feature> <target-level>
+argument-hint: "[low|medium|high] <feature> <target-level>"
 disable-model-invocation: true
 ---
 
 # Promote a Feature
 
-Arguments: `$ARGUMENTS`. Expected format: `<feature> <target-level>`, for
-example `/promote conversations alpha`.
+Arguments: `$ARGUMENTS`. Expected format: `[effort] <feature> <target-level>`,
+for example `/promote conversations alpha` or `/promote high conversations
+beta`. The effort is `low`, `medium`, or `high`, and sets how much the
+stability reviews cover, as the `stability-reviewer` agent describes. Without
+one, use `medium`.
 
 Promotion increases engineering investment only enough to satisfy the next
 deliberate commitment. Use the `stability` skill for the level definitions.
@@ -29,9 +32,9 @@ deliberate commitment. Use the `stability` skill for the level definitions.
 ## 2. Review against the target
 
 Invoke the `stability-reviewer` subagent. Give it the feature, where its code
-lives if known, the current level, and tell it to review against the
-**target** level. Its REQUIRED NOW findings are what the target requires. Its
-UNNECESSARY NOW findings exceed even the target.
+lives if known, the current level, and the effort, and tell it to review
+against the **target** level. Its REQUIRED NOW findings are what the target
+requires. Its UNNECESSARY NOW findings exceed even the target.
 
 ## 3. Present the delta
 
@@ -75,10 +78,14 @@ Otherwise, proceed.
 ## 5. Verify
 
 - Run the relevant tests, linters, and type checks. Fix failures your changes caused.
-- Invoke `stability-reviewer` again against the target. Resolve remaining
-  REQUIRED NOW and SECURITY/PRIVACY findings, or explain why you can't.
+- Invoke `stability-reviewer` again against the target, at the same effort.
+  Resolve remaining REQUIRED NOW and SECURITY/PRIVACY findings, or explain why
+  you can't.
 
 ## 6. Record the new level
+
+Below high effort, the review didn't check everything the target expects.
+Show its NOT REVIEWED list and ask before recording the new level.
 
 Only when the second review passes for the target: update the feature's
 declared stability level, and update `known_gaps` (or the project's
