@@ -122,7 +122,11 @@ nothing else.
 Do the task in the worktree the way the project's instructions and the global
 rules describe, sized to the target level: meet what it expects, and leave out
 what first appears at a later level. Don't fix the feature's `known_gaps`
-along the way. Ask when a decision is the user's to make.
+along the way. Ask when a decision is the user's to make. A task that
+implements, changes, or clarifies a business rule adds or updates its
+acceptance tests, and a bug fix or performance work doesn't (see the testing
+rule). Acceptance tests need the user's explicit approval before you add,
+change, or remove any: propose the scenarios before writing them.
 
 When the work is done:
 

@@ -13,7 +13,7 @@ reliability, compatibility, maintainability, and long-term operation.
 Reliability:
 
 - behavior is dependable
-- important workflows are comprehensively tested
+- important workflows and business rules are comprehensively tested
 - important failure modes have known behavior
 - performance characteristics are understood
 - realistic scale has been validated

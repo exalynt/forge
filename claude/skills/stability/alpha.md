@@ -13,7 +13,8 @@ for validating the real workflow, not for hardening every edge.
 
 - the primary workflow works end-to-end, and users can actually complete it
 - real persistence and integrations replace mocks where necessary
-- common paths have high-level end-to-end or black-box automated tests; that
+- common paths have black-box end-to-end automated tests, and the core
+  business rules have acceptance tests (in Gherkin, run with Cucumber); that
   is all the testing Alpha needs
 - failures are visible, not swallowed
 - reasonable input validation
@@ -27,8 +28,10 @@ for validating the real workflow, not for hardening every edge.
   - the language's standard checks: linting, formatting, static analysis, and
     a build, plus a container image build if the project uses one. CI only
     checks; it never commits fixes
-  - a feature-test job that starts the needed dependencies and runs the
-    black-box feature tests
+  - an e2e-test job that starts the needed dependencies and runs the
+    black-box end-to-end tests
+  - an acceptance-test job that starts what the acceptance tests need and
+    runs them
 - changes receive normal code review
 - known limitations are documented
 
@@ -43,8 +46,9 @@ Don't automatically introduce:
 
 - authentication and authorization (permissions); they are first required at
   Beta
-- unit and integration tests, or CI jobs for them; deeper testing starts at
-  Beta
+- unit and integration tests, or CI jobs for them, and acceptance tests for
+  edge-case business rules the work isn't implementing, changing, or
+  clarifying; deeper testing starts at Beta
 - exhaustive error-path tests
 - comprehensive dashboards, sophisticated alerting, or elaborate SLOs
 - large-scale load testing or production-scale capacity planning

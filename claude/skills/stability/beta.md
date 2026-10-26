@@ -14,6 +14,8 @@ operating it responsibly.
 Testing and correctness:
 
 - primary and important secondary workflows are tested
+- edge-case business rules have acceptance tests, adding to Alpha's
+  acceptance tests of the core rules
 - deeper unit and integration tests are added where they're useful, beyond
   Alpha's end-to-end tests
 - CI adds a unit-test job and an integration-test job; the integration job

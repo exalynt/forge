@@ -63,7 +63,9 @@ it is not part of the promotion unless the user agrees.
 
 If the delta is large or contains decisions that are the user's to make, such
 as choosing a monitoring stack or a public contract, ask before implementing.
-Otherwise, proceed.
+If it adds or changes acceptance tests, show their scenarios in Gherkin and
+get explicit approval for them, whatever the delta's size (see the testing
+rule). Otherwise, proceed.
 
 ## 4. Implement only the delta
 

@@ -14,7 +14,7 @@ claude/
 │   ├── engineering-philosophy.md
 │   ├── stability.md
 │   ├── observability.md         # OTel traces, logs, and metrics in any language
-│   ├── testing.md               # unit, integration, and feature tests by level
+│   ├── testing.md               # unit, integration, e2e, and acceptance tests by level
 │   └── subagents.md             # when to parallelize work with subagents
 ├── skills/
 │   ├── stability/               # level definitions and review classification

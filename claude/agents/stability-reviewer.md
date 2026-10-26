@@ -66,6 +66,9 @@ review.
 - unnecessary extensibility
 - unnecessary scalability work
 - code motivated primarily by hypothetical future requirements
+- acceptance tests added, changed, or removed in the diff, including step
+  definitions that change what a scenario checks. They need the user's
+  explicit approval, so list each one for the caller to confirm
 
 Over-engineering is a failed stability review, just like under-engineering.
 Prefer removing unjustified complexity rather than merely documenting it.
