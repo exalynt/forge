@@ -1,17 +1,20 @@
 ---
 name: ux
 description: Try a feature's main flow, through its UI or API, as a specific type of user, report what it's like for them to use (where they hesitate, get stuck, or do more work than they should), then confirm which findings to act on before changing anything.
-argument-hint: <feature> [as <type of user>]
+argument-hint: "[low|medium|high] <feature> [as <type of user>]"
 disable-model-invocation: true
 ---
 
 # UX Walkthrough
 
-Arguments: `$ARGUMENTS`. Expected format: `<feature> [as <type of user>]`, for
-example `/ux conversations as a support agent on a phone` or
-`/ux billing-api as a partner developer integrating for the first time`. If no
-feature is given, ask. Anything after the user type narrows the walkthrough to
-part of the flow.
+Arguments: `$ARGUMENTS`. Expected format:
+`[effort] <feature> [as <type of user>]`, for example
+`/ux conversations as a support agent on a phone` or
+`/ux high billing-api as a partner developer integrating for the first time`.
+The effort is `low`, `medium`, or `high`, and sets how much time and cost the
+walkthrough spends (see "Effort"). Without one, use `medium`. If no feature is
+given, ask. Anything after the user type narrows the walkthrough to part of
+the flow.
 
 A walkthrough asks how it is for this user to get the main flow done. It
 judges experience, not correctness. A flow can be bug-free and still slow,
@@ -103,7 +106,7 @@ Look at each step through these lenses:
   without guessing? Does each step lead to the next?
 - **Language**: do labels, messages, field and endpoint names use this user's
   words, or the system's internal ones?
-- **Effort**: steps, clicks, typing, fields, waits, calls, and switching
+- **Workload**: steps, clicks, typing, fields, waits, calls, and switching
   between screens or tools. What could be skipped, defaulted, or remembered?
 - **Feedback**: do they always know what's happening, whether it worked, and
   what changed?
@@ -140,9 +143,9 @@ Look at each step through these lenses:
   default (Vite's 5173) nor one the project sets anywhere: in its config, dev
   scripts, `.env` files, or Compose files, including the ports of other apps
   it runs beside. The user's own instances run there. Pick a free port outside
-  all of them, pass it explicitly (`npm run dev -- --port <port>
-  --strictPort`), point the browser at it, and stop the server when you're
-  done.
+  all of them, pass it explicitly
+  (`npm run dev -- --port <port> --strictPort`), point the browser at it, and
+  stop the server when you're done.
 - The flow shares a browser session or a server, so run it in the main
   conversation. When walking as several user types, do them one at a time and
   report each separately.
@@ -156,13 +159,36 @@ feature's level:
   edges elsewhere aren't findings.
 - **Alpha**: this user must be able to complete the main flow without help and
   without getting it wrong. Anything that stops them, or leads them to the
-  wrong result, is a finding. Effort and polish can wait unless they're
+  wrong result, is a finding. Workload and polish can wait unless they're
   severe.
-- **Beta** and **GA**: the full set of lenses, and the variations.
+- **Beta** and **GA**: the full set of lenses, and the variations, as far as
+  the effort covers them.
 
 Something only a later level expects isn't a finding. Neither is anything in
 `known_gaps`. List it under "Later, at <level>" only when it's a real problem
 this user would hit.
+
+## Effort
+
+Effort controls how much of the experience a walkthrough covers, and so its
+time and token cost. It's independent of the stability level. The level sets
+which friction counts as a finding. Effort decides how much of the flow is
+looked at. A low-effort walkthrough of a GA feature judges what it covers by
+GA's bar, but it doesn't cover everything GA expects.
+
+The steps in this skill describe **high**. **Medium** and **low** do less:
+
+| Part           | Low                                                                    | Medium                                                                            |
+| -------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| The user (2)   | Assume what isn't given and mark it. Ask only for a missing user type. | Ask about assumptions that would change the walkthrough.                          |
+| Variations     | None. The main flow once.                                              | A first time and a repeat time, and the mistake this user is most likely to make. |
+| Lenses         | Finding the way, Feedback, and Mistakes: what stops this user.         | All of them on the main flow. Finding the way and Mistakes on the variations.     |
+| Through an API | The first successful call and the whole outcome.                       | Plus the mistakes a newcomer would make.                                          |
+| Screenshots    | Only as evidence for findings.                                         | At the moments that matter.                                                       |
+
+At every effort, walk the main flow end to end as this user, through the UI
+where there is one, at their device's width. List the variations and lenses
+this effort skipped under "Not tried", as skipped at this effort.
 
 ## 4. Check what you can't judge alone
 
@@ -176,13 +202,14 @@ Ask them with the report in step 6, not before.
 ```
 Feature: <name>
 Stability: <level> (source: <declaration | user | inferred from <what>>)
+Effort: <low | medium | high>
 User: <type of user>. Goal: <goal>
 Scope: <the flow walked, the variations, environment, commit; through UI at
         <widths> | API | from code only>
 
 Verdict
 <Two or three sentences: could they get it done, how sure were they, and how
-much effort it took. Then the steps, clicks or calls, and rough time taken.>
+much work it took. Then the steps, clicks or calls, and rough time taken.>
 
 Walkthrough
 S1. <intent>: <what happened, in a line> (friction: <what>, or none)
@@ -208,7 +235,7 @@ Later, at <level>
 - <item>
 
 Not tried
-- <variation or check>: why
+- <variation or check>: why (couldn't run, skipped at <effort> effort)
 ```
 
 Severities:

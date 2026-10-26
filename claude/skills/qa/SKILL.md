@@ -1,15 +1,17 @@
 ---
 name: qa
 description: QA a feature end to end against its business rules and stability level, report the issues found, clarify ambiguous rules and assumptions, then confirm which issues to fix before fixing them.
-argument-hint: <feature> [focus]
+argument-hint: "[low|medium|high] <feature> [focus]"
 disable-model-invocation: true
 ---
 
 # QA a Feature
 
-Arguments: `$ARGUMENTS`. Expected format: `<feature> [focus]`, for example
-`/qa conversations` or `/qa conversations reconnecting by email`. If no feature
-is given, ask.
+Arguments: `$ARGUMENTS`. Expected format: `[effort] <feature> [focus]`, for
+example `/qa conversations`, `/qa low conversations`, or
+`/qa high conversations reconnecting by email`. The effort is `low`, `medium`,
+or `high`, and sets how much time and cost the run spends (see "Effort").
+Without one, use `medium`. If no feature is given, ask.
 
 QA checks that the feature does what it's supposed to, through the paths
 people actually take. It judges behavior. Read code to understand or explain
@@ -36,7 +38,9 @@ the project. Steps 6–7 fix only what the user confirms.
   UI, end to end starts there: the user's path is through its screens, not
   its endpoints.
 
-With a `focus`, go deep on that part but still run the primary workflow once.
+A `focus` narrows where the effort goes, not how much: the focus gets the
+effort's full checks, and the rest of the feature gets the primary workflow
+once.
 
 For a feature spanning several layers or repositories, research them in
 parallel subagents (see the subagents rule), one per layer or source, each
@@ -73,8 +77,8 @@ the user answers become **confirmed**.
 
 ## 4. Plan and run the checks
 
-Plan checks against the rules, scaled to the stability level (next section).
-Typically:
+Plan checks against the rules, cut to the effort and judged by the stability
+level (the sections after this one). At high effort:
 
 - **Primary workflow**: the happy path end to end, with realistic data.
 - **Rules**: each rule exercised at least once.
@@ -206,9 +210,9 @@ verified".
   default (Vite's 5173) nor one the project sets anywhere: in its config, dev
   scripts, `.env` files, or Compose files, including the ports of other apps
   it runs beside. The user's own instances run there. Pick a free port outside
-  all of them, pass it explicitly (`npm run dev -- --port <port>
-  --strictPort`), point the browser at it, and stop the server when you're
-  done.
+  all of them, pass it explicitly
+  (`npm run dev -- --port <port> --strictPort`), point the browser at it, and
+  stop the server when you're done.
 - Reproduce each issue before reporting it, and narrow it to the fewest steps
   that show it.
 - When you find an issue, keep going. One bug doesn't mean the rest works.
@@ -229,19 +233,54 @@ feature's level:
 - **Beta** and **GA**: the full set of checks, including breaking changes.
 
 Edge cases are checked at every level. The level decides which failures count
-as issues, not whether to look. Mocks and stubs need an explicit exception at
-every level.
+as issues, not whether to look; the effort decides how many are looked at.
+Mocks and stubs need an explicit exception at every level.
 
 Something only a later level expects isn't an issue. Neither is anything in
 `known_gaps`. List it under "Not issues at <level>" only when someone could
 reasonably expect it. Tenant isolation and leaked secrets are checked at every
 level, and a problem there is always Critical.
 
+## Effort
+
+Effort controls how much of the feature a run checks, and so its time and
+token cost. It's independent of the stability level. The level sets the bar
+each check is judged by. Effort decides how many checks run. A low-effort run
+on a GA feature judges what it checks by GA's bar, but it doesn't check
+everything GA expects, so it can't say the feature meets GA.
+
+The steps in this skill describe **high**. **Medium** and **low** do less:
+
+| Part                       | Low                                                                                   | Medium                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Understand (1)             | The declaration and the primary workflow's path through the code.                     | Every layer the feature crosses.                                                                     |
+| Rules and questions (2, 3) | The rules the primary workflow touches. Ask only what blocks running it.              | All the rules. Ask what decides whether something is a bug.                                          |
+| Workflows                  | The primary workflow, once.                                                           | The primary workflow and the important secondary ones.                                               |
+| Rules exercised            | Those the primary workflow hits.                                                      | Each rule once.                                                                                      |
+| Edge cases                 | Those the primary workflow runs into. No separate list.                               | Boundaries, input, and state for each rule, and any case around an assumed rule or an open question. |
+| Real data                  | Search the primary workflow's path for mocks, and confirm its save survives a reload. | Search the feature's code, and run the runtime checks on the primary workflow.                       |
+| Presentation               | Desktop and 375px, light mode, on the primary workflow's screens.                     | The primary workflow at desktop, 360px, and 375px, in light and dark.                                |
+| Subagents                  | None.                                                                                 | Only for separate repositories, or test suites that run long.                                        |
+
+At every effort:
+
+- Run the primary workflow end to end, through the UI where there is one.
+- Check tenant isolation: try the primary workflow's data from another tenant,
+  at the API. The security and privacy baseline isn't a matter of effort.
+- Run the project's checks: tests, lint, type checks, and build.
+- Reproduce each issue, with a screenshot for each UI issue, and report
+  anything you run into outside the plan.
+
+Report what the run skipped that the stability level expects under "Not
+verified", as skipped at this effort, so the report never reads as more than
+it checked.
+
 ## 5. Report
 
 ```
 Feature: <name>
 Stability: <level> (source: <declaration | user | inferred from <what>>)
+Effort: <low | medium | high>
 Scope: <what was QA'd, environment, commit; through UI | API | code only>
 
 Business rules
@@ -269,7 +308,8 @@ Verified
   exception's source>
 
 Not verified
-- <check>: why (couldn't run, no access, out of scope)
+- <check>: why (couldn't run, no access, out of scope, skipped at <effort>
+  effort)
 ```
 
 Severities:
