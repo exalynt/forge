@@ -38,18 +38,18 @@ Acceptance tests are Gherkin run with
 [godog](https://github.com/cucumber/godog), Cucumber's Go implementation, at
 every level (see the testing rule):
 
-- Each package's acceptance tests run from one `TestAcceptance` function, in
-  a test file with the `acceptance` build tag, through `godog.TestSuite` with
-  `TestingT: t`. The tag keeps them out of the unit and integration suites,
-  and `go test -tags acceptance -run '^TestAcceptance$' ./...` runs them all
-  without the unit tests.
-- Rules proved at the service or repository go in a `features/` directory
-  next to that package, usually the service. Step definitions call it, with
-  moq mocks for its boundaries, or real dependencies where the rule needs
-  them.
-- Rules proved only across a flow of calls go in `tests/acceptance/`, a Go
-  package with its own `features/` directory, whose step definitions call the
-  running app's API over HTTP.
+- Every acceptance test lives in `tests/acceptance/`, one Go package,
+  whatever level proves it. The `.feature` files go in
+  `tests/acceptance/features/`, one per feature or area of the domain.
+- One `TestAcceptance` function runs them all, in a test file with the
+  `acceptance` build tag, through `godog.TestSuite` with `TestingT: t`. The
+  tag keeps them out of the unit and integration suites, and
+  `go test -tags acceptance -run '^TestAcceptance$' ./...` runs them without
+  the unit tests.
+- Step definitions live in the same package, also tagged `acceptance`. They
+  call the code at the rule's level: a service, with moq mocks for its
+  boundaries or real dependencies where the rule needs them, or the running
+  app's API over HTTP for a rule that only shows across a flow of calls.
 
 ## Mocks
 

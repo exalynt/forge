@@ -32,7 +32,7 @@ Alpha.
 | `check` | Alpha | `go vet ./...`; golangci-lint through `golangci/golangci-lint-action`, using the project's `.golangci.yml` if there is one; `go fmt ./...` and `go fix ./...`, then `git diff --exit-code` so the job fails if either changed anything; `go build ./...`. |
 | `docker-build` | Alpha, only if the project has a Dockerfile | `docker build .`, without pushing. |
 | `e2e-test` | Alpha | Start the dependencies with the project's local stack (`docker compose up -d --wait`), start the app and wait until it responds, then `npm ci` and `npx playwright test tests/e2e`. Install Playwright browsers only if the tests use a browser. |
-| `acceptance-test` | Alpha | Start the dependencies with `docker compose up -d --wait`, start the app and wait until it responds if there are acceptance tests in `tests/acceptance/`, then `go test -tags acceptance -run '^TestAcceptance$' ./...`. |
+| `acceptance-test` | Alpha | Start the dependencies with `docker compose up -d --wait`, start the app and wait until it responds if any step definitions call its API, then `go test -tags acceptance -run '^TestAcceptance$' ./...`. |
 | `unit-test` | Beta | `go test ./...` |
 | `integration-test` | Beta | Start the dependencies the tests need with `docker compose up -d --wait <services>`, then `go test -tags integration ./...`. |
 
