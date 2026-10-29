@@ -36,6 +36,10 @@ Alpha.
 | `unit-test` | Beta | `go test ./...` |
 | `integration-test` | Beta | Start the dependencies the tests need with `docker compose up -d --wait <services>`, then `go test -tags integration ./...`. |
 
+A library has no `acceptance-test` job, and its `e2e-test` job starts the
+dependencies its tests need with `docker compose up -d --wait <services>`,
+then runs `go test -tags e2e ./tests/e2e/...`, with no app to start.
+
 Pass dependency connection details and the app's URL to tests through the same
 environment variables used locally (see the testing rule), so CI and local runs
 behave the same way.

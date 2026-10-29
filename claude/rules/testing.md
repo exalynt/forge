@@ -90,9 +90,10 @@ the software working as it should.
   wiring, retries, or how a component renders, gets an ordinary unit,
   integration, or end-to-end test.
 - Required for core business rules from Alpha, and for edge-case business
-  rules from Beta. A core rule is one the primary workflow depends on: break
-  it and the feature doesn't do its job. An edge-case rule covers a boundary,
-  an unusual state, or a failure around a core rule.
+  rules from Beta. Libraries don't need them (see "Libraries"). A core rule
+  is one the primary workflow depends on: break it and the feature doesn't
+  do its job. An edge-case rule covers a boundary, an unusual state, or a
+  failure around a core rule.
 
 ### When they change
 
@@ -176,6 +177,30 @@ Test each case at the lowest level that can prove it, and only once:
 CI runs each suite in its own job from the stability level that requires it:
 end-to-end and acceptance tests from Alpha, unit and integration tests from
 Beta.
+
+## Libraries
+
+A library is code other projects import, such as a Go module or an npm
+package, with no running app, endpoints, or UI of its own. The levels and
+what each requires stay the same, with two differences:
+
+- No acceptance tests, at any level, unless the user asks for them. A
+  library's rules are about its API, not a business domain, and its
+  end-to-end, unit, and integration tests cover them.
+- End-to-end tests call the library's public API instead of an endpoint.
+  They still live in their own suite and directory and are still black box:
+  each imports the library as a consumer would and uses only what it
+  exports, never its internals. Each test walks the happy path of a common
+  flow a consumer would follow, such as setting the library up, making the
+  calls a typical use makes in order, and using the result, with the real
+  systems it supports, such as a database it renders queries for. Unlike an
+  app's, a library's end-to-end tests cover flows, since it has no
+  acceptance tests to carry them. They assert only on what the API returns
+  or does.
+
+So at Alpha a library has end-to-end tests of its common flows' happy paths,
+and from Beta it adds unit and integration tests for edge cases and failure
+paths. CI runs no acceptance job.
 
 ## Suites run in isolation and concurrently
 

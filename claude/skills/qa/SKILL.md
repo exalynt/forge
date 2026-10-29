@@ -24,6 +24,13 @@ through, and explores by hand the happy path and what they leave out. Business
 rules QA clarifies or finds uncovered are recorded as acceptance tests, with
 the user's approval.
 
+A library has no acceptance tests unless the user asked for them (see the
+testing rule's "Libraries"). There, run its end-to-end tests in their place,
+take its rules from its docs and tests, and walk its public API by hand the
+way a consumer would. Record rules QA settles in the end-to-end tests for a
+core flow and in unit or integration tests for an edge case, at the levels
+that require them.
+
 There are two phases. Steps 1–5 find and report issues, propose acceptance
 tests, and change nothing in the project. Steps 6–7 fix only the issues the
 user confirms and write only the acceptance tests the user approves.

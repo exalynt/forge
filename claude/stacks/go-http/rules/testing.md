@@ -16,7 +16,8 @@ stability level requires them (see the `stability` skill). Then add only the
 kinds and depth that the request or level calls for. For example, Alpha asks
 only for end-to-end tests of each endpoint's happy path and acceptance tests
 of core business rules. Unit and integration tests, and acceptance tests of edge-case
-rules, start at Beta. Otherwise, don't add tests on your own initiative.
+rules, start at Beta. A library has no acceptance tests (see "Libraries"
+below). Otherwise, don't add tests on your own initiative.
 Existing tests must still pass after any change. The CI rule covers which CI
 job runs each kind.
 
@@ -50,6 +51,19 @@ every level (see the testing rule):
   call the code at the rule's level: a service, with moq mocks for its
   boundaries or real dependencies where the rule needs them, or the running
   app's API over HTTP for a rule that only shows across a flow of calls.
+
+## Libraries
+
+A Go module other projects import has no acceptance tests, and its
+end-to-end tests are Go, not Playwright (see the testing rule's "Libraries"):
+
+- They live in `tests/e2e/`, tagged `//go:build e2e`, in a package that
+  imports the library by its module path and uses only what it exports.
+- Each test walks one common consumer flow's happy path through the public
+  API, against the real dependencies it supports.
+- `go test -tags e2e ./tests/e2e/...` runs them. In a repository of several
+  modules, `tests/e2e/` may be its own module so it can import the nested
+  ones.
 
 ## Mocks
 

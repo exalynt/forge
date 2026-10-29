@@ -15,7 +15,9 @@ for validating the real workflow, not for hardening every edge.
 - real persistence and integrations replace mocks where necessary
 - each endpoint's happy path has a black-box end-to-end test, and the core
   business rules, the primary workflow included, have acceptance tests (in
-  Gherkin, run with Cucumber); that is all the testing Alpha needs
+  Gherkin, run with Cucumber); that is all the testing Alpha needs. A library
+  has no acceptance tests, and its end-to-end tests walk common consumer
+  flows through its public API (see the testing rule's "Libraries")
 - failures are visible, not swallowed
 - reasonable input validation
 - database and schema changes use migrations
@@ -31,7 +33,7 @@ for validating the real workflow, not for hardening every edge.
   - an e2e-test job that starts the needed dependencies and runs the
     black-box end-to-end tests
   - an acceptance-test job that starts what the acceptance tests need and
-    runs them
+    runs them; a library has none
 - changes receive normal code review
 - known limitations are documented
 
