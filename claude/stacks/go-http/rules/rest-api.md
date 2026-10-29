@@ -48,8 +48,10 @@ server generates one (UUIDv7).
 
 ## Pagination
 
-Prefer cursor pagination (`after`, `before`, `size`) through `exalynt/turn`,
-with a `Link` header.
+List endpoints are paginated from Beta (see the `stability` skill). Before
+then, a list may return everything. Prefer cursor pagination (`after`,
+`before`, `size`) through `exalynt/turn`, with a `Link` header; offset
+pagination is fine where cursors don't fit.
 
 ## Status codes and errors
 

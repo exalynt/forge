@@ -51,6 +51,7 @@ Don't automatically introduce:
 - unit and integration tests, or CI jobs for them, and acceptance tests for
   edge-case business rules the work isn't implementing, changing, or
   clarifying; deeper testing starts at Beta
+- pagination of list endpoints; it is first required at Beta
 - exhaustive error-path tests
 - comprehensive dashboards, sophisticated alerting, or elaborate SLOs
 - large-scale load testing or production-scale capacity planning

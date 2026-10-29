@@ -41,6 +41,8 @@ Scale and performance:
 
 - realistic data volumes considered
 - realistic performance validated
+- an HTTP API's list endpoints are paginated, by cursor or offset, with a
+  maximum page size; pagination is first required at Beta
 
 Review and documentation:
 
