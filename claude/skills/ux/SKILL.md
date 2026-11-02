@@ -11,10 +11,10 @@ Arguments: `$ARGUMENTS`. Expected format:
 `[effort] <feature> [as <type of user>]`, for example
 `/ux conversations as a support agent on a phone` or
 `/ux high billing-api as a partner developer integrating for the first time`.
-The effort is `low`, `medium`, or `high`, and sets how much time and cost the
-walkthrough spends (see "Effort"). Without one, use `medium`. If no feature is
-given, ask. Anything after the user type narrows the walkthrough to part of
-the flow.
+The type of user can name a persona. The effort is `low`, `medium`, or `high`,
+and sets how much time and cost the walkthrough spends (see "Effort"). Without
+one, use `medium`. If no feature is given, ask. Anything after the user type
+narrows the walkthrough to part of the flow.
 
 A walkthrough asks how it is for this user to get the main flow done. It
 judges experience, not correctness. A flow can be bug-free and still slow,
@@ -41,7 +41,10 @@ nothing in the project. Steps 6–7 change only what the user confirms.
 
 ## 2. Define the user and their goal
 
-Write down who you're walking through as, before trying anything:
+Find the persona for this user with the `personas` skill, before trying
+anything. When there isn't one, or no user type was given, it asks whether to
+create one or use an existing one. Then write down who you're walking through
+as:
 
 ```
 User: <type of user>
@@ -53,12 +56,11 @@ Expects: <what they think the first step is, the words they'd look for,
 Success: <the observable end state that means they got it done>
 ```
 
-Take the user type from the arguments. If none is given, ask, and offer the
-user types the project's docs or the feature declaration describe. Fill in the
-rest from the project and common sense, and mark what you assumed. Ask
+Knows, Context, and Expects start from the persona. Fill in the rest for this
+walkthrough from the project and common sense, and mark what you assumed. Ask
 (AskUserQuestion, one round) only about assumptions that would change the
-walkthrough, such as whether they're new or experienced, or on a phone or a
-desktop, with your recommended option first.
+walkthrough, such as whether they're new or experienced this time, with your
+recommended option first.
 
 For an API, the user is the developer integrating with it. Their goal is the
 outcome their own product needs, not "call the endpoint".
@@ -124,7 +126,7 @@ Look at each step through these lenses:
 ### Rules for this phase
 
 - Don't change project files in this phase, except to git-ignore the QA
-  folder.
+  folder and to save a persona the user confirmed.
 - The QA folder is `.playwright-mcp/` at the project root. Everything you
   create goes there: screenshots, snapshots, console logs, scripts, and test
   data. Playwright MCP writes its own files there, and it refuses paths
@@ -134,8 +136,8 @@ Look at each step through these lenses:
 - Before creating anything, check that the folder is ignored with
   `git check-ignore -q .playwright-mcp/`. If it isn't, add `/.playwright-mcp/`
   to the root `.gitignore`, and say so in the report. When you're done,
-  `git status` should show nothing new besides that line. Move anything else
-  you created into the folder, or delete it.
+  `git status` should show nothing new besides that line and any saved persona.
+  Move anything else you created into the folder, or delete it.
 - Use local or test environments and test data. Never touch production or
   real customer data, and never send real emails, messages, or payments.
 - Follow the project's instructions on what may be run. If the UI or API
@@ -187,15 +189,16 @@ The steps in this skill describe **high**. **Medium** and **low** do less:
 
 | Part           | Low                                                                    | Medium                                                                            |
 | -------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| The user (2)   | Assume what isn't given and mark it. Ask only for a missing user type. | Ask about assumptions that would change the walkthrough.                          |
+| The user (2)   | Assume what the persona doesn't cover and mark it.                     | Ask about assumptions that would change the walkthrough.                          |
 | Variations     | None. The main flow once.                                              | A first time and a repeat time, and the mistake this user is most likely to make. |
 | Lenses         | Finding the way, Feedback, and Mistakes: what stops this user.         | All of them on the main flow. Finding the way and Mistakes on the variations.     |
 | Through an API | The first successful call and the whole outcome.                       | Plus the mistakes a newcomer would make.                                          |
 | Screenshots    | Only as evidence for findings.                                         | At the moments that matter.                                                       |
 
-At every effort, walk the main flow end to end as this user, through the UI
-where there is one, at their device's width. List the variations and lenses
-this effort skipped under "Not tried", as skipped at this effort.
+At every effort, find the persona, and walk the main flow end to end as this
+user, through the UI where there is one, at their device's width. List the
+variations and lenses this effort skipped under "Not tried", as skipped at this
+effort.
 
 ## 4. Check what you can't judge alone
 
@@ -210,7 +213,7 @@ Ask them with the report in step 6, not before.
 Feature: <name>
 Stability: <level> (source: <declaration | user | inferred from <what>>)
 Effort: <low | medium | high>
-User: <type of user>. Goal: <goal>
+User: <type of user> (<persona file, if saved>). Goal: <goal>
 Scope: <the flow walked, the variations, environment, commit; through UI at
         <widths> | API | from code only>
 

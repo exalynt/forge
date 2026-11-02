@@ -11,9 +11,9 @@ Arguments: `$ARGUMENTS`. Expected format:
 `[effort] <flow> [as <role>, <role>...]`, for example
 `/use client onboarding`,
 `/use high capacity as a client and an engineer`, or
-`/use low invoices as a finance admin`. The effort is `low`, `medium`, or
-`high`, and sets how much time and cost the test spends (see "Effort"). Without
-one, use `medium`. If no flow is given, ask.
+`/use low invoices as a finance admin`. A role can name a persona. The effort
+is `low`, `medium`, or `high`, and sets how much time and cost the test spends
+(see "Effort"). Without one, use `medium`. If no flow is given, ask.
 
 A usability test asks: can each person actually do what they need to do, and
 does the whole flow get done? It's run like a session with real people. You're
@@ -42,16 +42,20 @@ decides what happens next. This skill doesn't change code.
 
 ## 2. Define the people and the scenario
 
-Write the scenario in the people's terms, with goals and no steps:
+Take the roles from the arguments, the project's docs, or the feature
+declarations. There are four browsers, so four people at most. Find each
+person's persona with the `personas` skill. When there isn't one, it asks whether
+to create one or use an existing one, with all the missing roles in one round.
+
+Then write the scenario in the people's terms, with goals and no steps:
 
 ```
 Scenario: <name>
 Done when: <the observable end state, across everyone>
 
-<Name>, <role>
+<Name>, <role> (<persona file, if saved>)
   Goal: <what they need to get done, in their words>
-  Knows: <domain knowledge, this product, the other people in the scenario>
-  Context: <device, how often they do this, what else is competing for them>
+  Knows: <beyond the persona: the other people in the scenario, this situation>
   Starts when: <what prompts them to begin>
   Has: <the app's URL, an account or how they'd get one>
 
@@ -59,10 +63,9 @@ Preconditions: <what must already be true, and what you'll hand to people
                 because it can't happen for real, such as an invite link>
 ```
 
-Take the roles from the arguments, the project's docs, or the feature
-declarations. There are four browsers, so four people at most. Mark what you
-assumed, then show it to the user and confirm it (AskUserQuestion, one round,
-your recommended option first). Don't run a scenario the user hasn't seen.
+Mark what you assumed, then show it to the user and confirm it (AskUserQuestion,
+one round, your recommended option first). Don't run a scenario the user hasn't
+seen.
 
 ## 3. Set up
 
@@ -78,7 +81,8 @@ your recommended option first). Don't run a scenario the user hasn't seen.
 
 ### Rules for the whole test
 
-- Don't change project files, except to git-ignore the QA folder.
+- Don't change project files, except to git-ignore the QA folder and to save a
+  persona the user confirmed.
 - The QA folder is `.playwright-mcp/` at the project root. Everything created
   goes there, and the file names include the folder, such as
   `.playwright-mcp/use-<person>-<step>-1280.png`. A bare name lands in the
@@ -86,7 +90,7 @@ your recommended option first). Don't run a scenario the user hasn't seen.
 - Before creating anything, check that the folder is ignored with
   `git check-ignore -q .playwright-mcp/`. If it isn't, add `/.playwright-mcp/`
   to the root `.gitignore`, and say so in the report. When you're done,
-  `git status` should show nothing new besides that line.
+  `git status` should show nothing new besides that line and any saved persona.
 - Never touch production or real customer data, and never send real emails,
   messages, or payments.
 - Everyone shares the running app on purpose, because the test is about them
@@ -108,9 +112,9 @@ your recommended option first). Don't run a scenario the user hasn't seen.
 ## 4. Run the scenario
 
 Start each person when their part of the story begins, as a background
-`use-role` agent. Their prompt has their section from step 2, their browser
-(`playwright-<n>`), and the agent ids of the people they'd already know how to
-reach, if any. An agent can't see its own id, so when someone new becomes
+`use-role` agent. Their prompt has their persona's full text, since they can't
+read files, their section from step 2, their browser (`playwright-<n>`), and the
+agent ids of the people they'd already know how to reach, if any. An agent can't see its own id, so when someone new becomes
 reachable, send it to the people who'd know them.
 
 Then run the session:

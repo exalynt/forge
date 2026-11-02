@@ -24,7 +24,8 @@ claude/
 │   ├── pr/                      # /pr [level] [draft], commit, push, open or update a labeled PR, manual only
 │   ├── qa/                      # /qa [low|medium|high] <feature> [focus], end-to-end QA, manual only
 │   ├── ux/                      # /ux [low|medium|high] <feature> [as <user>], main-flow walkthrough, manual only
-│   └── use/                     # /use [low|medium|high] <flow> [as <role>, ...], usability test with one agent per person, manual only
+│   ├── use/                     # /use [low|medium|high] <flow> [as <role>, ...], usability test with one agent per person, manual only
+│   └── personas/                # finds or creates reusable user personas in a project's docs/personas, for /ux and /use
 ├── agents/
 │   ├── stability-reviewer.md    # read-only review against a stability level
 │   └── use-role.md              # plays one person in a /use usability test
