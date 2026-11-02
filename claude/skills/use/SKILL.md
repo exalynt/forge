@@ -91,7 +91,17 @@ your recommended option first). Don't run a scenario the user hasn't seen.
   messages, or payments.
 - Everyone shares the running app on purpose, because the test is about them
   affecting each other. That's why this runs in parallel subagents despite the
-  subagents rule. Each still owns their browser, and only theirs.
+  subagents rule.
+- You assign each person a numbered browser, and no two people share one.
+  Subagents share this session's browsers, so two on one server would land on
+  the same page and sign-in. Another Claude session has its own browsers, so a
+  test or `/qa` running there can't touch yours through its browser tools, but
+  it does use the same app and database. That's another reason each run uses
+  its own organization or accounts.
+- Close a browser with `browser_close`. Never kill Chrome or Playwright
+  processes by name, such as with `pkill chrome`, even if a browser seems stuck.
+  That takes down other sessions' browsers too. Report a browser you can't
+  recover, and let the user decide.
 - Stop and tell the user if anyone sees another tenant's real data or a real
   secret.
 

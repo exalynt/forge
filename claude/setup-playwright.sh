@@ -47,8 +47,9 @@ if [[ ! -f $cli ]]; then
 fi
 
 launcher="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/playwright-mcp.sh"
-# playwright is for /qa and /ux. /use gives each person in a test their own
-# browser and sign-in, one of the numbered servers.
+# playwright is the one browser used by default. The numbered servers are for
+# when a skill calls for more: several sign-ins at once, a subagent that drives
+# a browser (subagents share a session's servers), or a person in a /use test.
 for server in playwright playwright-{1..4}; do
   "$claude" mcp remove --scope user "$server" >/dev/null 2>&1 || true
   "$claude" mcp add --scope user "$server" -- "$launcher" "$node" "$cli" --isolated ${1+"$@"}

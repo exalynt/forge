@@ -124,11 +124,17 @@ another one.
   in-memory profile. A sign-in from an earlier run doesn't carry into
   first-use, signed-out, or other-tenant checks. The cost is signing in again
   each session.
-- It registers five servers: `playwright` for `/qa` and `/ux`, and
-  `playwright-1` through `playwright-4`, so `/use` can have up to four people
-  signed in at once, each in their own browser. They belong to the main session,
-  so a person's sign-in survives their agent waiting between turns. Their windows
-  open in the same corner, on top of each other.
+- It registers five servers, each its own browser and sign-in: `playwright`, the
+  one used by default, and `playwright-1` through `playwright-4` for when a skill
+  calls for more, such as several sign-ins at once or the people in a `/use`
+  test. Every Claude session starts its own five, so separate sessions never
+  share a browser, and one can't reach another's through its browser tools.
+  Subagents share their session's, so each subagent driving a browser needs a
+  numbered server of its own. They belong to the main session, so a person's
+  sign-in survives their agent waiting between turns. Browsers don't separate
+  data: every agent and session uses the same app and database. Their windows
+  open in the same corner, on top of each other, and killing Chrome by name
+  closes every session's browser, so the skills close only their own.
 - The server writes screenshots, snapshots, and console logs to
   `.playwright-mcp/` in the project, and refuses paths outside the project or
   that folder. `/qa` and `/ux` keep everything they create there and add

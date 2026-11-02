@@ -148,9 +148,14 @@ Look at each step through these lenses:
   all of them, pass it explicitly
   (`npm run dev -- --port <port> --strictPort`), point the browser at it, and
   stop the server when you're done.
-- The flow shares a browser session or a server, so run it in the main
-  conversation. When walking as several user types, do them one at a time and
-  report each separately.
+- Run the flow in the main conversation, on one browser, `playwright`. Another
+  Claude session has its own browsers, so it can't touch yours through its
+  browser tools, and you can't touch its. When walking as several user types,
+  do them one at a time and report each separately.
+- Close a browser with `browser_close`. Never kill Chrome or Playwright
+  processes by name, such as with `pkill chrome`, even if a browser seems stuck.
+  That takes down other sessions' browsers too. Report a browser you can't
+  recover, and let the user decide.
 
 ## Scale to the stability level
 

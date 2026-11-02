@@ -254,8 +254,26 @@ verified".
 - When you find an issue, keep going. One bug doesn't mean the rest works.
 - Run checks that share nothing in parallel subagents, such as tracing each
   rule through the code or test suites with their own data. Checks that share
-  a browser session, a server, a database, or test data run one at a time in
-  the main conversation.
+  a browser, a database's data, or test data run one at a time in the main
+  conversation.
+- Use one browser by default: `playwright`, in the main conversation. Another
+  Claude session has its own browsers, so it can't touch yours through its
+  browser tools, and you can't touch its.
+- Close a browser with `browser_close`. Never kill Chrome or Playwright
+  processes by name, such as with `pkill chrome`, even if a browser seems stuck.
+  That takes down other sessions' browsers too. Report a browser you can't
+  recover, and let the user decide.
+- Use the numbered servers (`playwright-1` through `playwright-4`) only when a
+  check needs several sign-ins open at once, such as two roles on the same item,
+  or trying one tenant's data while signed in as another.
+- At high effort, browser checks can also run in parallel subagents, when each
+  has its own numbered server and test data, such as its own tenant. Subagents
+  share this session's browsers, so two on one server land on the same page and
+  sign-in and overwrite each other's work. Name the server in the prompt, and
+  tell it to use only that one. Browsers separate pages and sign-ins, not data.
+  Every agent and session still uses the same app and database, so checks on
+  the same data run one at a time. If the numbered servers aren't there, run
+  browser checks one at a time in the main conversation.
 
 ## Scale to the stability level
 
