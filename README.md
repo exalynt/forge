@@ -32,7 +32,8 @@ claude/
 ├── settings.json                # permissions, merged into ~/.claude/settings.json
 ├── install.sh                   # symlinks the above into ~/.claude, merges settings.json
 ├── setup-playwright.sh          # installs and registers Playwright MCP for /qa, /ux, and /use
-├── playwright-mcp.sh            # starts it with the browser window out of the way
+├── playwright-mcp.sh            # starts it, opening Chrome through playwright-chrome.sh
+├── playwright-chrome.sh         # opens each browser window in the next free spot on the monitors
 ├── stacks/
 │   ├── go-http/rules/           # general rules for Go HTTP API projects
 │   └── react/rules/             # general rules for React + MUI frontends
@@ -112,15 +113,18 @@ another one.
   works under WSLg, so add `--headless` where there's no display. Pass
   `--browser firefox` to use Firefox instead of Chrome. Playwright's bundled
   Chromium isn't one of the server's options.
-- The browser window opens out of the way, so you can follow along without it
-  covering your work. `playwright-mcp.sh`, which the setup registers as the
-  server, reads the monitors each time the server starts, with `xrandr` on
-  Linux and WSLg or AppKit on macOS. It sizes the window to about a quarter of
-  a monitor, at most 1280×900, and puts it in the bottom-right corner of a
-  secondary monitor, or of the only one. Where it can't read the monitors, or
-  with `--headless` or Firefox, the browser opens as it otherwise would.
-  `/qa` and `/ux` set each test width with the browser's resize tool, which
-  doesn't move the window.
+- Browser windows arrange themselves across your monitors, so you can follow
+  along without them covering your work. `playwright-chrome.sh` reads the
+  monitors each time a browser opens, with `xrandr` on Linux and WSLg or AppKit
+  on macOS, and gives the window an eighth of a monitor, or more where that would
+  be smaller than Chrome's minimum window size. Windows fill from the top
+  right, right to left and then down, on secondary monitors first and the primary
+  last. Once every spot is taken, new ones stack on the same spots in order. A
+  spot frees up when its browser closes. Spots are shared across sessions, but
+  only count browsers it opened, not your own windows. Where it can't read the
+  monitors, the browser opens as it otherwise would, and with `--headless` or
+  another browser it isn't used at all. The skills set each test width with the
+  browser's resize tool, which doesn't move or resize the window.
 - The server always gets `--isolated`, so each session starts with a fresh,
   in-memory profile. A sign-in from an earlier run doesn't carry into
   first-use, signed-out, or other-tenant checks. The cost is signing in again
@@ -133,9 +137,8 @@ another one.
   Subagents share their session's, so each subagent driving a browser needs a
   numbered server of its own. They belong to the main session, so a person's
   sign-in survives their agent waiting between turns. Browsers don't separate
-  data: every agent and session uses the same app and database. Their windows
-  open in the same corner, on top of each other, and killing Chrome by name
-  closes every session's browser, so the skills close only their own.
+  data: every agent and session uses the same app and database. Killing Chrome
+  by name closes every session's browser, so the skills close only their own.
 - The server writes screenshots, snapshots, and console logs to
   `.playwright-mcp/` in the project, and refuses paths outside the project or
   that folder. `/qa` and `/ux` keep everything they create there and add

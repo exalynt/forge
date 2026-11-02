@@ -5,8 +5,8 @@
 # Installs @playwright/mcp globally with npm, installs Google Chrome (the
 # browser it launches) if it's missing, and registers the servers for every
 # project at user scope, started through playwright-mcp.sh so their windows
-# open out of the way. Arguments are passed on to the servers, for example
-# --headless where there's no display.
+# arrange themselves across the monitors. Arguments are passed on to the
+# servers, for example --headless where there's no display.
 #
 # Usage: setup-playwright.sh [server flags...]
 #
