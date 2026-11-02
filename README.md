@@ -23,12 +23,14 @@ claude/
 │   ├── implement/               # /implement [level] <task>, own branch and worktree, ends in a PR, manual only
 │   ├── pr/                      # /pr [level] [draft], commit, push, open or update a labeled PR, manual only
 │   ├── qa/                      # /qa [low|medium|high] <feature> [focus], end-to-end QA, manual only
-│   └── ux/                      # /ux [low|medium|high] <feature> [as <user>], main-flow walkthrough, manual only
+│   ├── ux/                      # /ux [low|medium|high] <feature> [as <user>], main-flow walkthrough, manual only
+│   └── use/                     # /use [low|medium|high] <flow> [as <role>, ...], usability test with one agent per person, manual only
 ├── agents/
-│   └── stability-reviewer.md    # read-only review against a stability level
+│   ├── stability-reviewer.md    # read-only review against a stability level
+│   └── use-role.md              # plays one person in a /use usability test
 ├── settings.json                # permissions, merged into ~/.claude/settings.json
 ├── install.sh                   # symlinks the above into ~/.claude, merges settings.json
-├── setup-playwright.sh          # installs and registers Playwright MCP for /qa and /ux
+├── setup-playwright.sh          # installs and registers Playwright MCP for /qa, /ux, and /use
 ├── playwright-mcp.sh            # starts it with the browser window out of the way
 ├── stacks/
 │   ├── go-http/rules/           # general rules for Go HTTP API projects
@@ -85,12 +87,13 @@ Start a new Claude Code session afterwards. To uninstall, remove the links:
 find ~/.claude -maxdepth 2 -type l -lname '*/forge/claude/*' -print -delete
 ```
 
-### Browser tools for /qa and /ux (optional)
+### Browser tools for /qa, /ux, and /use (optional)
 
 `/qa` and `/ux` drive a feature through its UI with whichever browser tools
-the session has. Without any, they report the UI as not verified. To give them
-[Playwright MCP](https://github.com/microsoft/playwright-mcp), set it up once
-per machine:
+the session has. Without any, they report the UI as not verified. `/use` needs
+Playwright MCP, because it gives each person in a test their own browser. To
+give them [Playwright MCP](https://github.com/microsoft/playwright-mcp), set it
+up once per machine:
 
 ```bash
 ./claude/setup-playwright.sh
@@ -121,6 +124,11 @@ another one.
   in-memory profile. A sign-in from an earlier run doesn't carry into
   first-use, signed-out, or other-tenant checks. The cost is signing in again
   each session.
+- It registers five servers: `playwright` for `/qa` and `/ux`, and
+  `playwright-1` through `playwright-4`, so `/use` can have up to four people
+  signed in at once, each in their own browser. They belong to the main session,
+  so a person's sign-in survives their agent waiting between turns. Their windows
+  open in the same corner, on top of each other.
 - The server writes screenshots, snapshots, and console logs to
   `.playwright-mcp/` in the project, and refuses paths outside the project or
   that folder. `/qa` and `/ux` keep everything they create there and add

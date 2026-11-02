@@ -19,7 +19,9 @@ the flow.
 A walkthrough asks how it is for this user to get the main flow done. It
 judges experience, not correctness. A flow can be bug-free and still slow,
 confusing, or easy to get wrong. Bugs found along the way get reported, but
-looking for them is `/qa`'s job. Reviewing code is `/code-review`'s.
+looking for them is `/qa`'s job. Reviewing code is `/code-review`'s. Whether
+people can get a flow done at all, especially several people working together,
+is `/use`'s.
 
 There are two phases. Steps 1–5 try the feature and report, and change
 nothing in the project. Steps 6–7 change only what the user confirms.

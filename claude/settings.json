@@ -1,10 +1,28 @@
 {
   "permissions": {
-    "allow": ["mcp__playwright"],
+    "allow": [
+      "mcp__playwright",
+      "mcp__playwright-1",
+      "mcp__playwright-2",
+      "mcp__playwright-3",
+      "mcp__playwright-4"
+    ],
     "ask": [
       "mcp__playwright__browser_run_code_unsafe",
       "mcp__playwright__browser_file_upload",
-      "mcp__playwright__browser_drop"
+      "mcp__playwright__browser_drop",
+      "mcp__playwright-1__browser_run_code_unsafe",
+      "mcp__playwright-1__browser_file_upload",
+      "mcp__playwright-1__browser_drop",
+      "mcp__playwright-2__browser_run_code_unsafe",
+      "mcp__playwright-2__browser_file_upload",
+      "mcp__playwright-2__browser_drop",
+      "mcp__playwright-3__browser_run_code_unsafe",
+      "mcp__playwright-3__browser_file_upload",
+      "mcp__playwright-3__browser_drop",
+      "mcp__playwright-4__browser_run_code_unsafe",
+      "mcp__playwright-4__browser_file_upload",
+      "mcp__playwright-4__browser_drop"
     ]
   }
 }

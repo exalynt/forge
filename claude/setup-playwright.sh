@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Set up Playwright MCP for Claude Code, so /qa and /ux can drive a browser.
+# Set up Playwright MCP for Claude Code, so /qa, /ux, and /use can drive a
+# browser.
 #
 # Installs @playwright/mcp globally with npm, installs Google Chrome (the
-# browser it launches) if it's missing, and registers the server for every
-# project at user scope, started through playwright-mcp.sh so its window opens
-# out of the way. Arguments are passed on to the server, for example
+# browser it launches) if it's missing, and registers the servers for every
+# project at user scope, started through playwright-mcp.sh so their windows
+# open out of the way. Arguments are passed on to the servers, for example
 # --headless where there's no display.
 #
 # Usage: setup-playwright.sh [server flags...]
@@ -45,9 +46,13 @@ if [[ ! -f $cli ]]; then
   exit 1
 fi
 
-"$claude" mcp remove --scope user playwright >/dev/null 2>&1 || true
 launcher="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/playwright-mcp.sh"
-"$claude" mcp add --scope user playwright -- "$launcher" "$node" "$cli" --isolated ${1+"$@"}
+# playwright is for /qa and /ux. /use gives each person in a test their own
+# browser and sign-in, one of the numbered servers.
+for server in playwright playwright-{1..4}; do
+  "$claude" mcp remove --scope user "$server" >/dev/null 2>&1 || true
+  "$claude" mcp add --scope user "$server" -- "$launcher" "$node" "$cli" --isolated ${1+"$@"}
+done
 
 echo
 echo "Done. Start a new Claude Code session, then check it with: $claude mcp list"
