@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Open Chrome in the next free spot on the user's monitors. setup.sh
-# has Playwright launch this in place of Chrome, so the spot is chosen when a
-# browser really opens, not when one of a session's servers starts.
+# Open Chrome in the next free spot on the user's monitors, without taking the
+# focus under WSLg. setup.sh has Playwright launch this in place of Chrome, so the
+# spot is chosen when a browser really opens, not when one of a session's servers
+# starts.
 #
 # Each monitor is a grid of eight spots: four across and two down, or two across
 # and four down if it's portrait. Spots fill from the top right, right to left
@@ -90,6 +91,19 @@ claim_spot() {
   done
 }
 
+# Under WSLg, start keep-focus.ps1 and wait until it's watching, or give up after
+# a few seconds. It outlives this script, so it gets none of the pipes Playwright
+# talks to Chrome over, which would otherwise stay open after Chrome exits. Chrome
+# inherits the read end of its output, because closing that would stop it.
+keep_focus() {
+  [[ -n ${WSL_DISTRO_NAME-} ]] && command -v powershell.exe >/dev/null || return 0
+  local script
+  script=$(iconv -f utf-8 -t utf-16le "$(dirname "${BASH_SOURCE[0]}")/keep-focus.ps1" | base64 -w0) || return 0
+  exec 9< <(exec powershell.exe -NoProfile -NonInteractive -EncodedCommand "$script" </dev/null 2>/dev/null 3>&- 4>&-)
+  read -r -t 5 -u 9 _
+}
+
+keep_focus
 layout=$(monitors 2>/dev/null)
 if [[ -n $layout ]] && read -r size position < <(placement "$(claim_spot)" <<<"$layout"); then
   args=("--window-size=$size" "--window-position=$position")

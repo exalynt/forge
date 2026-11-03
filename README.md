@@ -33,7 +33,8 @@ claude/
 ├── install.sh                   # symlinks the above into ~/.claude, merges settings.json
 ├── scripts/playwright/
 │   ├── setup.sh                 # installs and registers Playwright MCP for /qa, /ux, and /use
-│   └── chrome.sh                # opens each browser window in the next free spot on the monitors
+│   ├── chrome.sh                # opens each browser window in the next free spot on the monitors
+│   └── keep-focus.ps1           # under WSLg, keeps the focus off a browser that's opening
 ├── stacks/
 │   ├── go-http/rules/           # general rules for Go HTTP API projects
 │   └── react/rules/             # general rules for React + MUI frontends
@@ -125,6 +126,11 @@ another one.
   monitors, the browser opens as it otherwise would, and with `--headless` or
   another browser it isn't used at all. The skills set each test width with the
   browser's resize tool, which doesn't move or resize the window.
+- Under WSLg, a browser opening doesn't keep the focus. `keep-focus.ps1` runs on
+  the Windows side for the browser's first 10 seconds, and sends focus straight
+  back to the window you were in. Clicking into a browser window during those
+  seconds sends you back too. On macOS and native Linux, a new browser can still
+  take the focus.
 - The server always gets `--isolated`, so each session starts with a fresh,
   in-memory profile. A sign-in from an earlier run doesn't carry into
   first-use, signed-out, or other-tenant checks. The cost is signing in again
