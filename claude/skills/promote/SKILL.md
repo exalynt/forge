@@ -80,16 +80,16 @@ rule). Otherwise, proceed.
 ## 5. Verify
 
 - Run the relevant tests, linters, and type checks. Fix failures your changes caused.
-- Invoke `stability-reviewer` again against the target, at the same effort.
-  Resolve remaining REQUIRED NOW and SECURITY/PRIVACY findings, or explain why
-  you can't.
+- Invoke `stability-reviewer` again to verify the fixes, not to review from
+  scratch. Give it the target level and the first review's findings you set out
+  to fix. Resolve whatever it reports NOT RESOLVED, or explain why you can't.
 
 ## 6. Record the new level
 
-Below high effort, the review didn't check everything the target expects.
+Below high effort, the first review didn't check everything the target expects.
 Show its NOT REVIEWED list and ask before recording the new level.
 
-Only when the second review passes for the target: update the feature's
+Only when the verification passes for the target: update the feature's
 declared stability level, and update `known_gaps` (or the project's
 equivalent) to reflect the gaps that remain. If it doesn't pass, leave the
 declared level unchanged.
