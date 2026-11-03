@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Open Chrome in the next free spot on the user's monitors. mcp.sh
+# Open Chrome in the next free spot on the user's monitors. setup.sh
 # has Playwright launch this in place of Chrome, so the spot is chosen when a
 # browser really opens, not when one of a session's servers starts.
 #

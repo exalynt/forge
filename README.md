@@ -33,7 +33,6 @@ claude/
 ├── install.sh                   # symlinks the above into ~/.claude, merges settings.json
 ├── scripts/playwright/
 │   ├── setup.sh                 # installs and registers Playwright MCP for /qa, /ux, and /use
-│   ├── mcp.sh                   # starts it, opening Chrome through chrome.sh
 │   └── chrome.sh                # opens each browser window in the next free spot on the monitors
 ├── stacks/
 │   ├── go-http/rules/           # general rules for Go HTTP API projects

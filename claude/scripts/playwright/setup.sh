@@ -4,9 +4,9 @@
 #
 # Installs @playwright/mcp globally with npm, installs Google Chrome (the
 # browser it launches) if it's missing, and registers the servers for every
-# project at user scope, started through mcp.sh so their windows
-# arrange themselves across the monitors. Arguments are passed on to the
-# servers, for example --headless where there's no display.
+# project at user scope, opening Chrome through chrome.sh so its windows arrange
+# themselves across the monitors. Arguments are passed on to the servers, for
+# example --headless where there's no display.
 #
 # Usage: setup.sh [server flags...]
 #
@@ -46,13 +46,26 @@ if [[ ! -f $cli ]]; then
   exit 1
 fi
 
-launcher="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/mcp.sh"
+# Playwright launches chrome.sh in place of Chrome. If the browser is headless or
+# not Chrome, the server opens the browser's default window instead.
+headless=0 browser=chrome prev=
+for arg in "$@"; do
+  [[ $arg == --headless ]] && headless=1
+  [[ $prev == --browser ]] && browser=$arg
+  [[ $arg == --browser=* ]] && browser=${arg#--browser=}
+  prev=$arg
+done
+window=()
+if ((!headless)) && [[ $browser == chrome ]]; then
+  window=(--executable-path "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/chrome.sh")
+fi
+
 # playwright is the one browser used by default. The numbered servers are for
 # when a skill calls for more: several sign-ins at once, a subagent that drives
 # a browser (subagents share a session's servers), or a person in a /use test.
 for server in playwright playwright-{1..4}; do
   "$claude" mcp remove --scope user "$server" >/dev/null 2>&1 || true
-  "$claude" mcp add --scope user "$server" -- "$launcher" "$node" "$cli" --isolated ${1+"$@"}
+  "$claude" mcp add --scope user "$server" -- "$node" "$cli" --isolated ${window[@]+"${window[@]}"} ${1+"$@"}
 done
 
 echo
