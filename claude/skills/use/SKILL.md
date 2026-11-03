@@ -77,7 +77,7 @@ seen.
   where the flow creates them, so runs don't collide.
 - Run `browser_close` on `playwright-1` through `playwright-4`, so no sign-in
   or page carries over from an earlier run. If those servers aren't there, say
-  to run `setup-playwright.sh` and start a new session, then stop.
+  to run `claude/scripts/playwright/setup.sh` and start a new session, then stop.
 
 ### Rules for the whole test
 

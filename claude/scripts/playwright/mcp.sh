@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Start Playwright MCP with its browser windows arranged across the user's
-# monitors, through playwright-chrome.sh, which picks each window's spot when it
-# opens. setup-playwright.sh registers this as the server.
+# monitors, through chrome.sh, which picks each window's spot when it
+# opens. setup.sh registers this as the server.
 #
-# Usage: playwright-mcp.sh <node> <cli.js> [server flags...]
+# Usage: mcp.sh <node> <cli.js> [server flags...]
 #
 # If the browser is headless or not Chrome, the server starts with the browser's
 # default window.
@@ -21,6 +21,6 @@ for arg in "$@"; do
 done
 
 if ((!headless)) && [[ $browser == chrome ]]; then
-  exec "$node" "$cli" --executable-path "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/playwright-chrome.sh" "$@"
+  exec "$node" "$cli" --executable-path "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/chrome.sh" "$@"
 fi
 exec "$node" "$cli" "$@"

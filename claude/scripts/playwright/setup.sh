@@ -4,11 +4,11 @@
 #
 # Installs @playwright/mcp globally with npm, installs Google Chrome (the
 # browser it launches) if it's missing, and registers the servers for every
-# project at user scope, started through playwright-mcp.sh so their windows
+# project at user scope, started through mcp.sh so their windows
 # arrange themselves across the monitors. Arguments are passed on to the
 # servers, for example --headless where there's no display.
 #
-# Usage: setup-playwright.sh [server flags...]
+# Usage: setup.sh [server flags...]
 #
 # Safe to re-run: it updates the package and re-registers the server with the
 # current Node and flags. Re-run it after switching Node versions or moving
@@ -46,7 +46,7 @@ if [[ ! -f $cli ]]; then
   exit 1
 fi
 
-launcher="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/playwright-mcp.sh"
+launcher="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/mcp.sh"
 # playwright is the one browser used by default. The numbered servers are for
 # when a skill calls for more: several sign-ins at once, a subagent that drives
 # a browser (subagents share a session's servers), or a person in a /use test.

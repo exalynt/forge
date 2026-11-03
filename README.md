@@ -31,9 +31,10 @@ claude/
 │   └── use-role.md              # plays one person in a /use usability test
 ├── settings.json                # permissions, merged into ~/.claude/settings.json
 ├── install.sh                   # symlinks the above into ~/.claude, merges settings.json
-├── setup-playwright.sh          # installs and registers Playwright MCP for /qa, /ux, and /use
-├── playwright-mcp.sh            # starts it, opening Chrome through playwright-chrome.sh
-├── playwright-chrome.sh         # opens each browser window in the next free spot on the monitors
+├── scripts/playwright/
+│   ├── setup.sh                 # installs and registers Playwright MCP for /qa, /ux, and /use
+│   ├── mcp.sh                   # starts it, opening Chrome through chrome.sh
+│   └── chrome.sh                # opens each browser window in the next free spot on the monitors
 ├── stacks/
 │   ├── go-http/rules/           # general rules for Go HTTP API projects
 │   └── react/rules/             # general rules for React + MUI frontends
@@ -98,7 +99,7 @@ give them [Playwright MCP](https://github.com/microsoft/playwright-mcp), set it
 up once per machine:
 
 ```bash
-./claude/setup-playwright.sh
+./claude/scripts/playwright/setup.sh
 ```
 
 It installs `@playwright/mcp` globally with npm, installs Google Chrome if it's
@@ -114,7 +115,7 @@ another one.
   `--browser firefox` to use Firefox instead of Chrome. Playwright's bundled
   Chromium isn't one of the server's options.
 - Browser windows arrange themselves across your monitors, so you can follow
-  along without them covering your work. `playwright-chrome.sh` reads the
+  along without them covering your work. `chrome.sh` reads the
   monitors each time a browser opens, with `xrandr` on Linux and WSLg or AppKit
   on macOS, and gives the window an eighth of a monitor, or more where that would
   be smaller than Chrome's minimum window size. Windows fill from the top
