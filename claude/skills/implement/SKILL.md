@@ -1,17 +1,17 @@
 ---
 name: implement
-description: Implement a feature, improvement, or bug fix (features and improvements at a target stability level) on a new branch in its own git worktree, so several sessions can work in one repository on the same machine without stepping on each other, then commit, push, and open a pull request against the default branch labeled with that level.
-argument-hint: "[prototype|alpha|beta|ga] <task>"
+description: Implement a feature, improvement, or bug fix (features and improvements at a target stability level) in the current checkout on the current branch, leaving the changes uncommitted. Only when explicitly asked, work on a new branch in its own git worktree instead, so several sessions can work in one repository on the same machine without stepping on each other, then commit, push, and open a pull request against the default branch labeled with that level.
+argument-hint: "[prototype|alpha|beta|ga] [worktree] <task>"
 disable-model-invocation: true
 ---
 
 # Implement
 
-Arguments: `$ARGUMENTS`. Expected format: `<level> <task>`, where the level is
-`prototype`, `alpha`, `beta`, or `ga`, for example
+Arguments: `$ARGUMENTS`. Expected format: `<level> [worktree] <task>`, where the
+level is `prototype`, `alpha`, `beta`, or `ga`, for example
 `/implement alpha add reconnecting by email to conversations` or
-`/implement beta add CSV export to invoices`. A bug fix takes no level, as in
-`/implement fix the conversation popout overflowing on phones`. If no task is
+`/implement beta worktree add CSV export to invoices`. A bug fix takes no level,
+as in `/implement fix the conversation popout overflowing on phones`. If no task is
 given, ask. If the task isn't a bug fix and the level is missing, the target
 is the feature's current level, found in step 1. Tell the user which level
 that is. If the level is invalid, ask. If the
@@ -22,10 +22,26 @@ The level is the one the change is aiming for. It sets how much the work does
 and what review holds it to: enough to meet that level, and nothing that
 belongs to a later one.
 
-Invoking this skill is the request to create a branch. Each task gets its own
-branch and its own worktree, so other sessions working in the same repository
-keep their own working tree, index, and branch. What a worktree doesn't
-separate is covered in step 4.
+## Where the work goes
+
+By default the task happens where the session already is: the current
+repository or worktree, on the current branch, even if that's the default
+branch. Invoking this skill isn't a request for anything more, so don't create
+a branch or worktree, commit, push, or open a pull request.
+
+Those happen only when the user explicitly asks:
+
+- **A worktree**, with the `worktree` argument or in words ("in a new
+  worktree"): the task gets its own branch, its own worktree, and a pull
+  request, so other sessions working in the same repository keep their own
+  working tree, index, and branch. What a worktree doesn't separate is covered
+  in step 4.
+- **Only a new branch or only a pull request**: do just that part, in the
+  current checkout. Create a new branch with `git switch -c <branch>`, named as
+  step 3 describes. `/pr` refuses the default branch, so if a pull request is
+  asked for while on it, ask whether to create a branch first.
+
+If `worktree` could be read as part of the task, ask.
 
 ## 1. Settle the target level
 
@@ -34,7 +50,7 @@ level: skip this step. If a level was given for one, say bug fixes don't take
 one and leave it off. The feature's level still decides, as always, whether
 the fix may break things.
 
-This only reads, so do it in the main checkout before creating anything.
+This only reads, so do it before creating anything.
 
 Find the features the task touches and each one's current level as the
 `stability` skill describes: the user's word, then the declaration, then what
@@ -62,7 +78,14 @@ level's, before planning the work.
 
 ## 2. Read the repository
 
-In the repository the task is for:
+In the repository the task is for, run `git branch --show-current` and
+`git status --short`. Uncommitted changes already there aren't this task's.
+Leave them as they are, and don't stash, revert, or commit them.
+
+Without a worktree, tell the user which branch the work goes on and skip to
+step 5. If HEAD is detached, ask first.
+
+With a worktree:
 
 - Find the default branch: `git symbolic-ref --short refs/remotes/origin/HEAD`
   (for example `origin/main`). Fetch it with `git fetch origin <default>`.
@@ -75,10 +98,11 @@ In the repository the task is for:
   say so and ask whether to branch from the local branch (those commits then
   become part of the pull request) or from `origin/<default>`.
 
-Uncommitted changes in the main checkout stay where they are. Don't carry them
-into the worktree, and don't stash or commit them.
+Don't carry the main checkout's uncommitted changes into the worktree.
 
 ## 3. Create the worktree
+
+Only with a worktree, as are step 4 and the cleanup at the end.
 
 - **Branch name**: `<type>/<slug>`. Match the prefixes the repository's
   existing branches use. Without a pattern, use `feat/`, `fix/`, `improve/`,
@@ -119,8 +143,8 @@ nothing else.
 
 ## 5. Do the work
 
-Do the task in the worktree the way the project's instructions and the global
-rules describe, sized to the target level: meet what it expects, and leave out
+Do the task the way the project's instructions and the global rules describe,
+sized to the target level: meet what it expects, and leave out
 what first appears at a later level. Don't fix the feature's `known_gaps`
 along the way. Ask when a decision is the user's to make. A task that
 implements, changes, or clarifies a business rule adds or updates its
@@ -133,22 +157,29 @@ When the work is done:
 
 - Run the project's checks (lint, format, build, tests, as its `CLAUDE.md`
   lists them) and fix what fails.
-- Except for a bug fix, invoke the `stability-reviewer` subagent on the
-  branch's changes
-  (`git diff $(git merge-base <base> HEAD)` from the worktree, which
-  includes uncommitted work)
-  against the target level, at the effort the user asked for, or `medium`.
+- Except for a bug fix, invoke the `stability-reviewer` subagent on this
+  task's changes against the target level, at the effort the user asked for,
+  or `medium`. In a worktree, those are
+  `git diff $(git merge-base <base> HEAD)`, which includes uncommitted work.
+  Otherwise they're the uncommitted changes and new files this task made, not
+  what step 2 found already there.
   Resolve its REQUIRED NOW and SECURITY/PRIVACY
   findings. Remove work this change added that it flags UNNECESSARY NOW.
   Findings about code this change didn't touch go in the report, not in the
   change. For a move, `../promote/SKILL.md` already has this review.
 
-## 6. Open the pull request
+## 6. Finish
 
-Follow `../pr/SKILL.md` from this skill's directory, with the target level and
+**By default**, leave the changes uncommitted on the current branch. Report what
+changed, the checks and the stability review's outcome, and that nothing was
+committed. The user can follow up with `/commit`, or `/pr` from a branch other
+than the default.
+
+**When a pull request was asked for**, including with a worktree, follow
+`../pr/SKILL.md` from this skill's directory, with the target level and
 whether this is a move, or with no level for a bug fix: commit, push the branch, and open a pull
 request against the default branch. The pull request is where review happens.
-To make follow-up changes, edit in the same worktree and follow
+To make follow-up changes, edit in the same place and follow
 `../pr/SKILL.md` again, which pushes them to the same pull request.
 
 Stay in the worktree when you're done. Don't remove it, merge the pull request,
@@ -156,7 +187,8 @@ or switch back to the default branch unless asked.
 
 ## Cleaning up
 
-Only when the user asks, usually once the pull request is merged or abandoned:
+Only for a worktree, and only when the user asks, usually once the pull request
+is merged or abandoned:
 
 1. Leave the worktree with `ExitWorktree` and `action: "keep"`. It doesn't
    remove worktrees entered with `path`.

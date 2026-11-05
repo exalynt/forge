@@ -27,7 +27,7 @@ update, its pull request. Do this in the main conversation, without subagents.
   `git symbolic-ref --short refs/remotes/origin/HEAD` for the default branch.
 - If the current branch is the default branch, or HEAD is detached, stop.
   Changes for a pull request belong on their own branch, for example from
-  `/implement`.
+  `/implement worktree`.
 - Run `gh auth status`. If it isn't authenticated, stop and tell the user
   (`gh auth login`, or replace an invalid `GITHUB_TOKEN` in the environment).
   Don't try to log in yourself.

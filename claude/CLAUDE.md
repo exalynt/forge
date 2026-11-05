@@ -34,8 +34,9 @@ When a feature's level is known, treat it as both:
 ## Git
 
 - Do not create a new git branch unless specifically asked to. Work on the
-  current branch. `/implement` is such a request: it puts a task on a new
-  branch in its own worktree and ends with a pull request.
+  current branch. `/implement` does too, unless asked for a worktree, which
+  puts the task on a new branch in its own worktree and ends with a pull
+  request.
 
 Project-specific architecture, domain rules, and where a repository declares
 feature stability belong in that project's own `CLAUDE.md` or `.claude/`.

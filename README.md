@@ -20,7 +20,7 @@ claude/
 │   ├── stability/               # level definitions and review classification
 │   ├── promote/                 # /promote [low|medium|high] <feature> <level>, manual only
 │   ├── commit/                  # /commit [session|all], grouped commits, manual only
-│   ├── implement/               # /implement [level] <task>, own branch and worktree, ends in a PR, manual only
+│   ├── implement/               # /implement [level] [worktree] <task>, on the current branch; worktree adds own branch and worktree, ends in a PR, manual only
 │   ├── pr/                      # /pr [level] [draft], commit, push, open or update a labeled PR, manual only
 │   ├── qa/                      # /qa [low|medium|high] <feature> [focus], end-to-end QA, manual only
 │   ├── ux/                      # /ux [low|medium|high] <feature> [as <user>], main-flow walkthrough, manual only
