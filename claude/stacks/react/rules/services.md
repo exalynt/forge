@@ -12,15 +12,15 @@ differs, follow it. Put new code in this layout. Don't move existing code into
 it unless asked.
 
 A service is an external API or SDK the app talks to, over HTTP REST or
-otherwise: the Exalynt API, Stripe, and so on. Each one gets a directory under
-`src/services/`, named for it in camelCase: `src/services/exalynt/`,
+otherwise: the Acme API, Stripe, and so on. Each one gets a directory under
+`src/services/`, named for it in camelCase: `src/services/acme/`,
 `src/services/stripe/`.
 
 ## One module per resource
 
 - Each resource the app uses gets its own module in its service's directory,
-  named in camelCase for it: `src/services/exalynt/appointments.ts`,
-  `src/services/exalynt/paymentMethods.ts`.
+  named in camelCase for it: `src/services/acme/appointments.ts`,
+  `src/services/acme/paymentMethods.ts`.
 - Each module exports one function per operation, named for the operation and
   the resource: `listAppointments`, `getAppointment`, `createAppointment`,
   `updateAppointment` (`PATCH`), `replaceAppointment` (`PUT`),

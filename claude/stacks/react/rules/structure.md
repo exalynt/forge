@@ -15,7 +15,7 @@ it unless asked.
 ```text
 src/
 ├── components/              # used across the whole app
-├── services/exalynt/        # Exalynt API calls (see the services rule)
+├── services/acme/           # Acme API calls (see the services rule)
 └── pages/
     └── appointments/
         ├── List.tsx

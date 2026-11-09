@@ -80,8 +80,8 @@ stability level and gets no label.
 
 Check the repository has the labels with `gh label list --search "stability:"`.
 If they're missing, open the pull request without the label, and tell the user.
-[Marking stability levels](https://readme.exalynt.com/engineers/marking-stability)
-has the commands that set them up. Offer to run them.
+Offer to create them with `gh label create`, one each for `stability: prototype`,
+`stability: alpha`, `stability: beta`, and `stability: ga`.
 
 ### Description
 
@@ -94,9 +94,7 @@ and what it restores.
 ```markdown
 ## Stability
 
-Review as **<Level>**: <what the level expects, in a sentence>. See the
-[stability checklist](https://readme.exalynt.com/how-it-works/stability-checklist)
-for what each level includes.
+Review as **<Level>**: <what the level expects, in a sentence>.
 
 - **Feature**: <name>, currently <level>, per `<declaration path>` or where
   else the level came from. <"Moves <feature> to <level>." for a move.>
