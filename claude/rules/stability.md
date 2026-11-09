@@ -40,7 +40,9 @@ do what we need.
 ## Where levels are declared
 
 A feature's level is the `**Stability:**` line in its capability doc,
-`docs/product/capabilities/<slug>.md`, along with its known gaps. A project that
+`docs/product/capabilities/<slug>.md`, along with the known gaps people would
+notice. Technical known gaps are in `docs/engineering/`, each saying what closes
+it. A project that
 also records levels somewhere else says where in its `CLAUDE.md`. The user's
 word on a feature's level wins over the declaration. Without
 either, infer the level from the repository's code and docs, as the

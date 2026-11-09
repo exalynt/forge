@@ -8,7 +8,9 @@ description: Standard location and layout for a project's product docs in docs/p
 Product docs describe what a product is and does, in the domain's words, for
 both people and agents. They live in `docs/product/` at the root of the
 repository. When a product spans several repositories, one of them holds the
-docs, and the others' `CLAUDE.md` says which.
+docs, and the others' `CLAUDE.md` says which. How the software is built goes in
+`docs/engineering/` instead (see the `engineering-docs` skill), and the two never
+repeat each other.
 
 | What you're documenting                                 | Where                                    | Format                         |
 | ------------------------------------------------------- | ---------------------------------------- | ------------------------------ |
@@ -53,7 +55,9 @@ Update product docs in the same change as what they describe:
 
 - **What people can do changed**: update the capability doc. A new capability
   gets a new doc.
-- **A gap opened or closed**: update the capability's Known gaps.
+- **A gap opened or closed**: update the capability's Known gaps if people using
+  the product would notice it. One only someone working on the code would see
+  goes in the engineering docs instead, and a gap is never in both.
 - **A rule was decided or changed**: update its rule doc, along with its
   acceptance tests, which need approval as the testing rule describes.
 - **A decision was left open**: add it to the capability's Open decisions. It
