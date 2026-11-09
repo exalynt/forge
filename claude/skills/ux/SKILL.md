@@ -172,6 +172,13 @@ Look at each step through these lenses:
   Claude session has its own browsers, so it can't touch yours through its
   browser tools, and you can't touch its. When walking as several user types,
   do them one at a time and report each separately.
+- Keep browser output small, since a long page's snapshot runs to tens of
+  thousands of characters. With Playwright MCP, take a full `browser_snapshot`
+  on each new page and reuse its refs until the page changes. A ref that's gone
+  returns an error saying to take a new one. To find or check something on a
+  page you've already seen, use `browser_find`, or `browser_snapshot` with a
+  `target`. At high effort, take a full snapshot whenever it helps. "Effort"
+  says when at medium and low.
 - Close a browser with `browser_close`. Never kill Chrome or Playwright
   processes by name, such as with `pkill chrome`, even if a browser seems stuck.
   That takes down other sessions' browsers too. Report a browser you can't
@@ -208,11 +215,13 @@ The steps in this skill describe **high**. **Medium** and **low** do less:
 | Part           | Low                                                                    | Medium                                                                            |
 | -------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | The user (2)   | Assume what the persona doesn't cover and mark it.                     | Ask about assumptions that would change the walkthrough.                          |
-| Variations     | None. The main flow once.                                              | A first time and a repeat time, and the mistake this user is most likely to make. |
+| Variations     | None. The main flow once.                                              | A first time and the mistake this user is most likely to make.                    |
 | Lenses         | Finding the way, Feedback, and Mistakes: what stops this user.         | All of them on the main flow. Finding the way and Mistakes on the variations.     |
 | Through an API | The first successful call and the whole outcome.                       | Plus the mistakes a newcomer would make.                                          |
 | Screenshots    | Only as evidence for findings.                                         | At the moments that matter.                                                       |
 | Thoughts (3)   | Only at a surprise, wrong turn, or doubt.                              | At each new screen and each choice of where to go next.                           |
+| Page reads     | Full snapshot per new page; else `browser_find` or a targeted one.     | Also a full snapshot after an action that changes much of the page.               |
+| Re-walk (7)    | That the friction is gone, not what's nearby. Checks once, at the end. | As described in step 7.                                                           |
 
 At every effort, find the persona, and walk the main flow end to end as this
 user, through the UI where there is one, at their device's width. List the

@@ -261,6 +261,13 @@ verified".
 - Use one browser by default: `playwright`, in the main conversation. Another
   Claude session has its own browsers, so it can't touch yours through its
   browser tools, and you can't touch its.
+- Keep browser output small, since a long page's snapshot runs to tens of
+  thousands of characters. With Playwright MCP, take a full `browser_snapshot`
+  on each new page and reuse its refs until the page changes. A ref that's gone
+  returns an error saying to take a new one. To find or check something on a
+  page you've already seen, use `browser_find`, or `browser_snapshot` with a
+  `target`. At high effort, take a full snapshot whenever it helps. "Effort"
+  says when at medium and low.
 - Close a browser with `browser_close`. Never kill Chrome or Playwright
   processes by name, such as with `pkill chrome`, even if a browser seems stuck.
   That takes down other sessions' browsers too. Report a browser you can't
@@ -311,13 +318,15 @@ The steps in this skill describe **high**. **Medium** and **low** do less:
 | -------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Understand (1)             | The declaration and the primary workflow's path through the code.                     | Every layer the feature crosses.                                                                                                           |
 | Rules and questions (2, 3) | The rules the primary workflow touches. Ask only what blocks running it.              | All the rules. Ask what decides whether something is a bug.                                                                                |
-| Workflows                  | The primary workflow, once.                                                           | The primary workflow and the important secondary ones.                                                                                     |
+| Workflows                  | The primary workflow, once.                                                           | The primary workflow and at most two important secondary ones.                                                                             |
 | Rules exercised by hand    | Those the primary workflow hits that no acceptance test covers.                       | Each rule without an acceptance test, once.                                                                                                |
-| Edge cases by hand         | Those the primary workflow runs into. No separate list.                               | Boundaries, input, and state for each rule, where no acceptance test covers them, and any case around an assumed rule or an open question. |
+| Edge cases by hand         | Those the primary workflow runs into. No separate list.                               | Boundaries, input, and state for core rules no acceptance test covers, and any case around an assumed rule or an open question.            |
 | Acceptance tests proposed  | For rules clarified or changed in this run.                                           | Also for every rule the level requires one for that has none.                                                                              |
 | Real data                  | Search the primary workflow's path for mocks, and confirm its save survives a reload. | Search the feature's code, and run the runtime checks on the primary workflow.                                                             |
-| Presentation               | Desktop and 375px, light mode, on the primary workflow's screens.                     | The primary workflow at desktop, 360px, and 375px, in light and dark.                                                                      |
+| Presentation               | Desktop and 375px, light mode, on the primary workflow's screens.                     | Walk the primary workflow at desktop and 375px. Just look at its key screens at 360px and in dark mode.                                    |
 | Subagents                  | None.                                                                                 | Only for separate repositories, or test suites that run long.                                                                              |
+| Page reads                 | A full snapshot on each new page. Otherwise `browser_find` or a targeted snapshot.    | Also a full snapshot after an action that changes much of the page.                                                                        |
+| Re-verify (7)              | Each fixed issue's steps only, then acceptance tests and project's checks once.       | As described in step 7.                                                                                                                    |
 
 At every effort:
 

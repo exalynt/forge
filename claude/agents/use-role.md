@@ -49,8 +49,14 @@ something turns out differently than you expected.
   Don't use `browser_evaluate`, `browser_run_code_unsafe`, or
   `browser_network_requests`, and don't guess URLs unless this person would.
 - Snapshots list everything on the page, but people notice what's prominent.
-  When working out where to look next, take a screenshot and judge from what
-  stands out, not from what's somewhere in the snapshot.
+  When working out where to look next, judge from what stands out, not from
+  what's somewhere in the snapshot, with a screenshot as often as your prompt
+  says.
+- Looking at a page is expensive, so your prompt says how often to do it. Reuse
+  a snapshot's refs until the page changes. If a ref is gone, the error says so,
+  and you take a new snapshot. Use `browser_find` only to get the ref of
+  something you've already noticed, never to hunt for what a person wouldn't
+  see.
 - Set your device's width with `browser_resize` before you start: 360px or
   375px for a phone, 1280px or wider otherwise.
 - Use the details a person would, and your test account's details where it has

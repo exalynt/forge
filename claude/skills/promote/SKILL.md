@@ -11,7 +11,7 @@ Arguments: `$ARGUMENTS`. Expected format: `[effort] <feature> <target-level>`,
 for example `/promote conversations alpha` or `/promote high conversations
 beta`. The effort is `low`, `medium`, or `high`, and sets how much the
 stability reviews cover, as the `stability-reviewer` agent describes. Without
-one, use `medium`.
+one, use `medium`. At low, start those reviews on Sonnet.
 
 Promotion increases engineering investment only enough to satisfy the next
 deliberate commitment. Use the `stability` skill for the level definitions.

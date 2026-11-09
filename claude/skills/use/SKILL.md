@@ -114,9 +114,11 @@ seen.
 ## 4. Run the scenario
 
 Start each person when their part of the story begins, as a background
-`use-role` agent. Their prompt has their persona's full text, since they can't
+`use-role` agent, on the model "Effort" gives. At high, set no model, so they
+use the session's. Their prompt has their persona's full text, since they can't
 read files, their section from step 2, their browser (`playwright-<n>`), how
-often to think aloud (see "Effort"), and the agent ids of the people they'd already know how to reach, if any. An agent can't see its own id, so when someone new becomes
+often to think aloud and look at the page (see "Effort"; at high, at every
+step), and the agent ids of the people they'd already know how to reach, if any. An agent can't see its own id, so when someone new becomes
 reachable, send it to the people who'd know them.
 
 Then run the session:
@@ -194,6 +196,9 @@ and **low** do less of:
 | Check-ins      | One for each wait                         | As needed                          |
 | Debrief        | Only "Is it finished?" and "How sure?"    | All the questions                  |
 | Thoughts (4)   | Only at a surprise, wrong turn, or doubt  | At each new screen and each choice |
+| Model (4)      | Sonnet                                    | Sonnet                             |
+| Looking (4)    | Snapshot new pages; screenshot if stuck   | Also screenshot each new page      |
+| Stalls (4)     | One nudge, then stop and report           | As described in step 4             |
 
 Low and medium run the main flow once. **High** also runs the variations a
 person would hit: the mistake each person is most likely to make, someone

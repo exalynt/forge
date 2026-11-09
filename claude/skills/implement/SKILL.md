@@ -1,13 +1,13 @@
 ---
 name: implement
 description: Implement a feature, improvement, or bug fix (features and improvements at a target stability level) in the current checkout on the current branch, leaving the changes uncommitted. Only when explicitly asked, work on a new branch in its own git worktree instead, so several sessions can work in one repository on the same machine without stepping on each other, then commit, push, and open a pull request against the default branch labeled with that level.
-argument-hint: "[prototype|alpha|beta|ga] [worktree] <task>"
+argument-hint: "[low|medium|high] [prototype|alpha|beta|ga] [worktree] <task>"
 disable-model-invocation: true
 ---
 
 # Implement
 
-Arguments: `$ARGUMENTS`. Expected format: `<level> [worktree] <task>`, where the
+Arguments: `$ARGUMENTS`. Expected format: `[effort] <level> [worktree] <task>`, where the
 level is `prototype`, `alpha`, `beta`, or `ga`, for example
 `/implement alpha add reconnecting by email to conversations` or
 `/implement beta worktree add CSV export to invoices`. A bug fix takes no level,
@@ -21,6 +21,12 @@ in, ask.
 The level is the one the change is aiming for. It sets how much the work does
 and what review holds it to: enough to meet that level, and nothing that
 belongs to a later one.
+
+The effort is `low`, `medium`, or `high`, and sets how much the review in step 5
+covers, as the `stability-reviewer` agent describes. Without one, use `medium`.
+It doesn't change how much the work does, which is the level's job, and a bug
+fix has no review for it to set. If it could be read as part of the task, as in
+`/implement high contrast mode`, ask.
 
 ## Where the work goes
 
@@ -161,7 +167,7 @@ When the work is done:
   lists them) and fix what fails.
 - Except for a bug fix, invoke the `stability-reviewer` subagent on this
   task's changes against the target level, at the effort the user asked for,
-  or `medium`. In a worktree, those are
+  or `medium`. At low, start it on Sonnet. In a worktree, those are
   `git diff $(git merge-base <base> HEAD)`, which includes uncommitted work.
   Otherwise they're the uncommitted changes and new files this task made, not
   what step 2 found already there.
