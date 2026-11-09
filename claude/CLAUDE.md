@@ -38,6 +38,8 @@ When a feature's level is known, treat it as both:
   puts the task on a new branch in its own worktree and ends with a pull
   request.
 
-Project-specific architecture belongs in that project's own `CLAUDE.md` or
-`.claude/`. Its personas, capabilities, flows, domain rules, and concepts belong
-in its `docs/product/`, as the product docs rule describes.
+Project-specific instructions belong in that project's own `CLAUDE.md` or
+`.claude/`. How it's built belongs in its `docs/engineering/`, as the
+engineering docs rule describes. Its personas, capabilities, flows, domain
+rules, and concepts belong in its `docs/product/`, as the product docs rule
+describes.
