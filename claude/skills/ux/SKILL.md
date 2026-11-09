@@ -53,14 +53,15 @@ Knows: <domain knowledge, familiarity with this app, technical skill>
 Context: <device, how often they do this, time pressure, interruptions>
 Expects: <what they think the first step is, the words they'd look for,
           what "done" looks like to them>
+Cares about: <what makes them trust it, and what would make them give up>
 Success: <the observable end state that means they got it done>
 ```
 
-Knows, Context, and Expects start from the persona. Fill in the rest for this
-walkthrough from the project and common sense, and mark what you assumed. Ask
-(AskUserQuestion, one round) only about assumptions that would change the
-walkthrough, such as whether they're new or experienced this time, with your
-recommended option first.
+Knows, Context, Expects, and Cares about start from the persona. Fill in the
+rest for this walkthrough from the project and common sense, and mark what you
+assumed. Ask (AskUserQuestion, one round) only about assumptions that would
+change the walkthrough, such as whether they're new or experienced this time,
+with your recommended option first.
 
 For an API, the user is the developer integrating with it. Their goal is the
 outcome their own product needs, not "call the endpoint".
