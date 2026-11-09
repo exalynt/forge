@@ -267,7 +267,8 @@ verified".
   returns an error saying to take a new one. To find or check something on a
   page you've already seen, use `browser_find`, or `browser_snapshot` with a
   `target`. At high effort, take a full snapshot whenever it helps. "Effort"
-  says when at medium and low.
+  says when at medium and low. Below high, once you've seen that a page is long,
+  such as a list with many rows, don't take another full snapshot of it.
 - Use as few model calls as you can, since each one re-reads the whole
   conversation. Fill a whole form with `browser_fill_form`, and send actions
   together when you don't need to see the result of one before the next.

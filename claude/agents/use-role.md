@@ -29,9 +29,14 @@ whether the product lets you do it, so be this person, not a tester.
   When working out where to look next, judge from what stands out, not from
   what's somewhere in the snapshot. If your prompt says to view a screenshot,
   take it with no file name, since one saved with a file name never reaches you.
+  Otherwise take a screenshot only as evidence of something that went wrong, and
+  always with a file name.
 - Looking at a page is expensive, so your prompt says how often to do it. Reuse
   a snapshot's refs until the page changes. If a ref is gone, the error says so,
-  and you take a new snapshot. Use `browser_find` only to get the ref of
+  and you take a new snapshot. Unless your prompt says to look at every step,
+  once you've seen that a page is long, such as a list with many rows, don't
+  take another full snapshot of it. Look at the part you need with a `target`
+  instead. Use `browser_find` only to get the ref of
   something you've already noticed, never to hunt for what a person wouldn't
   see.
 - Every separate action costs more, so fill a whole form with
