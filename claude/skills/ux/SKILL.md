@@ -83,14 +83,12 @@ S1. Trying to: <intent>
     Does: <the action>
     Result: <what happened>
     Friction: <hesitation, a guess, a wrong turn, a wait, a re-read, or none>
+    Thinking: <what's going through this user's head>
 ```
 
-Think aloud as this user, so the person running this can follow what's going
-through their head. At every step, once you've looked at the screen or response
-and before you act, write what they're thinking as plain text alongside the tool
-call, starting with the step: `S3: <what they're thinking>`. "Effort" says how
-often at medium and low. However often that is, also do it when something turns
-out differently than they expected.
+Fill in Thinking at every step, once you've looked at the screen or response and
+before you act. "Effort" says which steps at medium and low. Keep it in the log,
+not in chat as you go, and the report carries it.
 
 - One or two sentences, in the first person, as this user would think them: what
   catches their eye, what they make of it, what they're worried about, what
@@ -219,7 +217,7 @@ The steps in this skill describe **high**. **Medium** and **low** do less:
 | Lenses         | Finding the way, Feedback, and Mistakes: what stops this user.         | All of them on the main flow. Finding the way and Mistakes on the variations.     |
 | Through an API | The first successful call and the whole outcome.                       | Plus the mistakes a newcomer would make.                                          |
 | Screenshots    | Only as evidence for findings.                                         | At the moments that matter.                                                       |
-| Thoughts (3)   | Only at a surprise, wrong turn, or doubt.                              | At each new screen and each choice of where to go next.                           |
+| Thoughts (3)   | Only on steps with friction.                                           | At each new screen and each choice of where to go next.                           |
 | Page reads     | Full snapshot per new page; else `browser_find` or a targeted one.     | Also a full snapshot after an action that changes much of the page.               |
 | Re-walk (7)    | That the friction is gone, not what's nearby. Checks once, at the end. | As described in step 7.                                                           |
 
@@ -251,7 +249,7 @@ much work it took. Then the steps, clicks or calls, and rough time taken.>
 
 Walkthrough
 S1. <intent>: <what happened, in a line> (friction: <what>, or none)
-    Thinking: <their words, where it shaped what they did or showed a doubt>
+    Thinking: <their words from the step log, where it has them>
 
 Findings
 1. [<severity>] <title>
