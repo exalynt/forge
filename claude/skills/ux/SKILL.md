@@ -85,6 +85,22 @@ S1. Trying to: <intent>
     Friction: <hesitation, a guess, a wrong turn, a wait, a re-read, or none>
 ```
 
+Think aloud as this user, so the person running this can follow what's going
+through their head. At every step, once you've looked at the screen or response
+and before you act, write what they're thinking as plain text alongside the tool
+call, starting with the step: `S3: <what they're thinking>`. "Effort" says how
+often at medium and low. However often that is, also do it when something turns
+out differently than they expected.
+
+- One or two sentences, in the first person, as this user would think them: what
+  catches their eye, what they make of it, what they're worried about, what
+  they're about to do and why. Let what they care about, what they expect, and
+  what they're used to shape it.
+- Say the doubts and guesses too, and don't tidy them up afterwards.
+- Stick to what this user would know. What you've learned from the code or the
+  docs stays out of it.
+- Keep your own judgment out of it. Lenses and findings go in the report.
+
 **Through the UI**: use whichever browser tools are available, with realistic
 data for this user, such as their volume of items, their names, and their
 statuses. Run it at their device's width: 360px or 375px for a phone user,
@@ -196,6 +212,7 @@ The steps in this skill describe **high**. **Medium** and **low** do less:
 | Lenses         | Finding the way, Feedback, and Mistakes: what stops this user.         | All of them on the main flow. Finding the way and Mistakes on the variations.     |
 | Through an API | The first successful call and the whole outcome.                       | Plus the mistakes a newcomer would make.                                          |
 | Screenshots    | Only as evidence for findings.                                         | At the moments that matter.                                                       |
+| Thoughts (3)   | Only at a surprise, wrong turn, or doubt.                              | At each new screen and each choice of where to go next.                           |
 
 At every effort, find the persona, and walk the main flow end to end as this
 user, through the UI where there is one, at their device's width. List the
@@ -225,6 +242,7 @@ much work it took. Then the steps, clicks or calls, and rough time taken.>
 
 Walkthrough
 S1. <intent>: <what happened, in a line> (friction: <what>, or none)
+    Thinking: <their words, where it shaped what they did or showed a doubt>
 
 Findings
 1. [<severity>] <title>

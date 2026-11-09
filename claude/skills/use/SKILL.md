@@ -115,8 +115,8 @@ seen.
 
 Start each person when their part of the story begins, as a background
 `use-role` agent. Their prompt has their persona's full text, since they can't
-read files, their section from step 2, their browser (`playwright-<n>`), and the
-agent ids of the people they'd already know how to reach, if any. An agent can't see its own id, so when someone new becomes
+read files, their section from step 2, their browser (`playwright-<n>`), how
+often to think aloud (see "Effort"), and the agent ids of the people they'd already know how to reach, if any. An agent can't see its own id, so when someone new becomes
 reachable, send it to the people who'd know them.
 
 Then run the session:
@@ -128,6 +128,11 @@ Then run the session:
   can also message each other directly, as they would by email or chat, and a
   message wakes the person it's sent to. Wake two people at once when the flow
   has them working at the same time.
+- **Listen to them think.** Each person thinks aloud to you as they go, a line
+  for every step at high effort, and those messages are already shown to the
+  user. Don't reply, repeat them, or pass them to anyone else in the test, and
+  don't let them change what you tell people. The exception is anything "Rules
+  for the whole test" says to stop for.
 - **Hand over what can't happen for real.** An invite link, an emailed code,
   anything an external service would deliver in production: tell that person
   it arrived, as it would reach them, and record it under "Not tested".
@@ -146,8 +151,8 @@ Then run the session:
   tried, or when a stall has no way through.
 
 Read each person's report as it comes back and keep one timeline: who did
-what, every message sent outside the product and why, every wait, every
-intervention, and every bypass.
+what, what they were thinking when it mattered, every message sent outside the
+product and why, every wait, every intervention, and every bypass.
 
 ## 5. Debrief
 
@@ -188,6 +193,7 @@ and **low** do less of:
 | The people (2) | Only those the main flow can't do without | Everyone involved in the main flow |
 | Check-ins      | One for each wait                         | As needed                          |
 | Debrief        | Only "Is it finished?" and "How sure?"    | All the questions                  |
+| Thoughts (4)   | Only at a surprise, wrong turn, or doubt  | At each new screen and each choice |
 
 Low and medium run the main flow once. **High** also runs the variations a
 person would hit: the mistake each person is most likely to make, someone
@@ -218,6 +224,7 @@ People
 
 Timeline
 1. <Name>: <what they did or tried> (bypassed | intervened, if so)
+   Thinking: <their words, where it shaped what they did or showed a doubt>
 2. <Name> → <Name>, outside the product: <message, and why they needed it>
 
 Handoffs
