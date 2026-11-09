@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{go,ts,tsx,js,jsx,mjs,cjs,py,rb,java,kt,rs,php,cs,swift}"
+---
+
 # Observability
 
 How to add traces, logs, and metrics, in any language or framework. How much

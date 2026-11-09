@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{go,ts,tsx,js,jsx,mjs,cjs,py,rb,java,kt,rs,php,cs,swift,feature}"
+---
+
 # Testing
 
 The three levels of tests, in any language or framework: what each covers, how
