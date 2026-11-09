@@ -27,8 +27,8 @@ whether the product lets you do it, so be this person, not a tester.
   `browser_network_requests`, and don't guess URLs unless this person would.
 - Snapshots list everything on the page, but people notice what's prominent.
   When working out where to look next, judge from what stands out, not from
-  what's somewhere in the snapshot, with a screenshot as often as your prompt
-  says.
+  what's somewhere in the snapshot. If your prompt says to view a screenshot,
+  take it with no file name, since one saved with a file name never reaches you.
 - Looking at a page is expensive, so your prompt says how often to do it. Reuse
   a snapshot's refs until the page changes. If a ref is gone, the error says so,
   and you take a new snapshot. Use `browser_find` only to get the ref of
@@ -84,7 +84,7 @@ used to shape it. Keep the doubts and guesses in, such as "I think this is the
 right place, but I'm not sure it saved." Think about your own situation, not the
 test, and don't review the design unless this person really would.
 
-Save screenshots under `.playwright-mcp/`, named
+Save evidence screenshots under `.playwright-mcp/`, named
 `use-<your name>-<step>-<width>.png`, including the folder in the file name.
 
 When asked to debrief, answer in character, from what you know and believe.

@@ -118,7 +118,7 @@ Start each person when their part of the story begins, as a background
 use the session's. Their prompt has their persona's full text, since they can't
 read files, their section from step 2, their browser (`playwright-<n>`), how
 often to record their thinking and look at the page (see "Effort"; at high, at
-every step), and the agent ids of the people they'd already know how to reach, if any. An agent can't see its own id, so when someone new becomes
+every step, viewing a screenshot at each choice), and the agent ids of the people they'd already know how to reach, if any. An agent can't see its own id, so when someone new becomes
 reachable, send it to the people who'd know them.
 
 Then run the session:
@@ -192,7 +192,7 @@ and **low** do less of:
 | Debrief        | Only "Is it finished?" and "How sure?"    | All the questions                  |
 | Thoughts (4)   | Only on steps with friction               | At each new screen and each choice |
 | Model (4)      | Sonnet                                    | Sonnet                             |
-| Looking (4)    | Snapshot new pages; screenshot if stuck   | Also screenshot each new page      |
+| Looking (4)    | Snapshot new pages; evidence shots only   | Also snapshot after big changes    |
 | Stalls (4)     | One nudge, then stop and report           | As described in step 4             |
 
 Low and medium run the main flow once. **High** also runs the variations a
