@@ -5,6 +5,7 @@ repository:
 
 ```text
 docs/product/
+├── README.md         # for people: what these docs are for and what goes where
 ├── personas/         # who uses the product
 ├── capabilities/     # what people can do, with its stability level and known gaps
 ├── flows/            # how work gets done from start to finish

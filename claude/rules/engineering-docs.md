@@ -11,7 +11,7 @@ its root:
 
 ```text
 docs/engineering/
-├── README.md                     # one-screen map of the system
+├── README.md                     # for people: what these docs are for and what goes where
 ├── architecture/
 │   ├── systems/<slug>.md         # how something overarching works
 │   └── features/<slug>.md        # how one feature works, and what to know before changing it

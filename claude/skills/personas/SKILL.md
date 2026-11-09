@@ -50,8 +50,9 @@ Create it with the user, before the calling skill goes on:
    and Cares about. Don't ask what the docs settle or what wouldn't change how
    this person behaves.
 3. Show the finished persona, with an invented name, and ask whether to save it.
-4. Write the file. Don't commit it unless asked, and mention it in the report so
-   the user can.
+4. Write the file. If `docs/product/README.md` doesn't exist, create it as
+   [readme.md](../docs/readme.md) in the `docs` skill describes. Don't commit
+   either unless asked, and mention them in the report so the user can.
 
 ## Changing one
 

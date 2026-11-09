@@ -23,6 +23,10 @@ repeat each other.
 Read the format for a type before writing one. A folder exists once it has a
 file in it, and a project only needs the docs it has a use for.
 
+`docs/product/README.md` tells people what these docs are for and what goes
+where. Create it with the first doc in `docs/product/`, as
+[readme.md](readme.md) describes.
+
 ## Every doc
 
 - **Name**: a kebab-case slug for what it's about, such as

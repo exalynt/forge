@@ -21,9 +21,9 @@ repeat each other.
 Read the format for a type before writing one. A folder exists once it has a
 file in it.
 
-`docs/engineering/README.md` is the map, once there are a few docs to find: one
-screen on what the system is made of, how a request or job moves through it,
-and a link to each system doc.
+`docs/engineering/README.md` tells people what these docs are for and what goes
+where. Create it with the first doc in `docs/engineering/`, as
+[readme.md](readme.md) describes.
 
 ## When to write one
 
@@ -211,6 +211,8 @@ Update engineering docs in the same change as what they describe:
   the user decides this.
 - **A tradeoff was reversed**: delete it, or replace it with the new one.
 - **A new recovery is done by hand**: add a runbook.
+- **A system doc was added or removed**: update the README's list of them, if it
+  has one.
 
 If a doc and the code disagree, find out which is wrong before changing either.
 Keep system docs under about 150 lines and feature docs under about 75, and split
