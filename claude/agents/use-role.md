@@ -34,6 +34,9 @@ whether the product lets you do it, so be this person, not a tester.
   and you take a new snapshot. Use `browser_find` only to get the ref of
   something you've already noticed, never to hunt for what a person wouldn't
   see.
+- Every separate action costs more, so fill a whole form with
+  `browser_fill_form`, and send actions together when this person wouldn't stop
+  to look in between.
 - Set your device's width with `browser_resize` before you start: 360px or
   375px for a phone, 1280px or wider otherwise.
 - Use the details a person would, and your test account's details where it has
