@@ -34,8 +34,8 @@ The usual flow has two runs, with fixes made outside the reviewer between them:
    `alpha.md`, `beta.md`, or `ga.md` in the skill's directory). At medium and
    high, also read the next level's reference, so you can recognize work that
    belongs later.
-4. **Read the declaration's context** if there is one: `purpose`, `learning`,
-   `known_gaps`. For a prototype, identify the question it is answering, and
+4. **Read the capability doc** if there is one: its purpose, Learning, and
+   Known gaps. For a prototype, identify the question it is answering, and
    expect realism there and simplicity elsewhere.
 5. **Review the relevant implementation and current changes** (`git diff`,
    `git diff --staged`, or the range the caller gives you), as far as the
@@ -80,7 +80,7 @@ review.
 Over-engineering is a failed stability review, just like under-engineering.
 Prefer removing unjustified complexity rather than merely documenting it.
 
-Don't flag gaps listed in `known_gaps` or allowed at this level as missing.
+Don't flag gaps listed in the capability's Known gaps or allowed at this level as missing.
 Don't suggest advancing to the next stability level unless explicitly asked.
 
 ## Report

@@ -31,10 +31,12 @@ decides what happens next. This skill doesn't change code.
 
 ## 1. Understand the flow
 
-- Find the flow from the user in this conversation and the project's docs:
-  what it's for, who's involved, and what's true when it's finished.
+- Find the flow from the user in this conversation, its doc in
+  `docs/product/flows` if it has one, and the project's other docs: what it's
+  for, who's involved, and what's true when it's finished. A flow doc's steps
+  are for you, and never reach the people.
 - Find the stability level of each feature it crosses, as the `stability`
-  skill describes. Read `known_gaps` and `learning` where they exist.
+  skill describes. Read Known gaps and Learning in their capability docs.
 - Find what the test needs: each app's URL, test accounts and how they're
   seeded, and test modes for payments and other external services. Code and
   seeders are fine for this. You're the facilitator, and they never reach the
@@ -42,8 +44,8 @@ decides what happens next. This skill doesn't change code.
 
 ## 2. Define the people and the scenario
 
-Take the roles from the arguments, the project's docs, or the feature
-declarations. There are four browsers, so four people at most. Find each
+Take the roles from the arguments, the flow doc, the capability docs, or the
+project's other docs. There are four browsers, so four people at most. Find each
 person's persona with the `personas` skill. When there isn't one, it asks whether
 to create one or use an existing one, with all the missing roles in one round.
 
@@ -169,8 +171,8 @@ Each step is judged by the level of the feature it's in:
 - **Alpha** and up: each person must be able to do their part without help and
   without getting it wrong.
 
-A step the flow needs that's in `known_gaps`, or not built yet at that level,
-isn't a finding. Bypass it and list it under "Later". Everything else about
+A step the flow needs that's in a capability's Known gaps, or not built yet at
+that level, isn't a finding. Bypass it and list it under "Later". Everything else about
 getting the flow done counts at every level. Tenant isolation and leaked
 secrets are always a Blocker.
 
@@ -243,7 +245,7 @@ Open questions
 Q1. <question>. Options: A, B. Assumed: A.
 
 Later
-- <step>: <in known_gaps or not built yet, at this level>
+- <step>: <in Known gaps or not built yet, at this level>
 
 Not tested
 - <what was handed over or bypassed, or skipped at this effort>

@@ -39,8 +39,10 @@ do what we need.
 
 ## Where levels are declared
 
-Each project records stability in its own way, and its `CLAUDE.md` should say
-where. The user's word on a feature's level wins over the declaration. Without
+A feature's level is the `**Stability:**` line in its capability doc,
+`docs/product/capabilities/<slug>.md`, along with its known gaps. A project that
+also records levels somewhere else says where in its `CLAUDE.md`. The user's
+word on a feature's level wins over the declaration. Without
 either, infer the level from the repository's code and docs, as the
 `stability` skill describes, and tell the user what you inferred.
 

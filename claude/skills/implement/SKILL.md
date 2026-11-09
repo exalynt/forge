@@ -66,9 +66,9 @@ each and where it came from. Then compare the target against each one:
 - **Below the current level**: changes to an existing feature have to hold
   up to its level, so work on a GA feature is GA work. The exception is a task
   that creates a new feature, or a new version of a GA one, which gets its own
-  level. Ask which this is. For something new, record its declaration where
-  the project keeps them, and ask where if the project has no convention.
-  Otherwise use the current level.
+  level. Ask which this is. For something new, create its capability doc
+  with that level, as the `docs` skill describes. Otherwise use the
+  current level.
 - **Shared code at a stricter level**, such as a table, endpoint, or
   component other features use: the whole change is held to the highest level
   it touches. Say so, and offer to split the change if that's easy.
@@ -145,7 +145,7 @@ nothing else.
 
 Do the task the way the project's instructions and the global rules describe,
 sized to the target level: meet what it expects, and leave out
-what first appears at a later level. Don't fix the feature's `known_gaps`
+what first appears at a later level. Don't fix the capability's Known gaps
 along the way. Ask when a decision is the user's to make. A task that
 implements, changes, or clarifies a business rule adds or updates its
 acceptance tests, and a bug fix or performance work doesn't (see the testing
@@ -155,6 +155,8 @@ any: propose the scenarios before writing them.
 
 When the work is done:
 
+- Update the product docs the change affects, as the `docs` skill
+  describes.
 - Run the project's checks (lint, format, build, tests, as its `CLAUDE.md`
   lists them) and fix what fails.
 - Except for a bug fix, invoke the `stability-reviewer` subagent on this

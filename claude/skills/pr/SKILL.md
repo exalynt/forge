@@ -117,7 +117,7 @@ one, and anything not verified.
 What was deliberately left out, if anything.
 ```
 
-Mention the feature's `known_gaps` the change leaves in place under "Not
+Mention the capability's Known gaps the change leaves in place under "Not
 expected at this level". Leave out other sections with nothing to say. Keep any pull request attribution your configuration asks for.
 
 ### Create or update

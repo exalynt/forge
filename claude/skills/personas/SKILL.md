@@ -1,6 +1,6 @@
 ---
 name: personas
-description: Find, choose, or interactively create the reusable user personas stored in a project's docs/personas directory. Use when a skill such as /ux or /use needs someone to walk through a product as, or when asked to create, change, or list personas.
+description: Find, choose, or interactively create the reusable user personas stored in a project's docs/product/personas directory. Use when a skill such as /ux or /use needs someone to walk through a product as, or when asked to create, change, or list personas.
 ---
 
 # User Personas
@@ -11,23 +11,15 @@ test account belong to each run, so the same persona works for any flow.
 
 ## Where they live
 
-One file per persona, at `docs/personas/<slug>.md` from the root of the project
-being worked on, such as `docs/personas/client-owner.md`. If the folder doesn't
-exist, the project has no personas yet. Create it with the first one.
+One file per persona, at `docs/product/personas/<slug>.md` from the root of the
+project being worked on, such as `docs/product/personas/client-owner.md`. If the
+folder doesn't exist, the project has no personas yet. Create it with the first
+one.
 
 ## Format
 
-```markdown
-# <Name>, <role>
-
-Who: <their job, and why they use this product, in a sentence or two>
-Knows: <domain knowledge, familiarity with this product, technical skill>
-Context: <device, how often they do this, time pressure, interruptions>
-Expects: <the words they use, the tools they already know, how they think this
-kind of work goes>
-Cares about: <what makes them trust it, and what would make them give up>
-Based on: <the user's answers, project docs, or research; say what's assumed>
-```
+[persona.md](../docs/persona.md) in the `docs` skill has the
+layout: Who, Knows, Context, Expects, Cares about, and Based on.
 
 Names are invented. A persona file is checked in with the project, so it never
 holds a real person's details, an account, a password, or any other secret.
@@ -36,7 +28,7 @@ holds a real person's details, an account, a password, or any other secret.
 
 Do this at every effort, for each type of user the calling skill needs:
 
-1. Read everything in `docs/personas/`.
+1. Read everything in `docs/product/personas/`.
 2. If the user named a persona or a role and exactly one persona matches, use it
    and say which. Don't ask.
 3. Otherwise ask (AskUserQuestion, up to four people per call). Say which type of

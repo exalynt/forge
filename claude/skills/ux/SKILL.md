@@ -28,11 +28,12 @@ nothing in the project. Steps 6–7 change only what the user confirms.
 
 ## 1. Understand the feature
 
-- Find its stability level and declaration as the `stability` skill describes.
-  Read `purpose`, `learning`, and `known_gaps` if the declaration has them.
+- Find its stability level and capability doc as the `stability` skill
+  describes. Read its purpose, Learning, and Known gaps.
 - Find the main flow: what the feature is for, and the path from a user's
   first action to the result they came for. Use the user in this
-  conversation, the declaration, and the project's docs first. Read code only
+  conversation, the capability doc, any doc in `docs/product/flows` that
+  crosses it, and the project's other docs first. Read code only
   to find where the feature lives and how to reach it, not the steps to take.
   Step 3 works out those steps the way the user would.
 - Find what the user would actually have: the screens and navigation for a
@@ -175,8 +176,8 @@ feature's level:
   the effort covers them.
 
 Something only a later level expects isn't a finding. Neither is anything in
-`known_gaps`. List it under "Later, at <level>" only when it's a real problem
-this user would hit.
+the capability's Known gaps. List it under "Later, at <level>" only when it's a
+real problem this user would hit.
 
 ## Effort
 

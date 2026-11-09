@@ -37,9 +37,10 @@ user confirms and write only the acceptance tests the user approves.
 
 ## 1. Understand the feature
 
-- Find its stability level and declaration as the `stability` skill describes.
-  Read `purpose`, `learning`, and `known_gaps` if the declaration has them,
-  and note any mock or stub it explicitly allows.
+- Find its stability level and capability doc as the `stability` skill
+  describes. Read its purpose, Learning, and Known gaps, and note any mock or
+  stub it explicitly allows. Read the rules and concepts it links to, and any
+  doc in `docs/product/flows` that crosses it (see the `docs` skill).
 - Find where it lives: pages, routes, endpoints, services, tables, jobs,
   external integrations, and the tests that cover it.
 - Find its acceptance tests: the `.feature` files for it, the level each
@@ -48,8 +49,9 @@ user confirms and write only the acceptance tests the user approves.
   their steps show the flows to click through and the data to set up.
 - Find what it's supposed to do. Sources, most authoritative first: the user
   in this conversation, the feature's acceptance tests (its approved
-  specification), the feature declaration and project docs, specs or issues
-  the project links to, other existing tests, then the code. Code shows what
+  specification), its rule docs, capability doc, and flows in `docs/product`,
+  other project docs, specs or issues the project links to, other existing
+  tests, then the code. Code shows what
   the feature does, not what it should do. Don't treat current behavior as the
   rule just because it's implemented.
 - Work out what end to end means here: the primary workflow from a user's
@@ -71,7 +73,7 @@ reporting what it found and where.
 List the rules the feature should follow, each with its source:
 
 ```
-R1. <rule> (stated | assumed; source: <user | acceptance test | declaration | doc | test | code path>; acceptance test: <file › Rule | none>; core | edge case)
+R1. <rule> (stated | assumed; source: <user | acceptance test | rule doc | capability doc | doc | test | code path>; acceptance test: <file › Rule | none>; core | edge case)
 ```
 
 Cover who can do what, valid and invalid inputs, states and transitions,
@@ -181,8 +183,8 @@ Test doubles inside tests are fine, and so is the test data QA sets up. This
 check is about the feature's own code paths.
 
 A mock or stub is allowed only when an exception names it explicitly: the
-user says so in this conversation, or the feature declaration lists it, for
-example in `known_gaps`. A Prototype's general allowance for fake data isn't
+user says so in this conversation, or the capability doc's Known gaps lists
+it. A Prototype's general allowance for fake data isn't
 an exception by itself. List each allowed exception under Verified with its
 source. Any other mock or stub is an issue: Major, or Critical when it makes
 the primary workflow look like it works when it doesn't, such as a save that
@@ -291,8 +293,8 @@ as issues, not whether to look; the effort decides how many are looked at.
 Mocks and stubs need an explicit exception at every level.
 
 Something only a later level expects isn't an issue. Neither is anything in
-`known_gaps`. List it under "Not issues at <level>" only when someone could
-reasonably expect it. Tenant isolation and leaked secrets are checked at every
+the capability's Known gaps. List it under "Not issues at <level>" only when
+someone could reasonably expect it. Tenant isolation and leaked secrets are checked at every
 level, and a problem there is always Critical.
 
 ## Effort
@@ -409,8 +411,8 @@ requires, for those tests as shown. One the user wants reworded gets shown
 again before it's written.
 
 For a mock or stub, the user can make an explicit exception instead of a fix.
-Offer to record it in the feature declaration, such as in `known_gaps`, so the
-next QA run knows.
+Offer to record it in the capability doc's Known gaps, so the next QA run
+knows.
 
 If the user picks no issues and no acceptance tests, stop.
 
@@ -420,6 +422,8 @@ If the user picks no issues and no acceptance tests, stop.
   testing rule names. Each should pass once the confirmed fixes are in. One
   that still fails is a new issue: report it, and don't fix it without
   asking.
+- Record the rules the user confirmed, and those the approved tests state, in
+  the feature's rule docs, as the `docs` skill describes.
 - Fix only the confirmed issues, sized to the stability level. Follow the
   `stability` skill on breaking changes.
 - If a fix needs a decision that's the user's to make, ask.

@@ -15,6 +15,7 @@ claude/
 │   ├── stability.md
 │   ├── observability.md         # OTel traces, logs, and metrics in any language
 │   ├── testing.md               # unit, integration, e2e, and acceptance tests by level
+│   ├── product-docs.md          # where personas, capabilities, flows, rules, and concepts go
 │   └── subagents.md             # when to parallelize work with subagents
 ├── skills/
 │   ├── stability/               # level definitions and review classification
@@ -25,7 +26,8 @@ claude/
 │   ├── qa/                      # /qa [low|medium|high] <feature> [focus], end-to-end QA, manual only
 │   ├── ux/                      # /ux [low|medium|high] <feature> [as <user>], main-flow walkthrough, manual only
 │   ├── use/                     # /use [low|medium|high] <flow> [as <role>, ...], usability test with one agent per person, manual only
-│   └── personas/                # finds or creates reusable user personas in a project's docs/personas, for /ux and /use
+│   ├── personas/                # finds or creates reusable user personas in a project's docs/product/personas, for /ux and /use
+│   └── docs/                    # the layout of each kind of doc in a project's docs/product
 ├── agents/
 │   ├── stability-reviewer.md    # read-only review against a stability level
 │   └── use-role.md              # plays one person in a /use usability test
@@ -180,6 +182,8 @@ with the project so everyone working on it gets them. To change a rule, edit it
 here and re-apply. Don't hand-edit the copies. Re-running is safe: it reports
 each file as `added`, `updated`, or `ok`, and never deletes anything.
 
-Project-specific architecture and domain rules don't belong here. Keep them in
-each project's own `CLAUDE.md` or `.claude/`. A project should also say where it
-declares feature stability, for example `.exalynt/features/<feature>.yaml`.
+Project-specific architecture doesn't belong here. Keep it in each project's own
+`CLAUDE.md` or `.claude/`. A project's personas, capabilities, flows, domain
+rules, and concepts go in its `docs/product/`, in the formats in
+`claude/skills/docs/`. Each capability doc declares that capability's
+stability level and known gaps.

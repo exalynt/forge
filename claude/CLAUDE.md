@@ -38,5 +38,6 @@ When a feature's level is known, treat it as both:
   puts the task on a new branch in its own worktree and ends with a pull
   request.
 
-Project-specific architecture, domain rules, and where a repository declares
-feature stability belong in that project's own `CLAUDE.md` or `.claude/`.
+Project-specific architecture belongs in that project's own `CLAUDE.md` or
+`.claude/`. Its personas, capabilities, flows, domain rules, and concepts belong
+in its `docs/product/`, as the product docs rule describes.

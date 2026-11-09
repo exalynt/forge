@@ -37,8 +37,10 @@ with no schema has no migrations).
 1. **The user's statement** in the current conversation. The user's word
    wins. If it differs from the project's declaration, say so, and offer to
    update the declaration.
-2. **The project's declaration.** The project's `CLAUDE.md` should say where
-   feature stability is recorded. Use that.
+2. **The project's declaration.** The `**Stability:**` line in the feature's
+   capability doc, `docs/product/capabilities/<slug>.md` (see the
+   `docs` skill), or wherever else the project's `CLAUDE.md` says it's
+   recorded.
 3. **Otherwise, infer it from the repository.** Look at what its code and
    docs say about the feature:
    - **Where a level is stated**: a stability mark or level in the UI code,
@@ -55,32 +57,11 @@ with no schema has no migrations).
    Tell the user the level you inferred and what it rests on, including any
    evidence that pointed elsewhere, then go on with it. The user can correct
    it, and their word then wins. A subagent puts this in its report. Offer to
-   record the level as a declaration where the project keeps them.
+   record the level in its capability doc.
 
-A simple convention some projects use is one YAML file per feature, such as
-`.exalynt/features/conversations.yaml`. Follow whatever the project uses. Don't
-impose this one unless the project has adopted it.
-
-```yaml
-name: Prospect Conversations
-stability: prototype
-
-purpose: >
-  Determine whether allowing a prospect to begin a conversation before
-  creating a full account lowers the barrier to starting a relationship.
-
-learning:
-  - Will prospects use conversations as the initial point of contact?
-  - Is email sufficient identity for reconnecting conversations later?
-
-known_gaps:
-  - notification delivery may initially be simple
-  - abuse prevention is incomplete
-  - conversation search has not been designed
-```
-
-When a declaration has them, `purpose` and `learning` say what the feature is
-for right now, which is essential for prototypes. `known_gaps` lists what is
+The capability doc also says what the feature is for right now. Its opening
+paragraph is the purpose, and Learning is the question a Prototype is
+answering, which is essential for prototypes. Known gaps lists what is
 intentionally incomplete. Don't "fix" those gaps opportunistically.
 
 ## Changing existing features

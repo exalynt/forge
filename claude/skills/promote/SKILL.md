@@ -21,7 +21,7 @@ deliberate commitment. Use the `stability` skill for the level definitions.
 - Find the feature's current level as described in the `stability` skill:
   the user's word, then the declaration, then what the repository shows. Tell
   the user the level you found and where it came from. Step 6 records the new
-  level as a declaration. If the project has no convention for where, ask.
+  level in its capability doc.
 - The target must be one of `prototype`, `alpha`, `beta`, `ga`. If it is
   missing or invalid, ask.
 - If the target is not above the current level, stop. This isn't a promotion.
@@ -89,10 +89,12 @@ rule). Otherwise, proceed.
 Below high effort, the first review didn't check everything the target expects.
 Show its NOT REVIEWED list and ask before recording the new level.
 
-Only when the verification passes for the target: update the feature's
-declared stability level, and update `known_gaps` (or the project's
-equivalent) to reflect the gaps that remain. If it doesn't pass, leave the
-declared level unchanged.
+Only when the verification passes for the target: update the `**Stability:**`
+line in the feature's capability doc, creating the doc if it has none (see the
+`docs` skill), and also the place the project's `CLAUDE.md` names for
+levels, if it names one. Update Known gaps to reflect the gaps that remain, and
+remove Learning when leaving Prototype. If it doesn't pass, leave the declared
+level unchanged.
 
 ## 7. Report
 
