@@ -149,10 +149,15 @@ nothing else.
 
 ## 5. Do the work
 
+Before changing code, search `docs/engineering/` for its packages, files, and
+main symbols, and read what covers it, including another repository's docs when
+the project's `CLAUDE.md` names them. Work with its Tradeoffs and Gotchas, and
+if the task means undoing one, say so.
+
 Do the task the way the project's instructions and the global rules describe,
 sized to the target level: meet what it expects, and leave out
-what first appears at a later level. Don't fix the capability's Known gaps
-along the way. Ask when a decision is the user's to make. A task that
+what first appears at a later level. Don't fix Known gaps, in the capability doc
+or the engineering docs, along the way. Ask when a decision is the user's to make. A task that
 implements, changes, or clarifies a business rule adds or updates its
 acceptance tests, and a bug fix or performance work doesn't (see the testing
 rule). A library has no acceptance tests unless the user asks. Acceptance
@@ -163,6 +168,10 @@ When the work is done:
 
 - Update the product docs the change affects, as the `docs` skill
   describes.
+- Update the engineering docs the change affects, as the `engineering-docs`
+  skill describes: fix what it made wrong, record a tradeoff, gotcha, or
+  technical gap it introduced, and delete a gap it closed. Create a doc only when
+  that skill's tests call for one, not because a feature was built.
 - Run the project's checks (lint, format, build, tests, as its `CLAUDE.md`
   lists them) and fix what fails.
 - Except for a bug fix, invoke the `stability-reviewer` subagent on this

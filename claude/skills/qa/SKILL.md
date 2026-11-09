@@ -41,6 +41,10 @@ user confirms and write only the acceptance tests the user approves.
   describes. Read its purpose, Learning, and Known gaps, and note any mock or
   stub it explicitly allows. Read the rules and concepts it links to, and any
   doc in `docs/product/flows` that crosses it (see the `docs` skill).
+- Search `docs/engineering/` for its code and its capability doc's filename, and
+  read the Known gaps and Tradeoffs that cover it, so a technical gap or a
+  deliberate tradeoff isn't reported as a bug. Note any stub listed there (see
+  the `engineering-docs` skill).
 - Find where it lives: pages, routes, endpoints, services, tables, jobs,
   external integrations, and the tests that cover it.
 - Find its acceptance tests: the `.feature` files for it, the level each
@@ -183,8 +187,8 @@ Test doubles inside tests are fine, and so is the test data QA sets up. This
 check is about the feature's own code paths.
 
 A mock or stub is allowed only when an exception names it explicitly: the
-user says so in this conversation, or the capability doc's Known gaps lists
-it. A Prototype's general allowance for fake data isn't
+user says so in this conversation, or Known gaps lists it, in the capability
+doc or, for one people can't see, the engineering docs. A Prototype's general allowance for fake data isn't
 an exception by itself. List each allowed exception under Verified with its
 source. Any other mock or stub is an issue: Major, or Critical when it makes
 the primary workflow look like it works when it doesn't, such as a save that
@@ -304,7 +308,8 @@ as issues, not whether to look; the effort decides how many are looked at.
 Mocks and stubs need an explicit exception at every level.
 
 Something only a later level expects isn't an issue. Neither is anything in
-the capability's Known gaps. List it under "Not issues at <level>" only when
+the capability's Known gaps, or a Tradeoff or Known gap in the engineering docs,
+unless that gap is due (see the `engineering-docs` skill). List it under "Not issues at <level>" only when
 someone could reasonably expect it. Tenant isolation and leaked secrets are checked at every
 level, and a problem there is always Critical.
 
@@ -424,8 +429,8 @@ requires, for those tests as shown. One the user wants reworded gets shown
 again before it's written.
 
 For a mock or stub, the user can make an explicit exception instead of a fix.
-Offer to record it in the capability doc's Known gaps, so the next QA run
-knows.
+Offer to record it in Known gaps, in the capability doc if people can see it and
+the engineering docs if they can't, so the next QA run knows.
 
 If the user picks no issues and no acceptance tests, stop.
 
@@ -448,6 +453,8 @@ If the user picks no issues and no acceptance tests, stop.
   project's checks.
 - Anything new found while fixing goes in the report. Don't fix it without
   asking.
+- Update the engineering docs the fixes affect, as the `engineering-docs` skill
+  describes, such as deleting a gap a fix closed.
 - Don't commit unless asked.
 
 Report each confirmed issue as fixed (and how the fix was verified) or not

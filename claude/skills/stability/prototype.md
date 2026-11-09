@@ -66,7 +66,8 @@ Don't add these merely because they'd be useful later:
 - production-scale architecture or architecture built around hypothetical scale
 - large-scale performance optimization
 - long-term compatibility mechanisms or public API stability guarantees
-- exhaustive documentation
+- exhaustive documentation, or engineering docs beyond recording a stub `/qa`
+  should allow
 - elaborate deployment infrastructure
 - CI workflows (they start at Alpha)
 - abstraction to support future implementations

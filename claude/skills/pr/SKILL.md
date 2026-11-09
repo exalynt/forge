@@ -110,12 +110,18 @@ What changes and why, in a few sentences or bullets.
 Each check run and its result, the stability review's outcome if there was
 one, and anything not verified.
 
+## Deploying
+
+What's true only while this change rolls out: deploy order, one-time commands,
+and what rolling back does.
+
 ## Known gaps
 
 What was deliberately left out, if anything.
 ```
 
-Mention the capability's Known gaps the change leaves in place under "Not
+Mention the Known gaps the change leaves in place, from the capability doc or
+the engineering docs, under "Not
 expected at this level". Leave out other sections with nothing to say. Keep any pull request attribution your configuration asks for.
 
 ### Create or update

@@ -50,8 +50,10 @@ Review and documentation:
 - authentication and authorization (permissions) are in place; they are first
   required at Beta
 - security receives deeper review
-- operational documentation exists
-- architecture and meaningful tradeoffs are documented
+- each recovery done by hand has a runbook, and provider setup outside the
+  repository is written down (see the `engineering-docs` skill)
+- how shared systems work and meaningful tradeoffs are in the engineering docs,
+  which doesn't mean a doc per feature: what the code shows stays out
 - someone other than the original author can understand and support it
 
 ## Changing it

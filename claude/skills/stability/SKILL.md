@@ -62,7 +62,10 @@ with no schema has no migrations).
 The capability doc also says what the feature is for right now. Its opening
 paragraph is the purpose, and Learning is the question a Prototype is
 answering, which is essential for prototypes. Known gaps lists what is
-intentionally incomplete. Don't "fix" those gaps opportunistically.
+intentionally incomplete that people would notice. Technical gaps and tradeoffs
+are in `docs/engineering/` (see the `engineering-docs` skill). Don't "fix" either
+kind of gap opportunistically. A technical gap whose **Until** names this
+capability at a level it has reached is due, which makes it REQUIRED NOW.
 
 ## Changing existing features
 

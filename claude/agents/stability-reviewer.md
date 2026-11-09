@@ -37,7 +37,11 @@ The usual flow has two runs, with fixes made outside the reviewer between them:
 4. **Read the capability doc** if there is one: its purpose, Learning, and
    Known gaps. For a prototype, identify the question it is answering, and
    expect realism there and simplicity elsewhere.
-5. **Review the relevant implementation and current changes** (`git diff`,
+5. **Read the engineering docs** covering the code you're reviewing, as far as
+   the effort reaches: search `docs/engineering/` for its packages, files, and
+   main symbols, and for the capability doc's filename. Note their Tradeoffs and
+   Known gaps.
+6. **Review the relevant implementation and current changes** (`git diff`,
    `git diff --staged`, or the range the caller gives you), as far as the
    effort reaches.
 
@@ -76,11 +80,20 @@ review.
 - acceptance tests added, changed, or removed in the diff, including step
   definitions that change what a scenario checks. They need the user's
   explicit approval, so list each one for the caller to confirm
+- technical gaps that are due: a Known gap in `docs/engineering/` whose
+  **Until** names this capability at the level reviewed against, or one below
+  it, is REQUIRED NOW
+- engineering docs the level expects that are missing, or that the diff made
+  wrong
+- engineering docs beyond the level or that restate the code, such as a doc per
+  feature, and a gap recorded in both the capability doc and the engineering docs
 
 Over-engineering is a failed stability review, just like under-engineering.
 Prefer removing unjustified complexity rather than merely documenting it.
 
-Don't flag gaps listed in the capability's Known gaps or allowed at this level as missing.
+Don't flag as missing what's allowed at this level, the capability's Known gaps,
+the engineering docs' Known gaps that aren't due, or their Tradeoffs. None of
+those excuses the security and privacy baseline.
 Don't suggest advancing to the next stability level unless explicitly asked.
 
 ## Report

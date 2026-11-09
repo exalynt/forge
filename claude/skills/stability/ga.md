@@ -37,8 +37,10 @@ Quality and documentation:
 
 - accessibility expectations are satisfied
 - security posture is appropriate for production dependence
-- documentation is sufficient for users, operators, and developers
-- significant architectural tradeoffs are documented
+- documentation is sufficient for users, developers, and operators, including
+  an operator who didn't build it
+- significant architectural tradeoffs are in the engineering docs (see the
+  `engineering-docs` skill)
 
 ## Changing it
 

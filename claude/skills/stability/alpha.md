@@ -35,7 +35,8 @@ for validating the real workflow, not for hardening every edge.
   - an acceptance-test job that starts what the acceptance tests need and
     runs them; a library has none
 - changes receive normal code review
-- known limitations are documented
+- known limitations are documented: what people would notice in the capability
+  doc, and technical gaps and gotchas in the engineering docs, where they exist
 
 ## Changing it
 
