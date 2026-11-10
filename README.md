@@ -169,7 +169,7 @@ Start a new Claude Code session afterwards. `claude mcp list` should show
 A stack is a set of rules for one kind of project, applied per repository
 rather than globally. `go-http` holds general conventions for Go HTTP API
 projects: preferred packages, layers and boundaries, repositories, service
-errors, REST API design, configuration, and tests. `react` holds conventions
+errors, REST API design, health checks, configuration, and tests. `react` holds conventions
 for React + MUI frontends: page and component layout, reusing MUI and existing
 components, mobile responsiveness, light and dark mode, services for external
 APIs and SDKs, and CI. Each rule loads only when Claude works on files it
