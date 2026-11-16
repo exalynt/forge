@@ -1,11 +1,25 @@
 # Prototype
 
+**Exploring.** Explores an idea so we can choose a direction. Its data may be
+fake, and it may change completely or be thrown away.
+
+## What people can expect
+
+- **Changes**: anything can change, or it may be thrown away.
+- **Bugs**: only what's being shown is expected to work, and its data may be
+  fake.
+- **Data**: may be sample data, and may be wiped.
+- **People using it**: react to it and help choose the direction. Don't use it
+  for real work, or trust the data it shows.
+- **Engineers building on it**: don't build on it. Expect it to be rewritten.
+
 ## Purpose
 
-Explore an idea and answer important unknowns. A prototype exists primarily to
-learn. It may be rewritten or deleted entirely. Success means learning enough to
-decide what to do next. Stopping after answering the current question is
-success.
+A prototype exists to learn, and may be rewritten or deleted entirely. Success
+means learning enough to decide what to do next. A prototype doesn't have to
+move on: many are done once they've answered their question, and "don't build
+it" is a successful outcome. Work that's dropped is cleaned up, flags and data
+included, so it doesn't get in the way of what comes next.
 
 ## Prototype the uncertainty
 
@@ -30,28 +44,29 @@ as simple as reasonably possible:
 
 - making the idea tangible
 - answering the current unknown
-- getting user, client, or team reaction
+- getting the client's reaction, early and often
 - fast iteration
 - low cost of change and of deletion
 - proving or disproving assumptions
 
-## Expected (where applicable)
+## Expected
 
-- the primary demo path works when manually exercised
-- known gaps are documented
-- it is clear what is real and what is sample, mock, or fake, including to the
-  people trying it: a Prototype tells them its data may be fake
-- performance is sufficient for the experiment or demo
-- the security and privacy baseline is respected: one tenant or client cannot
-  see or interact with another's real data, and real secrets are never leaked
-  anywhere (authentication and authorization are not required until Beta)
-- prototype behavior is not unintentionally exposed as production behavior
-- experimental code is reasonably isolated from stable production behavior
+The items marked Prototype in [checklist.md](checklist.md), the security and
+privacy baseline above all. In short: what it's for is written down, the client
+can try it and their feedback is recorded, the main path works by hand, sample
+data is clearly marked, its level is clear wherever people see it, it isn't
+available to users by default, and it can be removed cleanly without affecting
+anything people rely on.
+
+## Ready for Alpha when
+
+The client likes the direction, and it's built to actually work, not just to
+show the idea.
 
 ## Changing it
 
-No compatibility guarantee. Take the quickest path, even if it breaks existing
-behavior, data, or clients.
+No compatibility guarantee, and no promise of notice. Take the quickest path,
+even if it breaks existing behavior, data, or clients.
 
 ## Avoid unless it is what we're learning about
 
@@ -60,14 +75,14 @@ Don't add these merely because they'd be useful later:
 - generalized abstractions, speculative interfaces, plugin or extension mechanisms
 - speculative configuration
 - exhaustive edge-case handling
-- exhaustive automated testing
+- automated tests and CI workflows (they start at Alpha)
 - elaborate retries or sophisticated failure recovery
-- dashboards, alerts, or deep observability infrastructure
+- logging beyond what the experiment needs, dashboards, alerts, or deep
+  observability infrastructure
 - production-scale architecture or architecture built around hypothetical scale
-- large-scale performance optimization
-- long-term compatibility mechanisms or public API stability guarantees
-- exhaustive documentation, or engineering docs beyond recording a stub `/qa`
-  should allow
+- performance optimization
+- compatibility mechanisms or public API stability guarantees
+- documentation beyond what it does, what it doesn't handle yet, and how to run
+  it, or engineering docs beyond recording a stub `/qa` should allow
 - elaborate deployment infrastructure
-- CI workflows (they start at Alpha)
 - abstraction to support future implementations

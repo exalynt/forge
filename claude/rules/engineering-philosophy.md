@@ -61,6 +61,7 @@ point that out instead of extending the pattern.
 
 - Security and privacy are never speculative. From the first line of code, one
   tenant or client cannot see or interact with another tenant's or client's
-  real data, and real secrets are never leaked anywhere. Authentication and
-  authorization are required from Beta onward.
+  real data, and real secrets are never leaked anywhere. Anything touching
+  real client systems or data has authentication and authorization, at every
+  level. Only work that holds nothing but sample data can go without.
 - Simple does not mean sloppy. What we do build should be correct and clear.

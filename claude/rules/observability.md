@@ -6,9 +6,12 @@ paths:
 # Observability
 
 How to add traces, logs, and metrics, in any language or framework. How much
-to add is the feature's stability level's call: Prototype adds none beyond what
-the experiment needs, Alpha needs basic logging, and Beta adds metrics and
-tracing. Whatever is added follows this.
+to add is the feature's stability level's call (the `stability` skill's
+checklist, "Logs, traces, and metrics"): Prototype adds none beyond what the
+experiment needs, Alpha logs errors with context, Beta adds logs correlated by
+request or job, error tracking, and metrics on key operations, and GA adds
+workflow success metrics and traces of the critical workflows. Whatever is
+added follows this.
 
 ## OpenTelemetry is the standard
 

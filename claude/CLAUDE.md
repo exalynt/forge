@@ -26,8 +26,10 @@ When a feature's level is known, treat it as both:
   non-breaking unless the user directs otherwise; GA changes must be
   non-breaking.
 - At every level, one tenant or client cannot see or interact with another
-  tenant's or client's real data, and real secrets are never leaked anywhere.
-  That is the security and privacy baseline.
+  tenant's or client's real data, anything touching real client data has
+  access control, and real secrets are never leaked anywhere. That is the core
+  of the security and privacy baseline, which the `stability` skill lists in
+  full.
 - Use the `stability` skill whenever stability materially affects a design,
   implementation, or review decision.
 

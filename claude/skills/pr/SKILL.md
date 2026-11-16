@@ -80,8 +80,21 @@ stability level and gets no label.
 
 Check the repository has the labels with `gh label list --search "stability:"`.
 If they're missing, open the pull request without the label, and tell the user.
-Offer to create them with `gh label create`, one each for `stability: prototype`,
-`stability: alpha`, `stability: beta`, and `stability: ga`.
+Offer to create them with `gh label create <name> --color <color>
+--description "<description>"`, using the same labels every Exalynt repository
+has, from `@exalynt/design`:
+
+| Name                    | Color    | Description                                                                         |
+| ----------------------- | -------- | ----------------------------------------------------------------------------------- |
+| `stability: prototype`  | `6d6a7c` | Prototype: exploring an idea; expect it to change completely or be thrown away      |
+| `stability: alpha`      | `9c4f6c` | Alpha: works but still taking shape; expect frequent breaking changes and bugs      |
+| `stability: beta`       | `3f6f88` | Beta: refining; occasional breaking changes, announced ahead of time when we can    |
+| `stability: ga`         | `4c7a58` | GA: generally available and stable; rare breaking changes, announced with a deprecation window |
+
+The label is the level the change aims for, not where the code is today. A
+change spanning levels takes the highest it touches. Refactoring, tooling, and
+dependency updates take the level of the code they change, and changes to CI,
+deployment, or shared tooling people already depend on are GA.
 
 ### Description
 

@@ -28,6 +28,11 @@ deliberate commitment. Use the `stability` skill for the level definitions.
 - If the target skips a level (for example prototype → beta), confirm that's
   intended. If it is, the delta covers each intermediate level up to the
   target, and never beyond it.
+- Read the current level's "Ready for <next> when" in the `stability` skill.
+  If the feature plainly isn't there yet, such as a shape that's still
+  changing, say so before going on.
+- A move to Beta or GA changes what the client relies on, so the client should
+  have agreed to it. If the user hasn't said they have, note it in the delta.
 
 ## 2. Review against the target
 
@@ -58,9 +63,17 @@ What we are intentionally NOT doing yet:
 Technical gaps due at <target>:
 - <gap> (<doc>): close it | give it a later Until | move it to Tradeoffs
 
+Proposed as known gaps instead:
+- <unmet item>: close later | accepted tradeoff, and why
+
 Known gaps that remain acceptable at <target>:
 - <gap>, from the capability doc or the engineering docs
 ```
+
+The checklist is a set of guidelines, not a gate. Each REQUIRED NOW finding is
+either in "What changes are required" or, where closing it now isn't worth it,
+proposed as a known gap. Proposed gaps need the user's agreement. The security
+and privacy baseline is never a gap.
 
 "What we are intentionally NOT doing yet" is mandatory. Name the specific
 hardening, abstraction, or operational work someone might expect, and say
@@ -102,13 +115,14 @@ rule). Otherwise, proceed.
 Below high effort, the first review didn't check everything the target expects.
 Show its NOT REVIEWED list and ask before recording the new level.
 
-Only when the verification passes for the target: update the `**Stability:**`
+Only when the verification passes for the target, with every finding it didn't
+resolve recorded as a known gap the user agreed to: update the `**Stability:**`
 line in the feature's capability doc, creating the doc if it has none (see the
 `docs` skill), and also the place the project's `CLAUDE.md` names for
 levels, if it names one. Update Known gaps, in the capability doc and the
-engineering docs, to reflect the gaps that remain, and
-remove Learning when leaving Prototype. If it doesn't pass, leave the declared
-level unchanged.
+engineering docs, to reflect the gaps that remain, each with its kind. Remove
+Learning when leaving Prototype, and add Success, as agreed with the client,
+when reaching Beta. If it doesn't pass, leave the declared level unchanged.
 
 ## 7. Report
 

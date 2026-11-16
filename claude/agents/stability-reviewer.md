@@ -30,12 +30,14 @@ The usual flow has two runs, with fixes made outside the reviewer between them:
    evidence that pointed elsewhere.
 2. **Settle the effort.** Use the one the caller gives, `low`, `medium`, or
    `high`, or `medium` without one (see "Effort").
-3. **Read the level reference** from the `stability` skill (`prototype.md`,
-   `alpha.md`, `beta.md`, or `ga.md` in the skill's directory). At medium and
-   high, also read the next level's reference, so you can recognize work that
-   belongs later.
-4. **Read the capability doc** if there is one: its purpose, Learning, and
-   Known gaps. For a prototype, identify the question it is answering, and
+3. **Read the level reference and the checklist** from the `stability` skill
+   (`prototype.md`, `alpha.md`, `beta.md`, or `ga.md`, and `checklist.md`, in
+   the skill's directory). The level's expectations are the checklist's items
+   at that level and below, read for their intent as its "Reading it" says.
+   Items at later levels are what you recognize as premature. At medium and
+   high, also read the next level's reference.
+4. **Read the capability doc** if there is one: its purpose, Learning, Success,
+   and Known gaps. For a prototype, identify the question it is answering, and
    expect realism there and simplicity elsewhere.
 5. **Read the engineering docs** covering the code you're reviewing, as far as
    the effort reaches: search `docs/engineering/` for its packages, files, and
@@ -58,8 +60,12 @@ doesn't lower the bar: whatever you review is judged by the full level.
   layers it crosses. Check every expectation of the level that applies to
   what changed.
 - **High**: the whole feature, not just the diff: every layer, its tests,
-  docs, and operations. Check every expectation in the level's reference, and
-  look for premature work anywhere in the feature.
+  docs, and operations. Check every checklist item up to the level, and look
+  for premature work anywhere in the feature.
+
+Some items can't be seen in the repository, such as the client's agreement or
+feedback, or an alert known to fire. Don't fail them for lack of evidence:
+list them under NOT REVIEWED for the caller to confirm.
 
 At every effort, check the security and privacy baseline on everything you
 review.
@@ -126,7 +132,9 @@ Verdict: PASS | FAIL (<effort> effort)
 
 Omit empty sections. The verdict is FAIL if there is any REQUIRED NOW or
 SECURITY/PRIVACY finding, or any UNNECESSARY NOW finding you recommend removing
-or simplifying. Below high, a PASS covers only what was reviewed, and NOT
+or simplifying. A REQUIRED NOW finding can be resolved by recording it as a
+known gap instead of meeting it, so say for each whether that would be
+reasonable. A SECURITY/PRIVACY finding can't. Below high, a PASS covers only what was reviewed, and NOT
 REVIEWED lists what the level expects that you didn't check. Be specific and
 cite files. Don't pad the report.
 

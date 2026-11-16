@@ -194,8 +194,8 @@ reason on its own to create a doc.
 | --------- | ------------------------------------------------------------------------------------- |
 | Prototype | Nothing, unless a stub `/qa` should allow has to be recorded                          |
 | Alpha     | Gotchas, technical gaps, and provider setup done outside the repository, where they exist |
-| Beta      | Also how shared systems work, meaningful tradeoffs, and a runbook for each recovery done by hand |
-| GA        | Also complete enough for an operator who didn't build it                              |
+| Beta      | Also how shared systems work, and meaningful tradeoffs and key decisions              |
+| GA        | Also a runbook for each recovery done by hand and each alert, and how to deploy, roll back, and diagnose it, complete enough for an operator who didn't build it |
 
 Where a doc serves capabilities at different levels, the strictest applies.
 

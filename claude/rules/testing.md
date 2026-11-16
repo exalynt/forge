@@ -176,8 +176,14 @@ Test each case at the lowest level that can prove it, and only once:
 - **Beta**: adds acceptance tests for the edge-case business rules, and unit
   and integration tests where they're useful. Primary and important secondary
   workflows are tested, and so are important failure paths.
-- **GA**: important workflows and business rules are comprehensively tested,
-  and important failure modes have tests that pin their behavior.
+- **GA**: critical workflows are tested end to end, important workflows and
+  business rules comprehensively, and important failure modes have tests that
+  pin their behavior. Every fixed bug has a test that would catch it coming
+  back, and no test is flaky or skipped without being tracked.
+
+Output that varies from run to run, such as an AI feature's or a ranking's, is
+tested by judging quality against a set of examples (evals), not by exact
+matches.
 
 CI runs each suite in its own job from the stability level that requires it:
 end-to-end and acceptance tests from Alpha, unit and integration tests from

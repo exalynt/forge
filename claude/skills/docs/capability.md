@@ -27,9 +27,13 @@ one are really at different levels, split it.
 
 - <A question this prototype exists to answer.>
 
+## Success
+
+- <What success looks like, as agreed with the client.>
+
 ## Known gaps
 
-- <What's intentionally incomplete>: <how it's handled for now.>
+- <What's intentionally incomplete>: <how it's handled for now.> (<To close later | Accepted tradeoff>)
 
 ## Open decisions
 
@@ -51,7 +55,12 @@ one are really at different levels, split it.
   lists them all.
 - **What people can do**: required, with one heading per role.
 - **Learning**: only at Prototype. Leave it out otherwise.
-- **Known gaps**: required. Write "None." when there are none. Only what someone
+- **Success**: from Beta, how the client will judge it's working, such as
+  "finance closes the month without the spreadsheet." GA means it has been
+  shown to meet this in real use. Leave it out below Beta.
+- **Known gaps**: required. Write "None." when there are none. Each says its
+  kind: to close later, or an accepted tradeoff kept on purpose. Either kind
+  can exist at any level, GA included. Only what someone
   using the product would notice, in their words, so never paging, load testing,
   test coverage, or how a deploy behaves. A gap only someone working on the code
   would see goes in the engineering docs, and a gap is never in both (see the

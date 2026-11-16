@@ -59,12 +59,15 @@ make them wrong.
 
 Each capability says how far along it is:
 
-| Level     | What it means                                                      |
-| --------- | ------------------------------------------------------------------ |
-| Prototype | An experiment to answer a question. It may be rewritten or removed |
-| Alpha     | The main workflow is real and usable, but its shape may change     |
-| Beta      | The shape has settled, and the edges are being hardened            |
-| GA        | People can depend on it                                            |
+| Level     | What it means                                                                                   |
+| --------- | ----------------------------------------------------------------------------------------------- |
+| Prototype | Explores an idea so we can choose a direction. Its data may be fake, and it may be thrown away  |
+| Alpha     | Works, but is still taking shape. Expect frequent breaking changes and bugs                     |
+| Beta      | Settled enough for real use. Breaking changes are occasional, announced ahead when we can       |
+| GA        | Stable, and keeps working as it does today. Breaking changes are rare and come with time to move |
+
+A level says how much you can depend on something, not how good it is. Each
+capability also lists its known gaps, so you can see what it doesn't do yet.
 
 ## Keeping them current
 

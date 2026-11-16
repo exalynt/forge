@@ -4,12 +4,19 @@ Features may declare a stability level:
 
 Prototype → Alpha → Beta → GA
 
-- **Prototype**: learn and answer a specific unknown. It may be rewritten or deleted,
-  and its data may be fake.
-- **Alpha**: the primary workflow is real and usable, though the shape may still change.
-- **Beta**: the shape has settled. Harden the edges and operate it responsibly.
-- **GA**: people may depend on it. We commit to reliability, compatibility, and
-  long-term operation.
+- **Prototype** (exploring): explores an idea so we can choose a direction. Its
+  data may be fake, and it may change completely or be thrown away.
+- **Alpha** (developing): works, but is still taking shape. Expect frequent
+  breaking changes and bugs, and data that may be reset.
+- **Beta** (refining): settled enough for real use. Breaking changes and bugs
+  are occasional, and data is kept. We aim to announce breaking changes ahead
+  of time, but can't always.
+- **GA** (stable): generally available and stable. It keeps working as it does
+  today. Breaking changes are rare, announced ahead of time, and come with time
+  to move over.
+
+A level describes how much people can depend on the work, not how good it is.
+Stability isn't perfection: GA software can still have bugs and known gaps.
 
 ## Rules
 
@@ -22,11 +29,19 @@ Prototype → Alpha → Beta → GA
   at GA" is not one.
 - Over-engineering is a stability problem, just like under-engineering. Flag
   both when designing, modifying, or reviewing a feature.
+- What each level includes is a set of guidelines, not a gate: the `stability`
+  skill's checklist. An item that applies and isn't met is either fixed or
+  written down as a known gap, to close later or accepted as a tradeoff, where
+  people can see it. Known gaps can exist at any level, GA included.
 - Never promote or demote a feature unless explicitly instructed. Promotion is
   a deliberate decision, made with `/promote`.
 - The security and privacy baseline applies at every level, including
-  Prototype: one tenant or client cannot see or interact with another's real
-  data, and real secrets are never leaked anywhere.
+  Prototype, and is never a known gap: secrets stay out of code, version
+  control, sample data, logs, and output; real client data is never copied
+  into code or fixtures; anything touching real client systems or data has
+  access control, so people only see and change what they're allowed to and
+  one client or customer never sees another's; personal data is collected only
+  where needed; and untrusted input can't run as code.
 
 ## Prototype the uncertainty
 
@@ -57,8 +72,11 @@ decides whether the change must be non-breaking:
 - **Beta**: prefer non-breaking changes. Break only when the user directs it,
   and aim to announce the break to the people using it ahead of time. That's
   the goal, not a guarantee.
-- **GA**: non-breaking only. Clarify the direction with the user when a change
-  would otherwise break something.
+- **GA**: non-breaking only. A change that would break something ships as a
+  new version with its own level, while the current one keeps working through
+  a deprecation window. Clarify the direction with the user first.
+
+A new capability in a GA feature starts at its own level, opt-in.
 
 When a change touches something several features share, the strictest level
 applies.

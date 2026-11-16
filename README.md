@@ -19,7 +19,7 @@ claude/
 │   ├── engineering-docs.md      # where how it's built, tradeoffs, gotchas, and technical gaps go
 │   └── subagents.md             # when to parallelize work with subagents
 ├── skills/
-│   ├── stability/               # level definitions and review classification
+│   ├── stability/               # level definitions, the stability checklist, and review classification
 │   ├── promote/                 # /promote [low|medium|high] <feature> <level>, manual only
 │   ├── commit/                  # /commit [session|all], grouped commits, manual only
 │   ├── implement/               # /implement [low|medium|high] [level] [worktree] <task>, on the current branch; worktree adds own branch and worktree, ends in a PR, manual only
