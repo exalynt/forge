@@ -24,6 +24,20 @@ projects using these rules meet an item, and aren't in the readme.
   command-line tool.
 - **Not applicable when the intent doesn't apply.** Backups don't apply to work
   that keeps no data. An example not matching isn't a reason on its own.
+- **Feature flags are a recommendation, not a requirement.** A flag, or another
+  way to turn work off without a code change, is worth it when new work lands
+  in software people already rely on and a problem would hurt, or when
+  releasing to some users first. In a new product nobody relies on yet,
+  rolling back is usually enough. Once a flag has done its job, removing it
+  keeps the code simple, but that's housekeeping, not part of any level. A
+  missing flag, or one not yet removed, isn't a known gap, so don't raise or
+  ask about it as one.
+- **Team practices fit the team.** An owner, a place to report bugs, and
+  review by another engineer are recommended, in whatever form the team and
+  client already work, such as a client who reports problems by message, or an
+  engineer working alone. They usually live outside the code, so they're taken
+  as met unless something says otherwise, and one that doesn't fit the team
+  isn't a known gap. Don't raise or ask about them as one.
 - **A capability can rely on its project.** Items about the whole system, such
   as testing on every change, recovering data, monitoring, and the release
   process, can be met by what the project already has, as long as it covers the
@@ -232,12 +246,11 @@ _How it reaches your users, and how quickly it can be undone._
   production, or behind a flag that's off).
 - **Prototype–Alpha**: Can be removed cleanly, and can't affect anything people
   rely on, including production data.
-- **Alpha only**: Opt-in only (such as behind a feature flag).
+- **Alpha only**: Opt-in only (such as only for invited users, or behind a
+  feature flag).
 - **Beta**: Released the same way as the rest of the product (such as the
   normal deploy pipeline).
-- **Beta only**: Can be turned off without a code change (such as a flag).
 - **Beta**: Can be rolled back to the previous version.
-- **GA**: Any feature flag removed, so it's simply part of the product.
 - **GA**: Rollback has been tried.
 - **GA**: It can be set up again from scratch without hand steps, such as after
   losing its environment.
@@ -305,7 +318,7 @@ _It can keep changing, by any engineer, without getting harder to change._
 
 - **Alpha**: Follows the project's conventions, and passes its automated checks
   (such as lint and type checks).
-- **Alpha**: Reviewed by another engineer.
+- **Alpha**: Reviewed by another engineer, where the team has one.
 - **Beta**: Earlier shortcuts removed or tracked.
 - **GA**: Another engineer can change it without the author.
 - **GA**: No untracked TODOs or dead code.

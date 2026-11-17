@@ -19,7 +19,7 @@ always.
 The client agrees the feature's shape has settled, and people use it for real
 work. Now invest in hardening the edges and operating it responsibly: keep
 their data, handle the edge cases, see what it's doing in production, and be
-able to turn it off or roll it back.
+able to roll it back.
 
 > The feature's shape is proven enough that hardening it is now worth the
 > investment.
@@ -34,10 +34,10 @@ with bounded work; personal data exportable and deletable; protected against
 misuse; legal duties known; reproducible builds with vulnerability scanning;
 timeouts on external calls; correlated logs, an error tracker, and metrics on
 key operations; automated health checks and a dashboard; released through the
-normal pipeline, can be turned off without a code change and rolled back;
-bugs triaged and shared; waiting, empty, and error states handled; usable by
-everyone it's meant for; how it's put together documented; release notes;
-earlier shortcuts removed or tracked; and a clear public interface.
+normal pipeline and can be rolled back; bugs triaged and shared; waiting,
+empty, and error states handled; usable by everyone it's meant for; how it's
+put together documented; release notes; earlier shortcuts removed or tracked;
+and a clear public interface.
 
 Here: the testing rule's Beta suites (acceptance tests for the edge-case
 business rules, unit and integration tests where useful) and the stack's CI
@@ -65,7 +65,7 @@ GA's work can wait until the feature is headed there: alerts, latency and
 availability targets, traces of critical workflows, tested restores and
 rollbacks, runbooks, a security review, least-privilege access and audit
 trails, concurrency and partial-failure handling, versioning and deprecation
-windows, removing the feature flag, and support outside working hours.
+windows, and support outside working hours.
 
 Beta is not an excuse to implement hypothetical enterprise requirements. Avoid
 complexity not tied to real usage: scale beyond realistic projections,

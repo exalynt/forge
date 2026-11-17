@@ -34,10 +34,9 @@ credentials, payments, personal data, or permissions; least-privilege access
 and an audit trail; data and logs kept only as long as needed; legal duties
 met; dependencies kept current; workflow success measured and traces of
 critical workflows; targets tracked and alerts that fire, are quiet, and say
-what to do; the feature flag removed, rollback tried, and rebuildable from
-scratch; GA bugs fixed before new work, a known support response, an owner for
-the long term, and incident reviews; supported platforms listed and the
-accessibility standard met; complete user, reference, and operations
+what to do; rollback tried and rebuildable from scratch; GA bugs fixed before
+new work, a known support response, an owner for the long term, and incident
+reviews; supported platforms listed and the accessibility standard met; complete user, reference, and operations
 documentation; changeable without the author; and public interfaces documented
 as stable.
 

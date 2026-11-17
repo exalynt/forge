@@ -65,7 +65,10 @@ doesn't lower the bar: whatever you review is judged by the full level.
 
 Some items can't be seen in the repository, such as the client's agreement or
 feedback, or an alert known to fire. Don't fail them for lack of evidence:
-list them under NOT REVIEWED for the caller to confirm.
+list them under NOT REVIEWED for the caller to confirm. Team practices, such as
+an owner, where bugs are reported, and review by another engineer, are the
+exception: the checklist takes them as met unless something says otherwise,
+so leave them out of the report.
 
 At every effort, check the security and privacy baseline on everything you
 review.

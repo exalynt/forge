@@ -33,7 +33,7 @@ automatically on every change, errors visible and logged with context, input
 validated where it enters, usable with today's real data and use, dependencies
 no less stable than itself, settings kept out of code, an owner and somewhere
 to report bugs, conventions and automated checks followed, and reviewed by
-another engineer.
+another engineer where the team has one.
 
 Here, the automated checks are the testing rule's Alpha suites, an end-to-end
 test of each endpoint's happy path and acceptance tests for the core business
