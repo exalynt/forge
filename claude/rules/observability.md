@@ -128,21 +128,41 @@ than adding spans by hand at each call site.
 ## Metrics
 
 Instrumentation libraries already cover infrastructure metrics such as request
-latency, database pools, and runtime. Hand-written metrics are about the
-domain: sign-ups, sign-ins, payments, bookings, jobs processed. Record each
-where its outcome is known, usually the service layer, and only once.
+latency, database pools, and runtime. Hand-written metrics cover two things:
+business events and outcomes, such as sign-ups, payments, bookings, and members
+leaving a team, and technical measurements the libraries can't know about,
+such as job durations. Record each where its outcome is known, usually the
+service layer, and only once.
 
 - Pick the instrument by what's measured: a **Counter** for things that happen
   (sign-ups), a **Histogram** for distributions (payment amounts, job
   durations), an **UpDownCounter** or **Gauge** for current values (active
   sessions, queue depth).
-- Name with dot-separated lowercase namespaces, such as `auth.sign_ins` or
-  `billing.payment.amount`. Put the unit in the instrument's unit (`s`, `By`,
-  `{payment}`), not the name, and don't add `_total`. Record money in minor
-  units, split by a `currency` attribute.
+- Count what happened in business terms, not every create, update, and
+  delete. `team.member.unassigned` answers a question someone will ask;
+  `team.changed`, `team.updated`, or a bare `changes` doesn't. Sometimes the
+  CRUD operation is the business event, as with `account.deleted`, and then
+  its name is the right one.
+- Name a counter `<thing>.<action>`: what it happened to, then what happened,
+  as a past-tense verb, such as `invoice.sent` or `appointment.booked`. When
+  the action is on a part of the thing, add a segment for each part, as many
+  as needed: `team.member.unassigned`, `order.line_item.refunded`. A field
+  isn't a part, so name the action instead: `team.member.promoted`, not
+  `team.member.role.changed`.
+- Names are lowercase, with dots between segments and snake_case within one:
+  `purchase_order.approved`, `sign_in.attempted`.
+- When an action can succeed or fail, count the attempt and split it by an
+  `outcome` attribute, such as `payment.attempted`, rather than one metric per
+  outcome.
+- Histograms and gauges measure something rather than count it, so they're
+  named `<thing>.<measurement>`: `payment.amount`, `job.duration`,
+  `queue.depth`.
+- Put the unit in the instrument's unit (`s`, `By`, `{payment}`), not the
+  name, and don't add `_total`. Record money in minor units, split by a
+  `currency` attribute.
 - Choose attributes by the questions the metric should answer. "How many
-  sign-ins failed this week, and why?" means `auth.sign_ins` with `outcome`,
-  `reason`, and `method`.
+  sign-ins failed this week, and why?" means `sign_in.attempted` with
+  `outcome`, `reason`, and `method`.
 - Every attribute has a small, fixed set of values, tens rather than
   thousands, and their combinations stay small too. Good ones are `outcome`
   (`success`/`failure`), a failure reason as an enum (`invalid_password`,
@@ -153,8 +173,9 @@ where its outcome is known, usually the service layer, and only once.
 
 | Metric                   | Instrument | Unit           | Attributes                        |
 | ------------------------ | ---------- | -------------- | --------------------------------- |
-| `auth.sign_ups`          | Counter    | `{sign_up}`    | `method`, `plan`                  |
-| `auth.sign_ins`          | Counter    | `{sign_in}`    | `method`, `outcome`, `reason`     |
-| `billing.payments`       | Counter    | `{payment}`    | `provider`, `currency`, `outcome` |
-| `billing.payment.amount` | Histogram  | `{minor_unit}` | `provider`, `currency`            |
-| `jobs.duration`          | Histogram  | `s`            | `job` (its name), `outcome`       |
+| `user.signed_up`         | Counter    | `{user}`       | `method`, `plan`                  |
+| `sign_in.attempted`      | Counter    | `{sign_in}`    | `method`, `outcome`, `reason`     |
+| `team.member.unassigned` | Counter    | `{member}`     | `role`, `reason`                  |
+| `payment.attempted`      | Counter    | `{payment}`    | `provider`, `currency`, `outcome` |
+| `payment.amount`         | Histogram  | `{minor_unit}` | `provider`, `currency`            |
+| `job.duration`           | Histogram  | `s`            | `job` (its name), `outcome`       |
