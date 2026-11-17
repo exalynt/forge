@@ -99,6 +99,42 @@ than adding spans by hand at each call site.
 
 - Structured key-value logs, not formatted strings, through the language's
   standard logger bridged to OTel.
+- The message says what happened, in a few words that are the same every time
+  it happens: `team member unassigned`, `payment capture failed`,
+  `job run finished`. Everything about this particular occurrence goes in
+  attributes, not the message: which records it involved (by ID), who did it,
+  the reason, counts, durations, and the error. A fixed message can be
+  searched and counted, and each attribute can be filtered on its own.
+- Name attributes like trace attributes, with OTel's conventions where one
+  fits and a domain namespace otherwise (`team.id`, `payment.provider`). The
+  error goes in an `error` attribute, not appended to the message.
+
+  ```go
+  // Wrong: the details are baked into the message, so no two lines match.
+  logger.InfoContext(ctx, fmt.Sprintf("unassigned member %s from team %s: %s",
+      memberID, teamID, reason))
+  logger.ErrorContext(ctx, "payment capture failed for "+paymentID+": "+
+      err.Error())
+
+  // Right: a fixed message, with the specifics and context as attributes.
+  logger.InfoContext(ctx, "team member unassigned",
+      "team.id", teamID,
+      "team.member.id", memberID,
+      "actor.id", actorID,
+      "reason", reason,
+  )
+  logger.ErrorContext(ctx, "payment capture failed",
+      "payment.id", paymentID,
+      "payment.provider", provider,
+      "payment.attempt", attempt,
+      "error", err,
+  )
+  ```
+
+  Other languages' structured loggers take the same shape:
+  `logger.info("team member unassigned", extra={"team.id": team_id})` in
+  Python, `logger.info({ "team.id": teamId }, "team member unassigned")` with
+  pino.
 - Every log written while handling a request or job carries `trace_id` and
   `span_id`, so it can be joined to its trace. Log with the active context
   (`logger.InfoContext(ctx, ...)` in Go) so the bridge can add them. If the
