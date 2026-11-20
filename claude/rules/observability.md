@@ -7,11 +7,14 @@ paths:
 
 How to add traces, logs, and metrics, in any language or framework. How much
 to add is the feature's stability level's call (the `stability` skill's
-checklist, "Logs, traces, and metrics"): Prototype adds none beyond what the
-experiment needs, Alpha logs errors with context, Beta adds logs correlated by
-request or job, error tracking, and metrics on key operations, and GA adds
-workflow success metrics and traces of the critical workflows. Whatever is
-added follows this.
+checklist, Observability): at Prototype, console output is enough; at Alpha,
+someone looking can see what went wrong, such as error logs with the operation,
+the IDs it was working on, and a request or run ID; at Beta, whoever runs it
+can tell it's healthy and hears about errors without searching, such as through
+metrics on key operations and an error tracker; and at GA, they find out about
+failures that matter before users report them, such as through alerts on
+agreed targets, measured workflow success, and traces of critical workflows
+that span more than one service. Whatever is added follows this.
 
 ## OpenTelemetry is the standard
 

@@ -6,39 +6,23 @@ over.
 
 ## What people can expect
 
-- **Changes**: rare. When one is needed, we aim to announce it well ahead, with
-  a deprecation window.
+- **Changes**: rare, announced well ahead, with a deprecation window.
 - **Bugs**: rare, and fixed first.
 - **Data**: kept, and recoverable after a loss.
 - **People using it**: depend on it, including for business-critical work.
-- **Engineers building on it**: build on it. Its interfaces are stable, and
-  changes come with notice and time to move.
+- **Engineers building on it**: build on it. Its interfaces are stable.
 
 ## Purpose
 
-People are allowed to depend on this feature. GA is a commitment to
-reliability, compatibility, maintainability, and long-term operation.
-
-> We are intentionally allowing people to depend on this and will engineer and
-> operate it accordingly.
+We're intentionally letting people depend on this, and will engineer and
+operate it accordingly: reliability, compatibility, maintainability, and
+long-term operation.
 
 ## Expected
 
-Everything in [checklist.md](checklist.md). In short, on top of Beta's: shown
-to meet its success in real use; critical workflows checked end to end, a
-regression check for every fixed bug, and no untracked flaky or skipped
-checks; concurrency, partial failures, and safe repeats handled; data changes
-tried at production size, and recovery tried; measured performance targets,
-headroom at peak, and a known running cost; a security review where it handles
-credentials, payments, personal data, or permissions; least-privilege access
-and an audit trail; data and logs kept only as long as needed; legal duties
-met; dependencies kept current; workflow success measured and traces of
-critical workflows; targets tracked and alerts that fire, are quiet, and say
-what to do; rollback tried and rebuildable from scratch; GA bugs fixed before
-new work, a known support response, an owner for the long term, and incident
-reviews; supported platforms listed and the accessibility standard met; complete user, reference, and operations
-documentation; changeable without the author; and public interfaces documented
-as stable.
+Every outcome in [checklist.md](checklist.md) that applies. Some often don't,
+such as an availability target for software on people's own devices, or alerts
+for a library. Say why.
 
 Here: the testing rule's GA expectations, and the engineering docs the
 `engineering-docs` skill's level table names for GA, complete enough for an
@@ -46,42 +30,24 @@ operator who didn't build it.
 
 ## Changing it
 
-Breaking changes are rare and planned. Never make one in place. If a request
-seems to need one, clarify the direction with the user first, and propose a new
-version:
+Never make a breaking change in place. If a request seems to need one, clarify
+the direction with the user, and propose a new version:
 
-1. **The change ships as a new version** alongside the current one: a new API
-   version (such as `/v2`), a new major version of a library, or a new workflow
-   next to the old one behind a flag or setting.
+1. **It ships as a new version** alongside the current one: a new API version
+   (such as `/v2`), a new major version, or a new workflow next to the old one.
 2. **The new version has its own level**, usually Alpha or Beta, with its own
-   capability doc, while the current version stays GA and fixes to it are GA
-   work.
+   capability doc. The current one stays GA, and fixes to it are GA work.
 3. **The current version keeps working** through a deprecation window agreed
-   with the client, with notice and a migration path, before it's retired.
+   with the client, with notice and a migration path.
 
-Changes that don't break anything, such as new features, new optional fields,
-and bug fixes, ship without a new version.
-
-## GA keeps improving
-
-GA doesn't mean finished:
-
-- **Small changes target GA directly.** A new option on a stable feature, or a
-  fix, doesn't start over at Prototype.
-- **New capabilities start at their own level.** A new capability in a GA
-  feature can start as a Prototype or Alpha, opt-in, and move up on its own
-  schedule, kept from putting the rest of the feature at risk.
-- **Known gaps get closed** in later iterations. An accepted tradeoff can be
-  revisited when needs change.
-
-GA rarely moves down. A change that would break it becomes a new version
-instead.
+Non-breaking changes, such as new features, optional fields, and bug fixes,
+ship without a new version. Small changes target GA directly. A new capability
+can start at Prototype or Alpha, opt-in, without putting the rest at risk.
 
 ## What GA is not
 
-Stability isn't perfection. GA software still has bugs, and it can still have
-known gaps, either to close later or accepted as tradeoffs, as long as they're
-written down where people can see them. It does not mean every conceivable
-edge case is handled, and it does not license speculative extensibility or
-scale beyond what real dependence requires. The ceiling still applies: invest
-in what the commitment demands, not in everything imaginable.
+Not perfection: GA still has bugs and written-down known gaps. It doesn't mean
+every edge case is handled, or license speculative extensibility or scale. GA
+has overengineering too, such as tighter targets than agreed, round-the-clock
+on-call for work nobody needs out of hours, or a penetration test neither the
+risk nor the client's duties call for. `checklist/<quality>.md` has more.

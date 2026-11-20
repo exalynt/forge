@@ -168,8 +168,9 @@ Test each case at the lowest level that can prove it, and only once:
 
 ## By stability level
 
-- **Prototype**: no automated tests. The primary demo path works when
-  exercised by hand.
+- **Prototype**: no automated tests, unless they're the quickest way to try
+  the idea, or the security baseline needs one, such as a test that tenants
+  stay apart. The primary demo path works when exercised by hand.
 - **Alpha**: an end-to-end test of each endpoint's happy path, and acceptance
   tests for the core business rules, the primary workflow included. That's
   all Alpha needs.

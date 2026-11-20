@@ -64,7 +64,7 @@ Technical gaps due at <target>:
 - <gap> (<doc>): close it | give it a later Until | move it to Tradeoffs
 
 Proposed as known gaps instead:
-- <unmet item>: close later | accepted tradeoff, and why
+- <unmet outcome>: close later | accepted tradeoff, and why
 
 Known gaps that remain acceptable at <target>:
 - <gap>, from the capability doc or the engineering docs

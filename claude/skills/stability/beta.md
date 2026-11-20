@@ -11,33 +11,17 @@ always.
 - **Data**: kept across changes.
 - **People using it**: use it for real work, with a fallback for anything
   critical.
-- **Engineers building on it**: build on it, and watch for changes. We aim to
-  announce them ahead of time.
+- **Engineers building on it**: build on it, and watch for changes.
 
 ## Purpose
 
-The client agrees the feature's shape has settled, and people use it for real
-work. Now invest in hardening the edges and operating it responsibly: keep
-their data, handle the edge cases, see what it's doing in production, and be
-able to roll it back.
-
-> The feature's shape is proven enough that hardening it is now worth the
-> investment.
+The client agrees the shape has settled, and people use it for real work. Now
+hardening is worth the investment: keep their data, handle the edges, see what
+it's doing in production, and be able to undo a bad release.
 
 ## Expected
 
-The items marked Prototype, Alpha, and Beta in [checklist.md](checklist.md).
-In short, on top of Alpha's: success agreed with the client; edge cases and
-error paths checked and handled; data kept across changes, through migrations
-that apply the same everywhere and can be undone; tried at realistic volumes
-with bounded work; personal data exportable and deletable; protected against
-misuse; legal duties known; reproducible builds with vulnerability scanning;
-timeouts on external calls; correlated logs, an error tracker, and metrics on
-key operations; automated health checks and a dashboard; released through the
-normal pipeline and can be rolled back; bugs triaged and shared; waiting,
-empty, and error states handled; usable by everyone it's meant for; how it's
-put together documented; release notes; earlier shortcuts removed or tracked;
-and a clear public interface.
+The Prototype, Alpha, and Beta outcomes in [checklist.md](checklist.md).
 
 Here: the testing rule's Beta suites (acceptance tests for the edge-case
 business rules, unit and integration tests where useful) and the stack's CI
@@ -48,26 +32,21 @@ skill's level table names for Beta.
 ## Ready for GA when
 
 It has held up in real use, and we're highly confident it solves the right
-problem in the right way. The client has tried it along the way, so it doesn't
-go past Beta on a guess.
+problem in the right way.
 
 ## Changing it
 
 Prefer non-breaking changes. Make a breaking change only when the user directs
-it, keep it to a minimum, and aim to announce it to the people using the
-feature ahead of time, with how to move to the new behavior. That's the goal,
-not a promise: Beta tells people breaking changes are announced ahead of time
-when we can, so don't claim more than that in release notes or copy.
+it, keep it to a minimum, and aim to announce it ahead of time, with how to
+move. That's a goal, not a promise, so don't claim more in release notes or
+copy.
 
 ## Still avoid
 
-GA's work can wait until the feature is headed there: alerts, latency and
-availability targets, traces of critical workflows, tested restores and
-rollbacks, runbooks, a security review, least-privilege access and audit
-trails, concurrency and partial-failure handling, versioning and deprecation
-windows, and support outside working hours.
-
-Beta is not an excuse to implement hypothetical enterprise requirements. Avoid
-complexity not tied to real usage: scale beyond realistic projections,
-resilience for failure modes that can't plausibly occur, and configurability
-nobody needs.
+GA's outcomes can usually wait until it's headed there, such as alerts against
+targets, runbooks, tested restores, load tests at peak, a security review, an
+audit log, and deprecation windows. A client's requirement, a law, or a real
+incident can bring one forward. Beta isn't an excuse for hypothetical
+enterprise requirements: scale beyond realistic projections, resilience for
+failures that can't plausibly happen, or configurability nobody needs.
+`checklist/<quality>.md` has more.

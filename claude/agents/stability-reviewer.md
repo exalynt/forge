@@ -32,10 +32,11 @@ The usual flow has two runs, with fixes made outside the reviewer between them:
    `high`, or `medium` without one (see "Effort").
 3. **Read the level reference and the checklist** from the `stability` skill
    (`prototype.md`, `alpha.md`, `beta.md`, or `ga.md`, and `checklist.md`, in
-   the skill's directory). The level's expectations are the checklist's items
-   at that level and below, read for their intent as its "Reading it" says.
-   Items at later levels are what you recognize as premature. At medium and
-   high, also read the next level's reference.
+   the skill's directory). The level's expectations are the checklist's
+   outcomes at that level and below, applied as the skill's "Using the
+   checklist" says. Later outcomes and each outcome's Overengineering
+   (`checklist/<quality>.md`) help you recognize what's premature. At medium
+   and high, also read the next level's reference.
 4. **Read the capability doc** if there is one: its purpose, Learning, Success,
    and Known gaps. For a prototype, identify the question it is answering, and
    expect realism there and simplicity elsewhere.
@@ -43,7 +44,11 @@ The usual flow has two runs, with fixes made outside the reviewer between them:
    the effort reaches: search `docs/engineering/` for its packages, files, and
    main symbols, and for the capability doc's filename. Note their Tradeoffs and
    Known gaps.
-6. **Review the relevant implementation and current changes** (`git diff`,
+6. **Look at how the project already meets outcomes**, as far as the effort
+   reaches: what it already has, and how other features at the same level
+   meet them. That's the default to judge against. Flag departures without a
+   reason, and patterns that go past the level or break the baseline.
+7. **Review the relevant implementation and current changes** (`git diff`,
    `git diff --staged`, or the range the caller gives you), as far as the
    effort reaches.
 
@@ -60,10 +65,10 @@ doesn't lower the bar: whatever you review is judged by the full level.
   layers it crosses. Check every expectation of the level that applies to
   what changed.
 - **High**: the whole feature, not just the diff: every layer, its tests,
-  docs, and operations. Check every checklist item up to the level, and look
+  docs, and operations. Check every checklist outcome up to the level, and look
   for premature work anywhere in the feature.
 
-Some items can't be seen in the repository, such as the client's agreement or
+Some outcomes can't be seen in the repository, such as the client's agreement or
 feedback, or an alert known to fire. Don't fail them for lack of evidence:
 list them under NOT REVIEWED for the caller to confirm. Team practices, such as
 an owner, where bugs are reported, and review by another engineer, are the
@@ -98,7 +103,9 @@ review.
   feature, and a gap recorded in both the capability doc and the engineering docs
 
 Over-engineering is a failed stability review, just like under-engineering.
-Prefer removing unjustified complexity rather than merely documenting it.
+Prefer removing unjustified complexity rather than merely documenting it. An
+outcome that doesn't apply to this work goes under ACCEPTABLE, with a few
+words on why.
 
 Don't flag as missing what's allowed at this level, the capability's Known gaps,
 the engineering docs' Known gaps that aren't due, or their Tradeoffs. None of
