@@ -109,8 +109,9 @@ skill with `--stack`. `go-http` covers Go HTTP API projects: preferred
 packages, layers and boundaries, repositories, service errors, REST API
 design, pagination, health checks, configuration, tests, and CI. `react` covers React + MUI frontends:
 page and component layout, reusing MUI and existing components, mobile
-responsiveness, light and dark mode, services for external APIs and SDKs, and
-CI. Each stack's `SKILL.md` indexes its `references/`, and lists the files it
+responsiveness, light and dark mode, accessibility, services for external
+APIs and SDKs, loading states and fetching data, lists with search, filters,
+sorting, and pagination, forms, and CI. Each stack's `SKILL.md` indexes its `references/`, and lists the files it
 applies to, which Claude Code and Cursor use to load it when you work on them.
 
 Project-specific architecture and domain rules don't belong here. Keep them in

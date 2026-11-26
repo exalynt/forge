@@ -27,6 +27,11 @@ src/
 - When a screen has several components of its own, give it a directory:
   `src/pages/<page>/List/List.tsx`, with its components in
   `src/pages/<page>/List/components/`.
+- Each page renders inside an error boundary, so a page that crashes shows an
+  error with a way to reload or go back, and the app's navigation keeps
+  working. Use the router's error handling where it has some, otherwise one
+  boundary component in `src/components/`. This applies at every stability
+  level.
 
 ## Where a component lives
 

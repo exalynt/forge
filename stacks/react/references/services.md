@@ -21,6 +21,11 @@ otherwise: the Acme API, Stripe, and so on. Each one gets a directory under
   `rescheduleAppointment`. Add a function when a page needs it, not before.
 - Each module declares the TypeScript types for its resource and requests,
   mirroring the service's shapes.
+- Each function takes an optional `AbortSignal` and passes it on to the
+  request, so callers can cancel it (see the data reference).
+- A list function takes the search, filters, sort, and page in the app's own
+  terms, and turns them into whatever the service takes (see the lists
+  reference).
 
 ## Shared plumbing
 
