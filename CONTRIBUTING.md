@@ -70,8 +70,8 @@ there reaches every project on its next `forge update`.
   that language or stack. Rules for one project's architecture or domain
   belong in that project's own instructions.
 - **Respect the project's intention.** Skills never decide what the software
-  should do, or how stable it should be. With Docket they read it from
-  Docket's docs, and without it they ask the user. `kit/AGENTS.md`, under
+  should do, or how stable it should be. With Docqet they read it from
+  Docqet's docs, and without it they ask the user. `kit/AGENTS.md`, under
   "Where intention lives", defines both modes, and every skill follows it.
 
 ## Changing the command

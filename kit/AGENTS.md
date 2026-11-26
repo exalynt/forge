@@ -73,24 +73,24 @@ A capability is one result of value, and the thing that carries a stability
 level: draft, prototype, alpha, beta, or ga. A feature is a group of
 capabilities.
 
-**With Docket**, when there's a `docket.yaml` at the working directory or
-above it, within the repository: the Docket kit, its block in this file and
-its `docket` skill, is the authority on each capability's level, its business
+**With Docqet**, when there's a `docqet.yaml` at the working directory or
+above it, within the repository: the Docqet kit, its block in this file and
+its `docqet` skill, is the authority on each capability's level, its business
 rules, the personas it serves, its gaps, tradeoffs, and open decisions, and
-what each level expects (`docket rubric`). Read them with `docket touches`,
-`docket show`, and `docket list`. Forge's skills record intention only the
+what each level expects (`docqet rubric`). Read them with `docqet touches`,
+`docqet show`, and `docqet list`. Forge's skills record intention only the
 kit's way, and only after a person confirms it.
 
-**Without Docket**: a capability's level is whatever the user says. Ask only
+**Without Docqet**: a capability's level is whatever the user says. Ask only
 when the answer changes the work. Nothing about intention is recorded: no
 levels, rules, personas, or gaps written anywhere. The only record is the code
 and tests the user approves. The `stability-review` and `promote` skills need
-Docket, and say so.
+Docqet, and say so.
 
 ### Precedence
 
-On intention, Docket's instructions win over forge's. This project's own
-instructions win over both, except for Docket's rule that nothing an agent
+On intention, Docqet's instructions win over forge's. This project's own
+instructions win over both, except for Docqet's rule that nothing an agent
 infers counts as declared until a person confirms it. Project-specific
 architecture and domain rules belong in the project's own instructions,
 outside this block.
@@ -123,9 +123,9 @@ when someone asks for it by name ("use implement", "/implement"). The ones marke
   friction.
 - `use` (on request): usability test a flow with one player per person.
 - `stability-review`: review work against a level, for what's missing and
-  what's premature. Needs Docket.
+  what's premature. Needs Docqet.
 - `promote` (on request): move a capability to a higher level, doing only the
-  delta. Needs Docket.
+  delta. Needs Docqet.
 - `standards`: conventions for every project, whenever you write or change
   code, APIs, schemas, CI, or UI.
 - `testing`: how we write and organize tests, whenever you write or change

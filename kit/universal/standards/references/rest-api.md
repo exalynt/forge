@@ -52,7 +52,7 @@ never the body. See [pagination.md](pagination.md).
 ## Changing endpoints
 
 How to change an endpoint depends on the stability level of the capabilities
-it serves: from Docket when the repo has it, otherwise the level the user
+it serves: from Docqet when the repo has it, otherwise the level the user
 gave. The strictest of them applies.
 
 - **Prototype and Alpha**: change, rename, or remove endpoints and fields in

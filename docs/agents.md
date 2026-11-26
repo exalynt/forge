@@ -38,8 +38,8 @@ unbalanced, forge stops and changes nothing.
 
 Forge changes only what's its own: its block, the `@AGENTS.md` line when it
 added it, and the skill folders it installed, which it makes match the binary
-exactly. It never touches another skill, such as `docket`, or another block,
-such as Docket's. If a skill folder with one of forge's names is already in a
+exactly. It never touches another skill, such as `docqet`, or another block,
+such as Docqet's. If a skill folder with one of forge's names is already in a
 target and forge didn't install it, forge stops rather than overwrite it.
 Copies an earlier forge left in `.claude/skills/`, from before the `claude`
 target, are removed, while a project's own skill of the same name stays.

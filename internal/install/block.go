@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// The markers around forge's block. Docket's kit has its own, which forge
+// The markers around forge's block. Docqet's kit has its own, which forge
 // never touches.
 const (
 	blockStart = "<!-- forge:start -->"

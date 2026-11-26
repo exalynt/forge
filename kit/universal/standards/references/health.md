@@ -6,7 +6,7 @@ instructions differ, follow the project.
 
 ## When
 
-Add the health endpoints once a capability's level expects them (Docket's
+Add the health endpoints once a capability's level expects them (Docqet's
 rubric, when the repo has it).
 
 Before then, add them when something needs them, such as a platform or

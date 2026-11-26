@@ -46,5 +46,5 @@ covers. Read the reference for what you're about to change, from this skill's
 | [observability](../observability/SKILL.md)         | Adding traces, logs, or metrics                                                |
 
 These say how to build. How much a capability needs, such as which tests,
-health endpoints, or CI jobs, is what its stability level expects (Docket's
+health endpoints, or CI jobs, is what its stability level expects (Docqet's
 rubric, when the repo has it; see forge's block, "Where intention lives").

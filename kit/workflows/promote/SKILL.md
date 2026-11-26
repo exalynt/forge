@@ -1,6 +1,6 @@
 ---
 name: promote
-description: Deliberately promote a capability to a higher stability level (prototype, alpha, beta, ga) in a repository that has Docket, implementing only the delta the target level requires and recording the new level last.
+description: Deliberately promote a capability to a higher stability level (prototype, alpha, beta, ga) in a repository that has Docqet, implementing only the delta the target level requires and recording the new level last.
 disable-model-invocation: true
 ---
 
@@ -15,15 +15,15 @@ level, and may name an effort, for example "promote room-booking to alpha" or
 Promotion increases engineering investment only enough to satisfy the next
 deliberate commitment. It happens only when a person asks for it.
 
-## Needs Docket
+## Needs Docqet
 
-A capability's level, and what each level expects, live in Docket (see
-forge's `AGENTS.md`, "Where intention lives"). Look for a `docket.yaml` at the
+A capability's level, and what each level expects, live in Docqet (see
+forge's `AGENTS.md`, "Where intention lives"). Look for a `docqet.yaml` at the
 working directory or above it, within the repository. If there isn't one,
-stop and say promotion needs Docket: the repository can adopt it with
-`docket init` and `docket kit`.
+stop and say promotion needs Docqet: the repository can adopt it with
+`docqet init` and `docqet kit`.
 
-The `docket` skill's stability reference, "Promoting a capability", is the
+The `docqet` skill's stability reference, "Promoting a capability", is the
 procedure. Follow it. This skill adds forge's review, the shape of the delta,
 and its approvals around those steps, and doesn't restate them.
 
@@ -44,11 +44,11 @@ said they have, note it in the delta.
 Run the `stability-review` skill, in a subagent if your agent can run one,
 otherwise yourself. Give it the capability, the current level, the effort,
 and tell it to review against the **target** level, using
-`docket rubric --for capability:<id> --to <target>`. At low effort, a
+`docqet rubric --for capability:<id> --to <target>`. At low effort, a
 smaller, cheaper model is fine for it, if your agent lets you choose. Its
 REQUIRED NOW findings are what the target requires. Its UNNECESSARY NOW
 findings exceed even the target. The gaps on the components and mechanisms the
-capability relies on, which the rubric's `--for` output and `docket touches`
+capability relies on, which the rubric's `--for` output and `docqet touches`
 show, are part of the delta when they affect an outcome the target expects.
 
 ## 3. Present the delta
@@ -71,7 +71,7 @@ What we are intentionally NOT doing yet:
 - <tempting work that belongs to a later level, or is speculative>
 
 Gaps that remain acceptable at <target>:
-- <gap already written in Docket>
+- <gap already written in Docqet>
 ```
 
 The rubric is a guideline, not a gate. Each REQUIRED NOW finding is either in
@@ -119,11 +119,11 @@ expects. Show its NOT REVIEWED list and ask before recording the new level.
 
 Only when the verification passes for the target: record the agreed gaps the
 kit's way, then change the capability's `stability` last, and finish as the
-`docket` skill's "Before you finish" describes. If it doesn't pass, leave the
+`docqet` skill's "Before you finish" describes. If it doesn't pass, leave the
 level unchanged.
 
 ## 7. Report
 
 Finish with the same format as step 3, reflecting what was actually done. Add
-the checks you ran with their results, the Docket section from `docket diff`,
+the checks you ran with their results, the Docqet section from `docqet diff`,
 and, if the promotion is incomplete, what is still outstanding.

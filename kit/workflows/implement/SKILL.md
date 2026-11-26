@@ -59,12 +59,12 @@ This only reads, so do it before creating anything.
 Find the capabilities the task touches and each one's current level, as
 forge's `AGENTS.md` "Where intention lives" says:
 
-- **With Docket**: run `docket touches` on the files and folders you expect to
+- **With Docqet**: run `docqet touches` on the files and folders you expect to
   change. It lists the capabilities involved, each one's level, its rules,
   gaps, tradeoffs, and open decisions. When the task is described in product
-  terms, find its capabilities with `docket list capabilities` first. Read
-  each one with `docket show`. Follow the `docket` skill's "Before a change".
-- **Without Docket**: the level is the one the user gave. If they gave none
+  terms, find its capabilities with `docqet list capabilities` first. Read
+  each one with `docqet show`. Follow the `docqet` skill's "Before a change".
+- **Without Docqet**: the level is the one the user gave. If they gave none
   and the answer would change the work, ask. Otherwise go on without one.
 
 Tell the user which level you found for each capability and where it came
@@ -75,20 +75,20 @@ from. Then compare the target against each one:
 - **Above the current level**: this moves the capability up. Confirm that's
   intended. If it is, do the work in step 5 as `../promote/SKILL.md` (from
   this skill's directory) describes: only the delta, then a second review,
-  then recording the new level. Promotion needs Docket. Without it there's no
+  then recording the new level. Promotion needs Docqet. Without it there's no
   recorded level to move: do the work at the level the user gave.
 - **Below the current level**: changes to an existing capability have to hold
   up to its level, so work on a GA capability is GA work. The exception is a
   task that creates a new capability, or a new version of a GA one, which gets
-  its own level. Ask which this is. With Docket, a new capability is written
-  the `docket` skill's way, at the level the user gives. Otherwise use the
+  its own level. Ask which this is. With Docqet, a new capability is written
+  the `docqet` skill's way, at the level the user gives. Otherwise use the
   current level.
 - **Shared code at a stricter level**, such as a table, endpoint, or
   component other capabilities use: the whole change is held to the highest
   level it touches. Say so, and offer to split the change if that's easy.
 
-With Docket, read what the target level expects before planning the work,
-with `docket rubric --level <level>`, and the next level's, so you can
+With Docqet, read what the target level expects before planning the work,
+with `docqet rubric --level <level>`, and the next level's, so you can
 recognize work that belongs later.
 
 ## 2. Read the repository
@@ -154,21 +154,21 @@ nothing else.
 
 ## 5. Do the work
 
-With Docket, before changing code, read the components and mechanisms
-`docket touches` names for it, with `docket show`, including another
+With Docqet, before changing code, read the components and mechanisms
+`docqet touches` names for it, with `docqet show`, including another
 project's when the product spans several. Work with their tradeoffs, and the
-code their `docket:tradeoff` comments mark. If the task means undoing one, say
-so. Without Docket, nothing like this is written down: read the code.
+code their `docqet:tradeoff` comments mark. If the task means undoing one, say
+so. Without Docqet, nothing like this is written down: read the code.
 
 Do the task the way the project's instructions and forge's `AGENTS.md`
 describe, sized to the target level: meet what it expects, and leave out what
-first appears at a later level. With Docket, don't close the capability's gaps
+first appears at a later level. With Docqet, don't close the capability's gaps
 along the way unless that's the task, and keep its docs and annotations
-current in the same change, as the `docket` skill says. Ask when a decision is
+current in the same change, as the `docqet` skill says. Ask when a decision is
 the user's to make. A task that implements, changes, or clarifies a business
 rule adds or updates its acceptance tests, and a bug fix or performance work
 doesn't (see the `testing` skill). A library has no acceptance tests unless
-the user asks. Acceptance tests, and with Docket the rule docs they verify,
+the user asks. Acceptance tests, and with Docqet the rule docs they verify,
 need the user's explicit approval before you add, change, or remove any:
 propose them before writing them.
 
@@ -177,7 +177,7 @@ When the work is done:
 - Run the project's checks (lint, format, build, tests, as its `AGENTS.md` or
   other instructions list them) and fix what fails.
 - Except for a bug fix, review the change against the target level:
-  - **With Docket**, run the `stability-review` skill on this task's changes
+  - **With Docqet**, run the `stability-review` skill on this task's changes
     against the target level, at the effort the user asked for, or `medium`,
     in a subagent if your agent can run one, otherwise yourself. At low, a
     smaller, cheaper model is fine for it, if your agent lets you choose. In a
@@ -185,20 +185,20 @@ When the work is done:
     includes uncommitted work. Otherwise they're the uncommitted changes and
     new files this task made, not what step 2 found already there. Resolve
     its REQUIRED NOW and SECURITY/PRIVACY findings. A REQUIRED NOW finding
-    can instead be recorded as a gap the Docket kit's way, if the user agrees. Remove work this change
+    can instead be recorded as a gap the Docqet kit's way, if the user agrees. Remove work this change
     added that it flags UNNECESSARY NOW. Findings about code this change
     didn't touch go in the report, not in the change. For a move,
     `../promote/SKILL.md` already has this review.
-  - **Without Docket**, there's no level to review against. Check the change
+  - **Without Docqet**, there's no level to review against. Check the change
     yourself against the user's request, the security and privacy baseline,
     and forge's engineering philosophy, and remove what the request doesn't
     need.
 
 ## 6. Finish
 
-With Docket, finish the way the `docket` skill's "Before you finish"
-describes: `docket check --changed` clean for what you changed, `docket diff`,
-and a short Docket section in the report.
+With Docqet, finish the way the `docqet` skill's "Before you finish"
+describes: `docqet check --changed` clean for what you changed, `docqet diff`,
+and a short Docqet section in the report.
 
 **By default**, leave the changes uncommitted on the current branch. Report what
 changed, the checks and the stability review's outcome, and that nothing was

@@ -31,7 +31,7 @@ Where this project's own code or instructions differ, follow the project.
 ## Changing the schema
 
 How to change it depends on the stability level of the capabilities that use
-the tables involved: from Docket when the repo has it, otherwise the level the
+the tables involved: from Docqet when the repo has it, otherwise the level the
 user gave. The strictest of them applies.
 
 - **Prototype and Alpha**: take the quickest path. Editing an existing

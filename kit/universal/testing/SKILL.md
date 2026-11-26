@@ -14,7 +14,7 @@ skill's testing reference says which tools and directories a kind of project
 uses for each.
 
 This skill is how to test. How much testing a capability needs is what its
-stability level expects: `docket rubric` when the repository has Docket (see
+stability level expects: `docqet rubric` when the repository has Docqet (see
 forge's `AGENTS.md`, "Where intention lives").
 
 ## When to write tests
@@ -82,12 +82,12 @@ after 14 days", "only an organization's owner can remove a member".
 What an acceptance test answers to depends on where the repository keeps its
 intention (forge's `AGENTS.md`, "Where intention lives"):
 
-- **With Docket**, a business rule's source of truth is its Docket rule doc.
+- **With Docqet**, a business rule's source of truth is its Docqet rule doc.
   The acceptance test verifies it: the Gherkin `Rule:` that checks it carries
-  a `# docket:verifies rule:<id>@<domain>` annotation on the line above it, as
-  the `docket` skill's annotations describe. The rule doc and the test change
+  a `# docqet:verifies rule:<id>@<domain>` annotation on the line above it, as
+  the `docqet` skill's annotations describe. The rule doc and the test change
   together, and changing either needs a person's explicit approval.
-- **Without Docket**, a capability's acceptance tests are its specification:
+- **Without Docqet**, a capability's acceptance tests are its specification:
   the agreed statement of the software working as it should.
 
 Either way:
@@ -124,7 +124,7 @@ Acceptance tests follow the business rules, not the code:
 - Implementing a business rule, changing one, or clarifying one, whether the
   user answers a question or QA settles an ambiguity, means adding or updating
   its acceptance tests, with approval (below), wherever the capability's level
-  expects tests of that kind of rule. With Docket, the rule doc is written or
+  expects tests of that kind of rule. With Docqet, the rule doc is written or
   updated the kit's way in the same change. Without it, rules settled this way
   are recorded as acceptance tests, not only in docs or comments.
 - Bug fixes, performance work, refactors, and presentation changes don't
@@ -134,7 +134,7 @@ Acceptance tests follow the business rules, not the code:
 
 ### Changing them takes explicit approval
 
-Acceptance tests, and with Docket the rule docs they verify, state what the
+Acceptance tests, and with Docqet the rule docs they verify, state what the
 software must do, so they change only with the user's explicit approval,
 asked for and given for that change:
 
@@ -145,7 +145,7 @@ asked for and given for that change:
 - Changing a step definition in a way that changes what its scenarios check.
   Step definitions may follow the code through refactors without approval as
   long as every scenario still checks exactly what it says.
-- Adding, changing, or removing a `docket:verifies` annotation on a `Rule:`
+- Adding, changing, or removing a `docqet:verifies` annotation on a `Rule:`
   changes what the test claims, so it goes with the scenarios' approval.
 - When an acceptance test fails, the code is wrong until the user says the
   rule is. Fix the code, or ask. Never edit, skip, tag out, or delete an
@@ -161,8 +161,8 @@ files go.
 
 - One `.feature` file per feature or area of the domain. `Feature:` names it,
   a `Rule:` states each business rule, and the `Example:`s under a rule
-  illustrate it with concrete cases, edge cases included. With Docket, the
-  `Rule:` says the rule as its rule doc's name does, with the `docket:verifies`
+  illustrate it with concrete cases, edge cases included. With Docqet, the
+  `Rule:` says the rule as its rule doc's name does, with the `docqet:verifies`
   annotation above it.
 - Steps are declarative: `Given` the context, `When` the event, `Then` the
   outcome. Write "Given the room is booked from 9:00 to 10:00", not "Given I

@@ -16,11 +16,11 @@ Without a level, and unless the branch is a bug fix, use the one the
 `implement` skill settled earlier in this session, or the open pull request's
 `stability:` label. Failing those:
 
-- **With Docket** (see forge's `AGENTS.md`, "Where intention lives"), run
-  `docket touches --base origin/<default>` and use the strictest level among
+- **With Docqet** (see forge's `AGENTS.md`, "Where intention lives"), run
+  `docqet touches --base origin/<default>` and use the strictest level among
   the capabilities the branch touches. Tell the user which level that is and
   which capability it comes from.
-- **Without Docket**, ask the user for the level. If they don't want one, open
+- **Without Docqet**, ask the user for the level. If they don't want one, open
   the pull request without a stability label.
 
 Invoking this skill is the request to push the current branch and open, or
@@ -39,7 +39,7 @@ update, its pull request. Do this in the main session, without subagents.
 - See whether the branch already has a pull request:
   `gh pr view --json url,state,isDraft,labels`. If it's merged or closed,
   stop and ask. New work needs a new branch.
-- With Docket, if the `implement` skill didn't already settle the level,
+- With Docqet, if the `implement` skill didn't already settle the level,
   compare the level against the current level of the capabilities the
   branch touches, as `implement` step 1 (`../implement/SKILL.md`) describes.
   If it's above their current level without recording the move, or below it,
@@ -59,8 +59,8 @@ If there's nothing to commit and nothing unpushed, say so and stop.
 ## 3. Check
 
 Run the project's checks (lint, format, build, tests, as its `AGENTS.md` or
-other instructions list them) on what's committed. With Docket, also run
-`docket check --changed`. If they fail, fix the cause and commit the fix. If
+other instructions list them) on what's committed. With Docqet, also run
+`docqet check --changed`. If they fail, fix the cause and commit the fix. If
 you can't, stop and report. Don't push failing work unless the user says to,
 and then say so in the pull request.
 
@@ -117,7 +117,7 @@ what it restores. Without a level, leave the stability section out.
 Review as **<Level>**: <what the level expects, in a sentence>.
 
 - **Capabilities**: <each one the change touches>, currently <level>, per
-  <Docket | the user>. <"Moves <capability> to <level>." for a move.>
+  <Docqet | the user>. <"Moves <capability> to <level>." for a move.>
 - **Not expected at this level**: <work a reviewer might ask for that belongs
   to a later level, and which level>.
 
@@ -140,10 +140,10 @@ and what rolling back does.
 What was deliberately left out, if anything.
 ```
 
-With Docket, say what the level expects from `docket rubric --level <level>`,
+With Docqet, say what the level expects from `docqet rubric --level <level>`,
 mention the capability's gaps the change leaves in place under "Not expected
-at this level", and add a short Docket section from `docket diff`, with any
-`Docket-Became` trailers the `docket` skill asks for when the work will be
+at this level", and add a short Docqet section from `docqet diff`, with any
+`Docqet-Became` trailers the `docqet` skill asks for when the work will be
 squash-merged. Leave out other sections with nothing to say. Keep any pull
 request attribution your configuration asks for.
 

@@ -34,9 +34,9 @@ decides what happens next. This skill doesn't change code.
 - Find the flow from the user in this conversation and the project's docs:
   what it's for, who's involved, and what's true when it's finished.
 - Find the stability level of each capability it crosses, as forge's
-  `AGENTS.md` "Where intention lives" says. With Docket, read each with
-  `docket show capability:<id>`, including its gaps, tradeoffs, and open
-  decisions. Without Docket, use the levels the user gave, if any.
+  `AGENTS.md` "Where intention lives" says. With Docqet, read each with
+  `docqet show capability:<id>`, including its gaps, tradeoffs, and open
+  decisions. Without Docqet, use the levels the user gave, if any.
 - Find what the test needs: each app's URL, test accounts and how they're
   seeded, and test modes for payments and other external services. Code and
   seeders are fine for this. You're the facilitator, and they never reach the
@@ -44,17 +44,17 @@ decides what happens next. This skill doesn't change code.
 
 ## 2. Define the people and the scenario
 
-Take the roles from the user's request, the project's docs, or, with Docket,
+Take the roles from the user's request, the project's docs, or, with Docqet,
 the personas the capabilities list. One browser per person, so no more people
 than you have browsers, and four at most. Then find each person:
 
-- **With Docket**, find their persona with `docket list personas` and read it
-  with `docket show persona:<id>`. If the user named a persona or role and
+- **With Docqet**, find their persona with `docqet list personas` and read it
+  with `docqet show persona:<id>`. If the user named a persona or role and
   exactly one matches, use it and say which. Otherwise ask, with all the
   missing roles in one round, offering the closest personas. A new persona is
-  proposed and written only as the `docket` skill describes, after the user
+  proposed and written only as the `docqet` skill describes, after the user
   confirms it.
-- **Without Docket**, the user describes each person, or confirms ones you
+- **Without Docqet**, the user describes each person, or confirms ones you
   draft from the project's docs. Nothing is saved.
 
 Never make up a persona without asking, or stretch one that doesn't fit.
@@ -65,7 +65,7 @@ Then write the scenario in the people's terms, with goals and no steps:
 Scenario: <name>
 Done when: <the observable end state, across everyone>
 
-<Name>, <role> (<persona:<id>, with Docket>)
+<Name>, <role> (<persona:<id>, with Docqet>)
   Goal: <what they need to get done, in their words>
   Knows: <beyond the persona: the other people in the scenario, this situation>
   Starts when: <what prompts them to begin>
@@ -95,7 +95,7 @@ seen.
 ### Rules for the whole test
 
 - Don't change project files, except to git-ignore the QA folder and, with
-  Docket, to write a persona the user confirmed.
+  Docqet, to write a persona the user confirmed.
 - The QA folder is `.playwright-mcp/` at the project root. Everything created
   goes there, and the file names include the folder, such as
   `.playwright-mcp/use-<person>-<step>-1280.png`. A bare name lands in the
@@ -193,8 +193,8 @@ every screen worked. Then close each browser.
 
 ## Scale to the stability level
 
-Each step is judged by the level of the capability it's in, and with Docket
-by what that level expects, from `docket rubric --level <level>`:
+Each step is judged by the level of the capability it's in, and with Docqet
+by what that level expects, from `docqet rubric --level <level>`:
 
 - **Prototype**: only what the question it's exploring is about, from its
   description and open decisions. Rough edges elsewhere aren't findings.
@@ -203,7 +203,7 @@ by what that level expects, from `docket rubric --level <level>`:
 
 A step the flow needs that a gap, tradeoff, or decision on the capability
 already declares, or that isn't built yet at that level, isn't a finding.
-Without Docket or a level, every step the flow needs counts. Bypass it and list it under "Later". Everything else about
+Without Docqet or a level, every step the flow needs counts. Bypass it and list it under "Later". Everything else about
 getting the flow done counts at every level. Tenant isolation and leaked
 secrets are always a Blocker.
 
@@ -281,7 +281,7 @@ Open questions
 Q1. <question>. Options: A, B. Assumed: A.
 
 Later
-- <step>: <declared in Docket, or not built yet, at this level>
+- <step>: <declared in Docqet, or not built yet, at this level>
 
 Not tested
 - <what was handed over or bypassed, or skipped at this effort>

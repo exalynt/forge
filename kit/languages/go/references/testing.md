@@ -24,7 +24,7 @@ every level (see the `testing` skill):
 - Every acceptance test lives in `tests/acceptance/`, one Go package,
   whatever level proves it. The `.feature` files go in
   `tests/acceptance/features/`, one per feature or area of the domain. With
-  Docket, each `Rule:` carries its `docket:verifies` annotation, as the
+  Docqet, each `Rule:` carries its `docqet:verifies` annotation, as the
   `testing` skill describes.
 - One `TestAcceptance` function runs them all, in a test file with the
   `acceptance` build tag, through `godog.TestSuite` with `TestingT: t`. The

@@ -7,7 +7,7 @@ instructions differ, follow the project.
 ## When
 
 CI lives in `.github/workflows/ci.yml`. Add it once a capability's level
-expects CI (Docket's rubric, when the repo has it), and add each job once a
+expects CI (Docqet's rubric, when the repo has it), and add each job once a
 capability's level expects what it runs. Don't add jobs for tests no
 capability's level expects yet.
 

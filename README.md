@@ -26,8 +26,8 @@ Claude Code or "use implement" elsewhere.
 | `qa`               | QA a capability end to end against its business rules                             |
 | `ux`               | Try a main flow as a type of user and report where it's hard to use               |
 | `use`              | Usability test a flow, each person played separately in their own browser         |
-| `stability-review` | Review work against a capability's stability level (needs Docket)                 |
-| `promote`          | Move a capability up a stability level (needs Docket)                             |
+| `stability-review` | Review work against a capability's stability level (needs Docqet)                 |
+| `promote`          | Move a capability up a stability level (needs Docqet)                             |
 
 **Conventions** for how code is built, in layers: `standards`, `testing` and
 `observability` in every install, then the languages (`go`, `typescript`) and
@@ -72,18 +72,18 @@ Most agents need nothing more. Gemini CLI and Aider need a setting, and a few
 agents can't load skills themselves. See
 [docs/agents.md](docs/agents.md) for each agent and exactly what forge writes.
 
-## Forge and Docket
+## Forge and Docqet
 
 Forge says *how* to do the work. What the software is meant to do, and how
 stable each part needs to be, belongs to the project. Where a repository
-records that with [Docket](https://github.com/exalynt/docket) (it has a
-`docket.yaml`), forge's skills read each capability's stability level, rules
-and gaps from it, and record what you confirm the Docket way. Install Docket's
+records that with [Docqet](https://github.com/exalynt/docqet) (it has a
+`docqet.yaml`), forge's skills read each capability's stability level, rules
+and gaps from it, and record what you confirm the Docqet way. Install Docqet's
 kit alongside forge's; neither touches the other.
 
-Without Docket, the skills take the level and rules from you and record
+Without Docqet, the skills take the level and rules from you and record
 nothing beyond the code and tests you approve. `stability-review` and
-`promote` need Docket and say so without it.
+`promote` need Docqet and say so without it.
 
 ## Browser tools
 
