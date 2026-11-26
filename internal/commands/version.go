@@ -20,7 +20,7 @@ func VersionCommand() *cli.Command {
 		Name:  "version",
 		Usage: "Print this binary's version",
 		Description: `--check asks Go for the latest forge, and exits 1 when this binary is older,
-or 2 when it can't tell, such as without Go or access to the repository.`,
+or 2 when it can't tell, such as without Go or a network connection.`,
 		Flags:  []cli.Flag{jsonFlag, &cli.BoolFlag{Name: "check", Usage: "compare with the latest forge"}},
 		Action: runVersion,
 	}
@@ -74,7 +74,7 @@ func latestVersion(ctx context.Context) (string, error) {
 	c.Stderr = &stderr
 	data, err := c.Output()
 	if err != nil {
-		return "", fmt.Errorf("can't check: go list couldn't reach %s (%s). It's private, so set GOPRIVATE=github.com/exalynt and make sure git can fetch from GitHub", module, strings.TrimSpace(stderr.String()))
+		return "", fmt.Errorf("can't check: go list couldn't reach %s (%s)", module, strings.TrimSpace(stderr.String()))
 	}
 	var m struct{ Version string }
 	if err := json.Unmarshal(data, &m); err != nil || m.Version == "" {
