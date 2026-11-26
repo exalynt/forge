@@ -22,6 +22,7 @@ forge/
 │   └── languages/            # chosen per repository
 │       ├── go/               # skill go; stacks/http/ is skill go-http
 │       └── typescript/       # skill typescript; stacks/react/ is skill typescript-react
+├── assets/logo/              # the forge logo and how to use it; not part of the binary
 ├── docs/                     # user docs the README links to
 ├── forge.go                  # embeds kit/ in the binary
 ├── cmd/forge/                # runs the forge command

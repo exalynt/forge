@@ -1,4 +1,11 @@
-# forge
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo/svg/forge-lockup-dark.svg">
+    <img src="assets/logo/svg/forge-lockup-light.svg" alt="forge" height="48">
+  </picture>
+</h1>
+
+<p align="center">Exalynt's way of working, for every coding agent</p>
 
 Forge gives coding agents Exalynt's way of working: how we engineer, and
 skills for the workflows that apply it. You install it into a repository and
@@ -142,6 +149,7 @@ they were.
 - [Standards, languages and stacks](docs/conventions.md)
 - [Browser tools](docs/browser.md)
 - [Developing and releasing forge](docs/development.md)
+- [Logo and how to use it](assets/logo/README.md)
 
 ## Contributing
 
