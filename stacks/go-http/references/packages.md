@@ -9,7 +9,8 @@ instructions differ, follow the project.
   tags, with one process-wide validator
 - `github.com/gofrs/uuid/v5`: IDs (UUIDv7)
 - `github.com/exalynt/turn`: pagination
-- `github.com/urfave/cli/v3`: the binary's commands
+- `github.com/urfave/cli/v3`: the binary's commands (see
+  [commands.md](commands.md))
 - `github.com/pressly/goose/v3`: SQL migrations, embedded in the binary
 - `github.com/matryer/moq`: generated mocks for tests
 - `github.com/alexliesenfeld/health`: health check endpoints
