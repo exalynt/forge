@@ -36,7 +36,7 @@ wins, and this project's own code and instructions win over all of them.
 
 Responsiveness, light and dark mode, accessibility, error boundaries, and how
 data loads, lists behave, and forms save apply at every stability level. How
-much else a capability needs, such as CI, is what its level expects (Docket's
+much else a capability needs, such as CI, is what its level expects (Docqet's
 rubric, when the repo has it; see forge's block, "Where intention lives").
 Topics this stack and TypeScript add nothing to are in the `standards` skill's
 index.

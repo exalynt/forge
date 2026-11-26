@@ -21,12 +21,12 @@ behavior, not to review it.
 Where the business rules come from depends on where the repository keeps its
 intention (forge's `AGENTS.md`, "Where intention lives"):
 
-- **With Docket**, the rules are the capability's Docket rule docs, from
-  `docket show capability:<id>` and `docket show` on each rule. Its acceptance
-  tests verify them, each `Rule:` with a `docket:verifies` annotation. Rules
-  QA clarifies, gaps it finds, and open questions are recorded the `docket`
+- **With Docqet**, the rules are the capability's Docqet rule docs, from
+  `docqet show capability:<id>` and `docqet show` on each rule. Its acceptance
+  tests verify them, each `Rule:` with a `docqet:verifies` annotation. Rules
+  QA clarifies, gaps it finds, and open questions are recorded the `docqet`
   skill's way, with the user's approval.
-- **Without Docket**, the rules come from the user, the acceptance tests, the
+- **Without Docqet**, the rules come from the user, the acceptance tests, the
   project's docs, and the code. The acceptance tests are the specification.
   QA produces its report, writes only the acceptance tests and fixes the user
   approves, and records nothing else.
@@ -46,29 +46,29 @@ level expects them.
 
 There are two phases. Steps 1–5 find and report issues, propose acceptance
 tests, and change nothing in the project. Steps 6–7 fix only the issues the
-user confirms and write only the acceptance tests, and with Docket the
+user confirms and write only the acceptance tests, and with Docqet the
 records, the user approves.
 
 ## 1. Understand the capability
 
 - Find its stability level, as forge's `AGENTS.md` "Where intention lives"
-  says. With Docket, read the capability with `docket show capability:<id>`:
+  says. With Docqet, read the capability with `docqet show capability:<id>`:
   its description, personas, rules, gaps, tradeoffs, and open decisions, and
   note any mock or stub a gap or tradeoff explicitly allows. Read the rules
-  and concepts it links to. Run `docket touches` on its code to find what else
+  and concepts it links to. Run `docqet touches` on its code to find what else
   relies on the same parts, and read the components and mechanisms it names,
   with their gaps and tradeoffs, so a known technical gap or a deliberate
-  tradeoff isn't reported as a bug. Without Docket, use the level the user
+  tradeoff isn't reported as a bug. Without Docqet, use the level the user
   gave, if any.
 - Find where it lives: pages, routes, endpoints, services, tables, jobs,
   external integrations, and the tests that cover it.
 - Find its acceptance tests: the `.feature` files for it, the level each
   scenario runs at, and the command that runs them, from the language or stack
-  skill's testing reference or the project's CI. With Docket, `docket show` on each rule lists
+  skill's testing reference or the project's CI. With Docqet, `docqet show` on each rule lists
   the tests that verify it. Read the scenarios. They state the rules, and
   their steps show the flows to click through and the data to set up.
 - Find what it's supposed to do. Sources, most authoritative first: the user
-  in this conversation, the capability's Docket rule docs when there are any,
+  in this conversation, the capability's Docqet rule docs when there are any,
   its acceptance tests, the project's docs, specs or issues the project links
   to, other existing tests, then the code. Code shows what
   the capability does, not what it should do. Don't treat current behavior as the
@@ -92,7 +92,7 @@ reporting what it found and where. Otherwise research them in turn.
 List the rules the capability should follow, each with its source:
 
 ```
-R1. <rule> (stated | assumed; source: <user | Docket rule:<id> | acceptance test | doc | test | code path>; acceptance test: <file › Rule | none>; core | edge case)
+R1. <rule> (stated | assumed; source: <user | Docqet rule:<id> | acceptance test | doc | test | code path>; acceptance test: <file › Rule | none>; core | edge case)
 ```
 
 Cover who can do what, valid and invalid inputs, states and transitions,
@@ -116,7 +116,7 @@ from the code, the docs, or by trying it.
 
 For ambiguities that don't block testing, or that the user would rather leave
 for now, state your assumption, carry on, and list them in the report. Rules
-the user answers become **confirmed**. An answer that contradicts a Docket
+the user answers become **confirmed**. An answer that contradicts a Docqet
 rule or an acceptance test changes the rule, so it needs that rule and its
 test updated (step 5), and it's not an issue in the code until then.
 
@@ -202,7 +202,7 @@ Test doubles inside tests are fine, and so is the test data QA sets up. This
 check is about the capability's own code paths.
 
 A mock or stub is allowed only when an exception names it explicitly: the
-user says so in this conversation, or, with Docket, a gap or tradeoff names
+user says so in this conversation, or, with Docqet, a gap or tradeoff names
 it: on the capability, or, for one people can't see, on a component or
 mechanism it relies on. A Prototype's general allowance for fake data isn't
 an exception by itself. List each allowed exception under Verified with its
@@ -310,8 +310,8 @@ verified".
 
 ## Scale to the stability level
 
-With Docket, judge against what the capability's level expects, from
-`docket rubric --level <level>`:
+With Docqet, judge against what the capability's level expects, from
+`docqet rubric --level <level>`:
 
 - **Prototype**: does it answer the question it's exploring, from its
   description and open decisions? Rough edges outside that question aren't
@@ -329,7 +329,7 @@ gap, tradeoff, or decision already declares, on the capability or on the
 components and mechanisms it relies on. List it under
 "Not issues at <level>" only when someone could reasonably expect it.
 
-Without Docket, there's no rubric to judge against, so scale by effort only:
+Without Docqet, there's no rubric to judge against, so scale by effort only:
 a rule that's broken is an issue, and the user decides in step 6 what's worth
 fixing.
 
@@ -348,7 +348,7 @@ The steps in this skill describe **high**. **Medium** and **low** do less:
 
 | Part                       | Low                                                                                   | Medium                                                                                                                                     |
 | -------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Understand (1)             | The capability's Docket docs, if any, and the primary workflow's path through the code. | Every layer the capability crosses.                                                                                                           |
+| Understand (1)             | The capability's Docqet docs, if any, and the primary workflow's path through the code. | Every layer the capability crosses.                                                                                                           |
 | Rules and questions (2, 3) | The rules the primary workflow touches. Ask only what blocks running it.              | All the rules. Ask what decides whether something is a bug.                                                                                |
 | Workflows                  | The primary workflow, once.                                                           | The primary workflow and at most two important secondary ones.                                                                             |
 | Rules exercised by hand    | Those the primary workflow hits that no acceptance test covers.                       | Each rule without an acceptance test, once.                                                                                                |
@@ -370,7 +370,7 @@ At every effort:
 - Reproduce each issue, with a screenshot for each UI issue, and report
   anything you run into outside the plan.
 
-Report what the run skipped that the level expects, or without Docket what
+Report what the run skipped that the level expects, or without Docqet what
 the high-effort run would have covered, under "Not verified", as skipped at
 this effort, so the report never reads as more than it checked.
 
@@ -378,7 +378,7 @@ this effort, so the report never reads as more than it checked.
 
 ```
 Capability: <id>
-Stability: <level> (source: <Docket | user | none given>)
+Stability: <level> (source: <Docqet | user | none given>)
 Effort: <low | medium | high>
 Scope: <what was QA'd, environment, commit; through UI | API | code only>
 
@@ -405,7 +405,7 @@ Proposed acceptance tests
 A1. <add | update | remove> R<n>, <file>: <why: clarified | changed | uncovered>
     <the Gherkin: the Rule and its Examples, or the diff to an existing one>
 
-Proposed for Docket (only with Docket)
+Proposed for Docqet (only with Docqet)
 D1. <rule written or changed | gap | open decision>: <what, on which doc; a
     gap with its impact, likelihood, and reach>
 
@@ -433,16 +433,16 @@ Severities:
 - **Polish**: presentation, wording, consistency.
 
 Propose acceptance tests for rules the user clarified or changed in this run,
-and, with Docket, for rules the capability's level expects one for that have
-none (`docket rubric`). Propose none where the level expects no automated
+and, with Docqet, for rules the capability's level expects one for that have
+none (`docqet rubric`). Propose none where the level expects no automated
 tests. Bug fixes, performance, and presentation issues don't get acceptance
 tests of their own: fixing them restores behavior the rule already describes.
 Write the Gherkin as the `testing` skill describes, in the domain's language,
-with Docket each `Rule:` with its `docket:verifies` annotation.
+with Docqet each `Rule:` with its `docqet:verifies` annotation.
 
-With Docket, also propose what to record in Docket the kit's way: rules the
+With Docqet, also propose what to record in Docqet the kit's way: rules the
 user clarified or stated, gaps QA found that won't be fixed now, and open
-questions that don't block anything, as open decisions. Without Docket, leave
+questions that don't block anything, as open decisions. Without Docqet, leave
 that section out: nothing besides approved tests and fixes is written.
 
 Order issues by severity. Omit empty sections. Keep things that work and
@@ -457,30 +457,30 @@ can't be fixed yet.
 
 Ask separately which proposed acceptance tests to write, with the Gherkin in
 front of the user. That answer is the explicit approval the `testing` skill
-requires, for those tests as shown, and with Docket for the rule docs they
+requires, for those tests as shown, and with Docqet for the rule docs they
 verify. One the user wants reworded gets shown
 again before it's written.
 
-With Docket, ask which of the proposed Docket records to write. Write only
+With Docqet, ask which of the proposed Docqet records to write. Write only
 what the user confirms.
 
 For a mock or stub, the user can make an explicit exception instead of a fix.
-With Docket, offer to record it as a gap or tradeoff on the capability, so the
-next QA run knows. Without Docket, it's an exception for this run only.
+With Docqet, offer to record it as a gap or tradeoff on the capability, so the
+next QA run knows. Without Docqet, it's an exception for this run only.
 
 If the user picks nothing, stop.
 
 ## 7. Fix, record the rules, and re-verify
 
 - Write the approved acceptance tests, as shown, in the place the language
-  or stack skill's testing reference names, with Docket each `Rule:` with its
-  `docket:verifies` annotation. Each should pass once the confirmed fixes are in. One
+  or stack skill's testing reference names, with Docqet each `Rule:` with its
+  `docqet:verifies` annotation. Each should pass once the confirmed fixes are in. One
   that still fails is a new issue: report it, and don't fix it without
   asking.
-- With Docket, write the confirmed Docket records the `docket` skill's way.
+- With Docqet, write the confirmed Docqet records the `docqet` skill's way.
 - Fix only the confirmed issues, sized to the stability level. The level
   decides whether a fix may break things, as the standards, language and
-  stack skills and, with Docket, the `docket` skill's stability reference
+  stack skills and, with Docqet, the `docqet` skill's stability reference
   describe.
 - If a fix needs a decision that's the user's to make, ask.
 - Fixes may run in parallel subagents, if your agent can run them, only when
@@ -492,7 +492,7 @@ If the user picks nothing, stop.
   project's checks.
 - Anything new found while fixing goes in the report. Don't fix it without
   asking.
-- With Docket, keep the docs the fixes affect current, as the `docket` skill
+- With Docqet, keep the docs the fixes affect current, as the `docqet` skill
   says, such as removing a gap a fix closed, and finish as its "Before you
   finish" describes.
 - Don't commit unless asked.

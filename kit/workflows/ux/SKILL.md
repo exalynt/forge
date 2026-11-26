@@ -27,12 +27,12 @@ nothing in the project. Steps 6–7 change only what the user confirms.
 ## 1. Understand the capability
 
 - Find its stability level, as forge's `AGENTS.md` "Where intention lives"
-  says. With Docket, read the capability with `docket show capability:<id>`:
+  says. With Docqet, read the capability with `docqet show capability:<id>`:
   its description, personas, gaps, tradeoffs, and open decisions. Without
-  Docket, use the level the user gave, if any.
+  Docqet, use the level the user gave, if any.
 - Find the main flow: what the capability is for, and the path from a user's
   first action to the result they came for. Use the user in this
-  conversation, the capability's Docket docs if any, and the project's docs
+  conversation, the capability's Docqet docs if any, and the project's docs
   first. Read code only
   to find where the capability lives and how to reach it, not the steps to take.
   Step 3 works out those steps the way the user would.
@@ -44,12 +44,12 @@ nothing in the project. Steps 6–7 change only what the user confirms.
 
 Find who you're walking through as, before trying anything:
 
-- **With Docket**, find the persona with `docket list personas`, or the ones
-  the capability lists, and read it with `docket show persona:<id>`. If the
+- **With Docqet**, find the persona with `docqet list personas`, or the ones
+  the capability lists, and read it with `docqet show persona:<id>`. If the
   user named a persona or role and exactly one matches, use it and say which.
   Otherwise ask, offering the closest personas. A new persona is proposed and
-  written only as the `docket` skill describes, after the user confirms it.
-- **Without Docket**, the user describes the person, or confirms one you
+  written only as the `docqet` skill describes, after the user confirms it.
+- **Without Docqet**, the user describes the person, or confirms one you
   draft from the project's docs. Nothing is saved.
 
 Never make up a persona without asking, or stretch one that doesn't fit. Then
@@ -67,7 +67,7 @@ Success: <the observable end state that means they got it done>
 ```
 
 Knows, Context, Expects, and Cares about start from the persona, or from the
-user's description without Docket. Fill in the rest for this walkthrough from the project and common sense, and mark what you assumed. Ask
+user's description without Docqet. Fill in the rest for this walkthrough from the project and common sense, and mark what you assumed. Ask
 the user, in one round of grouped questions, only about assumptions that would
 change the walkthrough, such as whether they're new or experienced this time,
 with your recommended option first.
@@ -150,7 +150,7 @@ Look at each step through these lenses:
 ### Rules for this phase
 
 - Don't change project files in this phase, except to git-ignore the QA
-  folder and, with Docket, to write a persona the user confirmed.
+  folder and, with Docqet, to write a persona the user confirmed.
 - The QA folder is `.playwright-mcp/` at the project root. Everything you
   create goes there: screenshots, snapshots, console logs, scripts, and test
   data. A Playwright browser tool writes its own files there, and refuses
@@ -196,8 +196,8 @@ Look at each step through these lenses:
 
 ## Scale to the stability level
 
-With Docket, judge against what the capability's level expects, from
-`docket rubric --level <level>`:
+With Docqet, judge against what the capability's level expects, from
+`docqet rubric --level <level>`:
 
 - **Prototype**: only the experience the question it's exploring is about,
   from its description and open decisions. Rough
@@ -213,7 +213,7 @@ Something only a later level expects isn't a finding. Neither is anything a
 gap, tradeoff, or decision on the capability already declares. List it under
 "Later, at <level>" only when it's a real problem this user would hit.
 
-Without Docket, there's no rubric to judge against, so scale by effort only:
+Without Docqet, there's no rubric to judge against, so scale by effort only:
 friction this user hits is a finding, and the user decides in step 6 what's
 worth changing.
 
@@ -254,9 +254,9 @@ Ask them with the report in step 6, not before.
 
 ```
 Capability: <id>
-Stability: <level> (source: <Docket | user | none given>)
+Stability: <level> (source: <Docqet | user | none given>)
 Effort: <low | medium | high>
-User: <type of user> (<persona:<id>, with Docket>). Goal: <goal>
+User: <type of user> (<persona:<id>, with Docqet>). Goal: <goal>
 Scope: <the flow walked, the variations, environment, commit; through UI at
         <widths> | API | from code only>
 
@@ -318,7 +318,7 @@ If the user picks nothing, stop.
 
 - Change only what's confirmed, sized to the stability level. The level
   decides whether a change may break things, as the standards, language and
-  stack skills and, with Docket, the `docket` skill's stability reference
+  stack skills and, with Docqet, the `docqet` skill's stability reference
   describe. Follow the project's own UI and API rules.
 - If a change needs a decision that's the user's to make, ask.
 - Walk the affected steps again as the same user, through the same path and
@@ -326,7 +326,7 @@ If the user picks nothing, stop.
   worse. Run the project's checks.
 - Anything new found while changing goes in the report. Don't change it
   without asking.
-- With Docket, finish as the `docket` skill's "Before you finish" describes.
+- With Docqet, finish as the `docqet` skill's "Before you finish" describes.
 - Don't commit unless asked.
 
 Report each confirmed finding as addressed (and how the walk again confirmed

@@ -13,8 +13,8 @@ forge/
 │   │   ├── qa/               # QA a capability end to end against its rules
 │   │   ├── ux/               # walk a main flow as a type of user
 │   │   ├── use/              # usability test, one player per person (role.md is their brief)
-│   │   ├── stability-review/ # review work against a level; needs Docket
-│   │   └── promote/          # move a capability up a level; needs Docket
+│   │   ├── stability-review/ # review work against a level; needs Docqet
+│   │   └── promote/          # move a capability up a level; needs Docqet
 │   ├── universal/            # in every install: conventions for any language
 │   │   ├── standards/        # layers, errors, config, APIs, pagination, health, CI, UI
 │   │   ├── testing/          # how we write tests
@@ -33,7 +33,7 @@ forge/
 ```
 
 Forge's block, `kit/AGENTS.md`, under "Where intention lives", defines how
-skills behave with and without Docket, and every skill follows it.
+skills behave with and without Docqet, and every skill follows it.
 
 ## CI
 

@@ -115,7 +115,7 @@ func (a *applier) apply(want Want, version string) (Result, error) {
 		// Skills forge installed here before and no longer does.
 		if slices.Contains(a.old.Wrote, t.Name) {
 			for _, n := range a.old.Skills {
-				if n != "docket" && !slices.Contains(names, n) {
+				if n != "docqet" && !slices.Contains(names, n) {
 					if err := a.removeAll(path.Join(t.Skills, n)); err != nil {
 						return Result{}, err
 					}
@@ -136,7 +136,7 @@ func (a *applier) apply(want Want, version string) (Result, error) {
 			}
 		}
 		for _, n := range candidates {
-			if n == "docket" {
+			if n == "docqet" {
 				continue
 			}
 			rel := path.Join(t.Skills, n)

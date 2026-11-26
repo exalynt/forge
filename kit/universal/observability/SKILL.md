@@ -8,8 +8,8 @@ paths:
 # Observability
 
 How to add traces, logs, and metrics, in any language or framework. How much
-to add is what the capability's level expects: `docket rubric` when the
-repository has Docket (see forge's `AGENTS.md`, "Where intention lives"). This
+to add is what the capability's level expects: `docqet rubric` when the
+repository has Docqet (see forge's `AGENTS.md`, "Where intention lives"). This
 skill is how. Whatever is added follows it.
 
 ## OpenTelemetry is the standard
