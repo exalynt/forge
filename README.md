@@ -76,7 +76,7 @@ agents can't load skills themselves. See
 
 Forge says *how* to do the work. What the software is meant to do, and how
 stable each part needs to be, belongs to the project. Where a repository
-records that with [Docqet](https://github.com/exalynt/docqet) (it has a
+records that with [Docqet](https://github.com/docqet/docqet) (it has a
 `docqet.yaml`), forge's skills read each capability's stability level, rules
 and gaps from it, and record what you confirm the Docqet way. Install Docqet's
 kit alongside forge's; neither touches the other.
