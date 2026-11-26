@@ -142,3 +142,12 @@ they were.
 - [Standards, languages and stacks](docs/conventions.md)
 - [Browser tools](docs/browser.md)
 - [Developing and releasing forge](docs/development.md)
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), and the
+Exalynt [Code of Conduct](https://github.com/exalynt/community/blob/main/CODE_OF_CONDUCT.md).
+
+## License
+
+[MIT](LICENSE)
