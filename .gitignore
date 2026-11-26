@@ -1,2 +1,4 @@
 # go build ./cmd/forge
 /forge
+/build/
+/dist/

@@ -42,16 +42,20 @@ forge/
 Forge is one command that carries its skills and stacks with it. Install it
 from a release, or with Go.
 
-**From a release**, with the GitHub CLI signed in to an account that can read
-the repository. Each release has a build for Linux, macOS and Windows, on
-amd64 and arm64 (Windows on amd64):
+**From the latest build**, with the GitHub CLI signed in to an account that
+can read the repository. The `latest` pre-release is rebuilt from every commit
+on `main` that passes CI, for Linux, macOS and Windows, on amd64 and arm64
+(Windows on amd64), with the same file names each time:
 
 ```bash
-gh release download --repo exalynt/forge --pattern "forge_*_linux_amd64.tar.gz"   # or darwin_arm64, …
-tar -xzf forge_*_linux_amd64.tar.gz
-install forge_*_linux_amd64/forge ~/.local/bin/                                   # anywhere on your PATH
-forge version
+gh release download latest --repo exalynt/forge --pattern "forge_latest_linux_amd64.tar.gz" --clobber   # or darwin_arm64, …
+tar -xzf forge_latest_linux_amd64.tar.gz
+install forge_latest_linux_amd64/forge ~/.local/bin/   # anywhere on your PATH
+forge version                                          # the commit it was built from, as a pseudo-version
 ```
+
+Once there are versioned releases, download one the same way with its
+version in place of `latest`.
 
 **With Go.** The repository is private, so tell Go not to look for it through
 the public proxy. It needs access to `github.com/exalynt/forge` through git:
@@ -198,11 +202,12 @@ When forge has a new release, update the binary the way you installed it,
 then each repository:
 
 ```bash
-go install github.com/exalynt/forge/cmd/forge@latest   # or download the release again
+go install github.com/exalynt/forge/cmd/forge@latest   # or download the latest build again, as above
 forge update
 ```
 
-`forge version --check` says whether the binary is the latest release. It
+`forge version --check` says whether the binary is the latest: the newest
+release, or until there's one, `main`'s latest commit. It
 asks Go, so it needs Go, `GOPRIVATE` set and access to the repository, and
 exits 2 when it can't tell.
 
@@ -214,8 +219,12 @@ too. The lock records the version of forge that last changed what it lists.
 
 ## Releasing
 
-A release is a version tag, such as `v0.2.0`, and the builds for it. In the
-repository's Actions tab, run the **Release** workflow with the version: it
+Every commit on `main` that passes CI is built and published as the `latest`
+pre-release by the **Latest** workflow, so there's nothing to do to get a
+build of `main`.
+
+A versioned release is a version tag, such as `v0.2.0`, and the builds for
+it. In the repository's Actions tab, run the **Release** workflow with the version: it
 tags `main`'s latest commit, builds forge for each platform, and publishes
 them as a GitHub release with notes from the commits since the last one.
 Pushing a tag yourself does the same:

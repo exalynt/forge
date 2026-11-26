@@ -1,0 +1,55 @@
+name: Latest
+
+# Rebuilds the "latest" pre-release from every commit on main that passes CI,
+# so there's always a build of main to download, and downloading it again is
+# how to update. Its archives keep the same names, forge_latest_<os>_<arch>,
+# and each binary reports its commit's pseudo-version. Versioned releases come
+# from the Release workflow.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+# The workflow's own token moves the tag and replaces the release's files.
+permissions:
+  contents: write
+
+concurrency:
+  group: latest
+  cancel-in-progress: true
+
+jobs:
+  latest:
+    name: Build and publish latest
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - run: scripts/release/build.sh latest
+
+      - name: Publish as the latest pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sha=$(git rev-parse HEAD)
+          version=$(./build/forge_latest_linux_amd64/forge version)
+          notes="Built from main at ${sha:0:7} ($version). Rebuilt from every commit on main that passes CI: download it again to update."
+          git tag -f latest "$sha"
+          git push -f origin refs/tags/latest
+          if gh release view latest >/dev/null 2>&1; then
+            gh release upload latest dist/* --clobber
+            gh release edit latest --prerelease --title "forge latest" --notes "$notes"
+          else
+            gh release create latest dist/* --prerelease --title "forge latest" --notes "$notes"
+          fi
