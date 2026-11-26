@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Open Chrome in the next free spot on the user's monitors, without taking the
-# focus under WSLg. setup.sh has Playwright launch this in place of Chrome, so the
-# spot is chosen when a browser really opens, not when one of a session's servers
-# starts.
+# focus under WSLg. forge browser setup writes it out, and has Playwright launch
+# it in place of Chrome, so the spot is chosen when a browser really opens, not
+# when one of a session's servers starts.
 #
 # Each monitor is a grid of eight spots: four across and two down, or two across
 # and four down if it's portrait. Spots fill from the top right, right to left

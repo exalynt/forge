@@ -32,9 +32,11 @@ forge/
 │   ├── go-http/              # Go HTTP APIs: SKILL.md and references/
 │   └── react/                # React + MUI frontends: SKILL.md and references/
 ├── forge.go                  # embeds AGENTS.md, skills/, and stacks/ in the binary
-├── cmd/forge/                # the forge command
+├── cmd/forge/                # runs the forge command
+├── internal/commands/        # each command in <name>.go, its subcommands in <name>/
 ├── internal/install/         # where each agent's files go, and how they're written
-└── scripts/playwright/       # browser tools for qa, ux, and use
+├── internal/playwright/      # Playwright MCP for qa, ux, and use, for forge browser
+└── scripts/release/          # builds the release archives
 ```
 
 ## Installing forge
@@ -264,45 +266,59 @@ browser for each person in a test.
 Set it up once per machine:
 
 ```bash
-./scripts/playwright/setup.sh   # from a checkout of forge
+forge browser setup                  # headed Chrome
+forge browser setup -- --headless    # where there's no display
 ```
 
 It installs `@playwright/mcp` globally with npm, installs Google Chrome if it's
 missing (the server's default browser; this step may ask for `sudo`), and
-prints the command and arguments for five servers: `playwright`, the one used
-by default, and `playwright-1` through `playwright-4` for when a skill calls
-for more, such as several sign-ins at once or the people in a `use` test. Each
-is its own browser and sign-in. Register all five with your agent, with the
-same command and arguments:
+records where Node and the package are in `setup.json`, in
+`~/.local/share/forge/playwright/` (`$XDG_DATA_HOME/forge/playwright/` where
+that's set). Then it prints the command to register, `forge browser server`
+by forge's absolute path, under five names: `playwright`, the one used by
+default, and `playwright-1` through `playwright-4` for when a skill calls for
+more, such as several sign-ins at once or the people in a `use` test. Each is
+its own browser and sign-in. Register all five with your agent, with the same
+command, once:
 
-- **Claude Code**: for each name,
-  `claude mcp add --scope user <name> -- <command> <arguments>`. Re-running
-  needs `claude mcp remove --scope user <name>` first.
+- **Claude Code**: setup prints a loop that runs
+  `claude mcp add --scope user <name> -- /path/to/forge browser server` for
+  each name. Replacing one needs `claude mcp remove --scope user <name>` first.
 - **Codex**: a table for each name in `~/.codex/config.toml`:
 
   ```toml
   [mcp_servers.playwright]
-  command = "/path/to/node"
-  args = ["/path/to/@playwright/mcp/cli.js", "--isolated", "--executable-path", "/path/to/forge/scripts/playwright/chrome.sh"]
+  command = "/path/to/forge"
+  args = ["browser", "server"]
   ```
 
 - **Cursor**: an entry for each name under `mcpServers` in `.cursor/mcp.json`
   for one project, or `~/.cursor/mcp.json` for all of them, with the same
   `command` and `args`.
 
+`forge browser server` reads `setup.json` and runs the package with Node in
+its place. So after switching Node versions, or to change the server's flags,
+run `forge browser setup` again: the servers use the new setup the next time
+they start, without registering them again. Re-registering is needed only if
+forge's binary moves. `forge browser check` exits 1 when something setup
+recorded is gone, such as a Node version that was uninstalled, and says what
+to run.
+
 Let the browser tools run without asking each time, but keep asking before
 `browser_run_code_unsafe`, which runs arbitrary code on your machine, and
 before `browser_file_upload` and `browser_drop`, which can send local files to
 a page. Set that in your agent's permissions.
 
-- Arguments to `setup.sh` are passed to the server. The browser is headed by
+- Flags after `--` are passed to the server. The browser is headed by
   default, which works under WSLg, so add `--headless` where there's no
   display. Pass `--browser firefox` to use Firefox instead of Chrome.
   Playwright's bundled Chromium isn't one of the server's options.
 - Browser windows arrange themselves across your monitors, so you can follow
-  along without them covering your work. `chrome.sh` reads the monitors each
-  time a browser opens, with `xrandr` on Linux and WSLg or AppKit on macOS,
-  and gives the window an eighth of a monitor, or more where that would be
+  along without them covering your work. Playwright opens Chrome through
+  `chrome.sh`, which setup writes beside `setup.json` and each server rewrites
+  as it starts, so it's always the one forge carries. It reads the monitors
+  each time a browser opens, with `xrandr` on Linux and WSLg or AppKit on
+  macOS, and gives the window an eighth of a monitor, or more where that would be
   smaller than Chrome's minimum window size. Windows fill from the top right,
   right to left and then down, on secondary monitors first and the primary
   last. Once every spot is taken, new ones stack on the same spots in order. A
@@ -330,10 +346,11 @@ a page. Set that in your agent's permissions.
   `.playwright-mcp/` in the project, and refuses paths outside the project or
   that folder. `qa`, `ux`, and `use` keep everything they create there and add
   `/.playwright-mcp/` to the project's `.gitignore` if it's missing.
-- It registers Node and the package by absolute path, so the server starts
-  even when the agent's environment lacks nvm's PATH. Re-run it, and
-  re-register, after switching Node versions. Re-running also updates the
-  package.
+- Setup records Node and the package by absolute path, so the server starts
+  even when the agent's environment lacks nvm's PATH. Re-running it also
+  updates the package.
+- On Windows, Chrome's windows don't arrange themselves, since `chrome.sh`
+  needs bash: Chrome opens as the server would open it anyway.
 
 ## Uninstalling
 

@@ -89,8 +89,8 @@ seen.
   where the flow creates them, so runs don't collide.
 - Close each person's browser before starting, so no sign-in or page carries
   over from an earlier run. One browser per person: if your agent doesn't
-  have a separate browser for each, say so, point to forge's
-  `scripts/playwright/setup.sh`, which sets up five, and stop.
+  have a separate browser for each, say so, point to
+  `forge browser setup`, which sets up five, and stop.
 
 ### Rules for the whole test
 
