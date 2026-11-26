@@ -39,15 +39,27 @@ forge/
 
 ## Installing forge
 
-Forge is a Go command that carries its skills and stacks with it. The
-repository is private, so tell Go not to look for it through the public proxy:
+Forge is one command that carries its skills and stacks with it. Install it
+from a release, or with Go.
+
+**From a release**, with the GitHub CLI signed in to an account that can read
+the repository. Each release has a build for Linux, macOS and Windows, on
+amd64 and arm64 (Windows on amd64):
+
+```bash
+gh release download --repo exalynt/forge --pattern "forge_*_linux_amd64.tar.gz"   # or darwin_arm64, …
+tar -xzf forge_*_linux_amd64.tar.gz
+install forge_*_linux_amd64/forge ~/.local/bin/                                   # anywhere on your PATH
+forge version
+```
+
+**With Go.** The repository is private, so tell Go not to look for it through
+the public proxy. It needs access to `github.com/exalynt/forge` through git:
 
 ```bash
 export GOPRIVATE=github.com/exalynt
 go install github.com/exalynt/forge/cmd/forge@latest
 ```
-
-It needs Go and access to `github.com/exalynt/forge` through git.
 
 ## Installing it in a repository
 
@@ -182,22 +194,42 @@ each project's own instructions.
 
 ## Updating
 
-When forge changes, update the binary, then each repository:
+When forge has a new release, update the binary the way you installed it,
+then each repository:
 
 ```bash
-go install github.com/exalynt/forge/cmd/forge@latest
+go install github.com/exalynt/forge/cmd/forge@latest   # or download the release again
 forge update
 ```
 
-`forge version --check` says whether the binary is the latest. It asks Go, so
-it needs `GOPRIVATE` set and access to the repository, and exits 2 when it
-can't tell.
+`forge version --check` says whether the binary is the latest release. It
+asks Go, so it needs Go, `GOPRIVATE` set and access to the repository, and
+exits 2 when it can't tell.
 
 `forge update` keeps the stacks the lock lists. With any `--stack`, it
 installs exactly those, so passing a different set is how you swap one, and
 `--no-stacks` removes them all. `forge install --stack` adds a stack, and
 `forge remove --stack` removes one. Any skill forge no longer has is removed
 too. The lock records the version of forge that last changed what it lists.
+
+## Releasing
+
+A release is a version tag, such as `v0.2.0`, and the builds for it. In the
+repository's Actions tab, run the **Release** workflow with the version: it
+tags `main`'s latest commit, builds forge for each platform, and publishes
+them as a GitHub release with notes from the commits since the last one.
+Pushing a tag yourself does the same:
+
+```bash
+git tag v0.2.0 && git push origin v0.2.0
+```
+
+The tag is the version `forge version` prints, what `go install …@latest`
+installs, and what `forge version --check` compares with. Releases follow
+semantic versioning: before 1.0, a breaking change to how forge installs, such
+as a lock it can't read, bumps the minor version. CI checks every push and
+pull request: formatting, vet, the scripts, and an install into a new
+repository that's checked, updated and removed.
 
 ## Checking in CI
 

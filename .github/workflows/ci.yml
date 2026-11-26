@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: gofmt changes nothing
+        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+      - run: go vet ./...
+      - run: go build ./...
+      - name: Scripts pass shellcheck
+        run: shellcheck scripts/playwright/*.sh
+
+  # Installs forge into a new repository for both targets and a stack, then
+  # checks it, updates it and removes it, as a person would.
+  install:
+    name: Install into a repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: go build -o "$RUNNER_TEMP/forge" ./cmd/forge
+      - name: Install, check, update and remove
+        run: |
+          forge="$RUNNER_TEMP/forge"
+          repo="$RUNNER_TEMP/repo"
+          git init -q "$repo"
+          "$forge" install "$repo" --agent codex --agent claude --stack go-http
+          "$forge" check "$repo"
+          "$forge" update "$repo"
+          "$forge" status "$repo"
+          "$forge" remove "$repo"
+          test -z "$(ls -A "$repo" | grep -v '^.git$')"
