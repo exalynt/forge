@@ -21,10 +21,11 @@ const module = "github.com/exalynt/forge"
 var errStale = cli.Exit("", 1)
 
 var (
-	jsonFlag     = &cli.BoolFlag{Name: "json", Usage: "print JSON to stdout"}
-	agentFlag    = &cli.StringSliceFlag{Name: "agent", Usage: "an agent the repository uses, such as claude or codex; see forge agents"}
-	stackFlag    = &cli.StringSliceFlag{Name: "stack", Usage: "a stack to install, such as go-http or react"}
-	noStacksFlag = &cli.BoolFlag{Name: "no-stacks", Usage: "install no stacks, removing any installed"}
+	jsonFlag        = &cli.BoolFlag{Name: "json", Usage: "print JSON to stdout"}
+	agentFlag       = &cli.StringSliceFlag{Name: "agent", Usage: "an agent the repository uses, such as claude or codex; see forge agents"}
+	languageFlag    = &cli.StringSliceFlag{Name: "language", Usage: "a language to install, such as go or typescript"}
+	stackFlag       = &cli.StringSliceFlag{Name: "stack", Usage: "a stack to install with its language, such as go/http or typescript/react"}
+	noLanguagesFlag = &cli.BoolFlag{Name: "no-languages", Aliases: []string{"no-stacks"}, Usage: "install no languages or stacks, removing any installed"}
 )
 
 // Root is the forge command.

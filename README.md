@@ -16,22 +16,25 @@ code and tests the user approves.
 
 ```text
 forge/
-├── AGENTS.md                 # the block written into a repository's instructions
-├── skills/                   # each skill forge installs
-│   ├── implement/            # build a feature, improvement, or fix; a worktree and PR when asked
-│   ├── commit/               # small, related commits
-│   ├── pr/                   # commit, push, and open or update a PR labeled with its level
-│   ├── qa/                   # QA a capability end to end against its rules
-│   ├── ux/                   # walk a main flow as a type of user
-│   ├── use/                  # usability test, one player per person (role.md is their brief)
-│   ├── stability-review/     # review work against a level; needs Docket
-│   ├── promote/              # move a capability up a level; needs Docket
-│   ├── testing/              # how we write tests
-│   └── observability/        # how we add traces, logs, and metrics
-├── stacks/
-│   ├── go-http/              # Go HTTP APIs: SKILL.md and references/
-│   └── react/                # React + MUI frontends: SKILL.md and references/
-├── forge.go                  # embeds AGENTS.md, skills/, and stacks/ in the binary
+├── kit/                      # what forge installs, each skill a folder
+│   ├── AGENTS.md             # the block written into a repository's instructions
+│   ├── workflows/            # in every install
+│   │   ├── implement/        # build a feature, improvement, or fix; a worktree and PR when asked
+│   │   ├── commit/           # small, related commits
+│   │   ├── pr/               # commit, push, and open or update a PR labeled with its level
+│   │   ├── qa/               # QA a capability end to end against its rules
+│   │   ├── ux/               # walk a main flow as a type of user
+│   │   ├── use/              # usability test, one player per person (role.md is their brief)
+│   │   ├── stability-review/ # review work against a level; needs Docket
+│   │   └── promote/          # move a capability up a level; needs Docket
+│   ├── universal/            # in every install: conventions for any language
+│   │   ├── standards/        # layers, errors, config, APIs, pagination, health, CI, UI
+│   │   ├── testing/          # how we write tests
+│   │   └── observability/    # how we add traces, logs, and metrics
+│   └── languages/            # chosen per repository
+│       ├── go/               # skill go; stacks/http/ is skill go-http
+│       └── typescript/       # skill typescript; stacks/react/ is skill typescript-react
+├── forge.go                  # embeds kit/ in the binary
 ├── cmd/forge/                # runs the forge command
 ├── internal/commands/        # each command in <name>.go, its subcommands in <name>/
 ├── internal/install/         # where each agent's files go, and how they're written
@@ -41,7 +44,7 @@ forge/
 
 ## Installing forge
 
-Forge is one command that carries its skills and stacks with it. Install it
+Forge is one command that carries its kit with it. Install it
 from a release, or with Go.
 
 **From the latest build**, with the GitHub CLI signed in to an account that
@@ -72,7 +75,8 @@ go install github.com/exalynt/forge/cmd/forge@latest
 ```bash
 cd path/to/repo
 forge install                              # for every agent that reads AGENTS.md
-forge install --stack go-http              # with a stack
+forge install --stack go/http              # with a stack, which brings its language
+forge install --language go                # with a language and no stack
 forge install --agent claude --agent codex # for the agents the repository uses
 ```
 
@@ -110,7 +114,7 @@ It writes these, to be committed with the repository:
 | `.agents/skills/<name>/`                   | A copy of each skill, for the `agents` target                                  |
 | `.claude/skills/<name>/`                   | A copy of each skill, for the `claude` target                                  |
 | `CLAUDE.md`                                | An `@AGENTS.md` line, with both targets, or with `agents` when it exists       |
-| `.agents/forge.lock`, or `.claude/forge.lock` with `claude` alone | Forge's version, the targets, the stacks, and each skill it installed |
+| `.agents/forge.lock`, or `.claude/forge.lock` with `claude` alone | Forge's version, the targets, the languages and stacks, and each skill it installed |
 
 An existing `AGENTS.md` or `CLAUDE.md` keeps everything it had: forge's block
 is added at the end, or replaced where it already is. If the markers are
@@ -151,10 +155,10 @@ Every command takes the repository's folder, the current one by default, and
 
 | Command                                                      | Does                                                                                                                                          |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `forge install [dir] [--agent NAME]... [--stack NAME]... [--no-stacks]` | The first install, `agents` by default. On an existing install, adds the agents' targets and the stacks, and rewrites everything installed. |
-| `forge update [dir] [--stack NAME]... [--no-stacks]`        | Rewrites every installed target with this binary's forge, keeping the lock's stacks unless told otherwise.                                     |
-| `forge remove [dir] [--agent NAME]... [--stack NAME]...`    | Removes those agents' targets and those stacks, moving the block when its file's target goes. With neither, removes everything forge installed. |
-| `forge status [dir]`                                        | The targets installed and the agents they serve, whether they match this binary, the stacks, the lock's version, and agent notes. Exits 0.   |
+| `forge install [dir] [--agent NAME]... [--language NAME]... [--stack LANG/NAME]... [--no-languages]` | The first install, `agents` by default. On an existing install, adds the agents' targets, the languages and the stacks, and rewrites everything installed. |
+| `forge update [dir] [--language NAME]... [--stack LANG/NAME]... [--no-languages]` | Rewrites every installed target with this binary's forge, keeping the lock's languages and stacks unless told otherwise. |
+| `forge remove [dir] [--agent NAME]... [--language NAME]... [--stack LANG/NAME]...` | Removes those agents' targets, those languages with their stacks, and those stacks, moving the block when its file's target goes. With none, removes everything forge installed. |
+| `forge status [dir]`                                        | The targets installed and the agents they serve, whether they match this binary, the languages and stacks, the lock's version, and agent notes. Exits 0. |
 | `forge check [dir]`                                         | Exits 1 when the install doesn't match this binary, for CI.                                                                                    |
 | `forge agents`                                              | The supported agents, their targets, and where their files go.                                                                                 |
 | `forge version [--check]`                                   | This binary's version. `--check` compares it with the latest: exit 1 when it's older, 2 when it can't tell.                                   |
@@ -165,7 +169,7 @@ install, exits 2 and changes nothing.
 ## With and without Docket
 
 A repository has Docket when there's a `docket.yaml` at the working directory
-or above it, within the repository. Forge's `AGENTS.md`, under "Where
+or above it, within the repository. Forge's block, `kit/AGENTS.md`, under "Where
 intention lives", is where the two modes are defined, and every skill follows
 it.
 
@@ -183,17 +187,38 @@ it.
 Without it they stop and say so: a repository adopts it with `docket init` and
 Docket's kit. Every other skill works either way.
 
-## Stacks
+## Standards, languages and stacks
 
-A stack is the conventions for one kind of project, installed as one more
-skill, in every target, with `--stack`. `go-http` covers Go HTTP API projects: preferred
-packages, layers and boundaries, repositories, service errors, REST API
-design, pagination, health checks, configuration, tests, and CI. `react` covers React + MUI frontends:
-page and component layout, reusing MUI and existing components, mobile
-responsiveness, light and dark mode, accessibility, services for external
-APIs and SDKs, loading states and fetching data, lists with search, filters,
-sorting, and pagination, forms, and CI. Each stack's `SKILL.md` indexes its `references/`, and lists the files it
-applies to, which Claude Code and Cursor use to load it when you work on them.
+How code is built comes in three layers, each one or more skills:
+
+| Layer | Installed | Skills | Covers |
+| --- | --- | --- | --- |
+| Universal | Always | `standards`, `testing`, `observability` | What holds in any language: layers and boundaries, errors, configuration, dependencies, repositories and schema changes, REST APIs, pagination, health checks, CI, where code lives, and for web UIs responsiveness, light and dark mode, and accessibility. |
+| Language | `--language go`, or with a stack | `go`, `typescript` | What a language adds: Go's packages, sentinel errors, config package, goose migrations, urfave/cli commands, tests and CI; TypeScript's services modules and npm scripts. |
+| Stack | `--stack go/http` | `go-http`, `typescript-react` | What a kind of project adds: chi, render, turn and the health library for Go HTTP APIs; MUI, pages and components, data, lists and forms for React. |
+
+A stack is named `language/stack` and brings its language with it, so
+`--stack go/http` installs `go` and `go-http`. A repository with a Go API and
+a React UI passes `--stack go/http --stack typescript/react`.
+
+What makes the layers work for agents:
+
+- **Each layer only adds to or narrows the one above it**, never restates it.
+  The more specific layer wins, and the project's own instructions win over
+  all of them. Forge's security and privacy rules apply whatever a layer says.
+- **A topic keeps its file name in every layer**: `errors.md` in `standards`,
+  `go`, and `go-http` is one topic, read in that order.
+- **The most specific skill is the entry point.** Its `SKILL.md` lists, for
+  each topic, the file in every layer, linked as `../go/references/errors.md`,
+  which resolves because installed skills are siblings. Each `SKILL.md` lists
+  the files it applies to, which Claude Code and Cursor use to load it.
+- **The block names what's installed**, such as "This repository has
+  `standards`, `go` → `go-http`, and `typescript`", so an agent that doesn't
+  load skills by itself still knows what to read.
+
+Forge's tests check that every link in the kit resolves to a skill that's
+always installed with the one linking to it, and that each language and stack
+index links every layer's file for each of its topics.
 
 Project-specific architecture and domain rules don't belong here. Keep them in
 each project's own instructions.
@@ -213,11 +238,18 @@ release, or until there's one, `main`'s latest commit. It
 asks Go, so it needs Go, `GOPRIVATE` set and access to the repository, and
 exits 2 when it can't tell.
 
-`forge update` keeps the stacks the lock lists. With any `--stack`, it
-installs exactly those, so passing a different set is how you swap one, and
-`--no-stacks` removes them all. `forge install --stack` adds a stack, and
-`forge remove --stack` removes one. Any skill forge no longer has is removed
-too. The lock records the version of forge that last changed what it lists.
+`forge update` keeps the languages and stacks the lock lists. With any
+`--language` or `--stack`, it installs exactly those, so passing a different
+set is how you swap one, and `--no-languages` removes them all.
+`forge install --language` or `--stack` adds one, and `forge remove` with
+either removes it; removing a language removes its stacks. Any skill forge no
+longer has is removed too. The lock records the version of forge that last
+changed what it lists.
+
+An install from before languages, with the `go-http` or `react` stack, updates
+to `go/http` or `typescript/react` and their languages: `forge update` adds
+`standards`, `go`, `typescript`, and `typescript-react`, and removes `react`.
+The old names still work with `--stack`.
 
 ## Releasing
 

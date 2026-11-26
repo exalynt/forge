@@ -1,13 +1,28 @@
-// Package forge holds what forge installs into a repository: the block for
-// its agents' instructions, its skills, and its stacks. cmd/forge installs
-// them, and internal/install says how.
+// Package forge holds what forge installs into a repository, its kit: the
+// block for its agents' instructions, its skills, its standards, and its
+// languages and stacks. cmd/forge installs them, and internal/install says
+// how.
 package forge
 
-import "embed"
+import (
+	"embed"
+	"io/fs"
+)
 
-// Files holds AGENTS.md, the block written into a repository's instructions;
-// skills/, each skill forge installs; and stacks/, each stack a repository can
-// choose.
-//
-//go:embed AGENTS.md skills stacks
-var Files embed.FS
+//go:embed kit
+var kit embed.FS
+
+// Files is the kit: AGENTS.md, the block written into a repository's
+// instructions; workflows/, the workflow skills; universal/, the conventions
+// every repository gets; and languages/, each language a repository can
+// choose, with the stacks under it. Every install has the workflows and the
+// universal skills.
+var Files fs.FS = mustSub(kit, "kit")
+
+func mustSub(fsys fs.FS, dir string) fs.FS {
+	sub, err := fs.Sub(fsys, dir)
+	if err != nil {
+		panic(err)
+	}
+	return sub
+}

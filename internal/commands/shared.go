@@ -50,23 +50,33 @@ func installed(cmd *cli.Command) (string, *install.Lock, error) {
 	return root, lock, nil
 }
 
-// stacksWanted works out the stacks from --stack and --no-stacks, or the
-// lock's when neither is given.
-func stacksWanted(cmd *cli.Command, lock *install.Lock) ([]string, bool, error) {
-	given := cmd.StringSlice("stack")
-	if cmd.Bool("no-stacks") {
-		if len(given) > 0 {
-			return nil, false, errors.New("--no-stacks and --stack can't be used together")
+// languagesWanted works out the languages and stacks from --language,
+// --stack and --no-languages, or the lock's when none is given. It reports
+// whether any was given.
+func languagesWanted(cmd *cli.Command, lock *install.Lock) (languages, stacks []string, given bool, err error) {
+	languages, stacks = cmd.StringSlice("language"), stackNames(cmd.StringSlice("stack"))
+	if cmd.Bool("no-languages") {
+		if len(languages) > 0 || len(stacks) > 0 {
+			return nil, nil, false, errors.New("--no-languages can't be used with --language or --stack")
 		}
-		return nil, true, nil
+		return nil, nil, true, nil
 	}
-	if len(given) > 0 {
-		return given, true, nil
+	if len(languages) > 0 || len(stacks) > 0 {
+		return languages, stacks, true, nil
 	}
 	if lock != nil {
-		return lock.Stacks, false, nil
+		return lock.Languages, lock.Stacks, false, nil
 	}
-	return nil, false, nil
+	return nil, nil, false, nil
+}
+
+// stackNames is each stack's name as forge writes it.
+func stackNames(stacks []string) []string {
+	var out []string
+	for _, s := range stacks {
+		out = append(out, install.StackName(s))
+	}
+	return out
 }
 
 // printResult prints each file's change and a summary, or with --json the
@@ -75,7 +85,7 @@ func printResult(cmd *cli.Command, res install.Result, notes []string, mode stri
 	out := cmd.Root().Writer
 	if cmd.Bool("json") {
 		writeJSON(out, map[string]any{
-			"files": res.Changes, "targets": res.Targets, "stacks": res.Stacks,
+			"files": res.Changes, "targets": res.Targets, "languages": res.Languages, "stacks": res.Stacks,
 			"upToDate": !res.Stale(), "notes": notes,
 		})
 		return

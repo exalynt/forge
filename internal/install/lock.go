@@ -34,7 +34,9 @@ type Lock struct {
 	// for older locks: one with "# skills .agents" wrote only to .agents/, and
 	// one with neither that nor "# targets" also wrote copies to .claude/.
 	Wrote []string
-	// Stacks are the stacks installed.
+	// Languages are the languages installed.
+	Languages []string
+	// Stacks are the stacks installed, as language/stack.
 	Stacks []string
 	// Skills are the skills installed, stacks included.
 	Skills []string
@@ -71,8 +73,12 @@ func parseLock(path, text string) *Lock {
 			l.Targets = ordered(strings.Fields(strings.TrimPrefix(line, "# targets")))
 		case line == "# skills .agents":
 			agentsOnly = true
+		case line == "# languages" || strings.HasPrefix(line, "# languages "):
+			l.Languages = strings.Fields(strings.TrimPrefix(line, "# languages"))
 		case line == "# stacks" || strings.HasPrefix(line, "# stacks "):
-			l.Stacks = strings.Fields(strings.TrimPrefix(line, "# stacks"))
+			for _, s := range strings.Fields(strings.TrimPrefix(line, "# stacks")) {
+				l.Stacks = appendNew(l.Stacks, StackName(s))
+			}
 		case line == "# import "+importFile:
 			l.Imported = true
 		case strings.HasPrefix(line, "#"), line == "":
@@ -80,6 +86,12 @@ func parseLock(path, text string) *Lock {
 			l.Skills = append(l.Skills, line)
 		}
 	}
+	// A stack's language is installed with it, even where an earlier forge's
+	// lock, from before languages, doesn't say so.
+	for _, s := range l.Stacks {
+		l.Languages = appendNew(l.Languages, StackLanguage(s))
+	}
+	slices.Sort(l.Languages)
 	switch {
 	case hasTargets:
 		l.Wrote = l.Targets
@@ -102,10 +114,11 @@ func lockPath(targets []string) string {
 }
 
 // lockBody is the lock's text after its "# forge" line.
-func lockBody(targets, stacks, skills []string, imported bool) string {
+func lockBody(want Want, skills []string, imported bool) string {
 	var b strings.Builder
-	b.WriteString("# targets " + strings.Join(targets, " ") + "\n")
-	b.WriteString(strings.TrimRight("# stacks "+strings.Join(stacks, " "), " ") + "\n")
+	b.WriteString("# targets " + strings.Join(want.Targets, " ") + "\n")
+	b.WriteString(strings.TrimRight("# languages "+strings.Join(want.Languages, " "), " ") + "\n")
+	b.WriteString(strings.TrimRight("# stacks "+strings.Join(want.Stacks, " "), " ") + "\n")
 	if imported {
 		b.WriteString("# import " + importFile + "\n")
 	}

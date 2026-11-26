@@ -25,7 +25,7 @@ func runCheck(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	res, err := install.Apply(root, forge.Files, install.Want{Targets: lock.Targets, Stacks: lock.Stacks}, version(), true)
+	res, err := install.Apply(root, forge.Files, install.Want{Targets: lock.Targets, Languages: lock.Languages, Stacks: lock.Stacks}, version(), true)
 	if err != nil {
 		return err
 	}

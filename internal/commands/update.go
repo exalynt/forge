@@ -15,9 +15,10 @@ func UpdateCommand() *cli.Command {
 		Name:      "update",
 		Usage:     "Rewrite every installed target with this binary's forge",
 		ArgsUsage: "[dir]",
-		Description: `Makes the install match this binary. It keeps the lock's stacks, unless
---stack names the stacks to have instead, or --no-stacks removes them all.`,
-		Flags:  []cli.Flag{jsonFlag, stackFlag, noStacksFlag},
+		Description: `Makes the install match this binary. It keeps the lock's languages and
+stacks, unless --language and --stack name the ones to have instead, or
+--no-languages removes them all. A stack brings its language with it.`,
+		Flags:  []cli.Flag{jsonFlag, languageFlag, stackFlag, noLanguagesFlag},
 		Action: runUpdate,
 	}
 }
@@ -27,11 +28,11 @@ func runUpdate(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	stacks, _, err := stacksWanted(cmd, lock)
+	languages, stacks, _, err := languagesWanted(cmd, lock)
 	if err != nil {
 		return err
 	}
-	res, err := install.Apply(root, forge.Files, install.Want{Targets: lock.Targets, Stacks: stacks}, version(), false)
+	res, err := install.Apply(root, forge.Files, install.Want{Targets: lock.Targets, Languages: languages, Stacks: stacks}, version(), false)
 	if err != nil {
 		return err
 	}

@@ -30,42 +30,23 @@ const (
 // Want is the install a repository should end up with. No targets means
 // nothing of forge at all.
 type Want struct {
-	Targets []string
-	Stacks  []string
+	Targets   []string
+	Languages []string
+	Stacks    []string
 }
 
 // Result is what Apply did, or would do.
 type Result struct {
-	Changes []Change `json:"files"`
-	Targets []string `json:"targets"`
-	Stacks  []string `json:"stacks"`
-	Lock    string   `json:"lock,omitempty"`
+	Changes   []Change `json:"files"`
+	Targets   []string `json:"targets"`
+	Languages []string `json:"languages"`
+	Stacks    []string `json:"stacks"`
+	Lock      string   `json:"lock,omitempty"`
 }
 
 // Stale reports whether anything changed, or would.
 func (r Result) Stale() bool {
 	return slices.ContainsFunc(r.Changes, func(c Change) bool { return c.Status != OK })
-}
-
-// Stacks lists the stacks src has.
-func Stacks(src fs.FS) ([]string, error) {
-	entries, err := fs.ReadDir(src, "stacks")
-	if err != nil {
-		return nil, err
-	}
-	var names []string
-	for _, e := range entries {
-		if e.IsDir() {
-			names = append(names, e.Name())
-		}
-	}
-	return names, nil
-}
-
-// skill is one skill to install: its name, and its files in src.
-type skill struct {
-	name string
-	dir  string
 }
 
 // Apply makes the repository at root hold want, from src, and returns what it
@@ -96,29 +77,9 @@ type applier struct {
 
 func (a *applier) apply(want Want, version string) (Result, error) {
 	// What to install.
-	var skills []skill
-	if len(want.Targets) > 0 {
-		entries, err := fs.ReadDir(a.src, "skills")
-		if err != nil {
-			return Result{}, err
-		}
-		for _, e := range entries {
-			if e.IsDir() {
-				skills = append(skills, skill{e.Name(), "skills/" + e.Name()})
-			}
-		}
-		known, err := Stacks(a.src)
-		if err != nil {
-			return Result{}, err
-		}
-		for _, s := range want.Stacks {
-			if !slices.Contains(known, s) {
-				return Result{}, fmt.Errorf("unknown stack %q: forge has %s", s, strings.Join(known, ", "))
-			}
-			skills = append(skills, skill{s, "stacks/" + s})
-		}
-	} else {
-		want.Stacks = nil
+	want, skills, err := resolve(a.src, want)
+	if err != nil {
+		return Result{}, err
 	}
 	names := make([]string, len(skills))
 	for i, s := range skills {
@@ -147,7 +108,7 @@ func (a *applier) apply(want Want, version string) (Result, error) {
 	for _, name := range want.Targets {
 		t, _ := TargetNamed(name)
 		for _, s := range skills {
-			if err := a.sync(path.Join(t.Skills, s.name), s.dir); err != nil {
+			if err := a.sync(path.Join(t.Skills, s.name), s); err != nil {
 				return Result{}, err
 			}
 		}
@@ -186,7 +147,7 @@ func (a *applier) apply(want Want, version string) (Result, error) {
 			if !ours && t.Name == TargetClaude {
 				// A link, or an exact copy of forge's skill, is a copy an
 				// earlier forge left. Anything else is the project's own.
-				ours = a.isLink(rel) || a.sameAs(rel, skillDir(skills, n))
+				ours = a.isLink(rel) || a.sameAs(rel, skillNamed(skills, n))
 			}
 			if ours {
 				if err := a.removeAll(rel); err != nil {
@@ -200,7 +161,7 @@ func (a *applier) apply(want Want, version string) (Result, error) {
 	agents, claude := docs["AGENTS.md"], docs[importFile]
 	hasAgents := slices.Contains(want.Targets, TargetAgents)
 	hasClaude := slices.Contains(want.Targets, TargetClaude)
-	block, err := a.block(want.Targets)
+	block, err := a.block(want)
 	if err != nil {
 		return Result{}, err
 	}
@@ -247,7 +208,7 @@ func (a *applier) apply(want Want, version string) (Result, error) {
 	lock := ""
 	if len(want.Targets) > 0 {
 		lock = lockPath(want.Targets)
-		body := lockBody(want.Targets, want.Stacks, names, imported)
+		body := lockBody(want, names, imported)
 		have, err := os.ReadFile(a.abs(lock))
 		switch {
 		case err == nil && withoutVersion(string(have)) == body:
@@ -280,21 +241,23 @@ func (a *applier) apply(want Want, version string) (Result, error) {
 			_ = os.Remove(a.abs(dir))
 		}
 	}
-	return Result{Changes: a.changes, Targets: want.Targets, Stacks: want.Stacks, Lock: lock}, nil
+	return Result{Changes: a.changes, Targets: want.Targets, Languages: want.Languages, Stacks: want.Stacks, Lock: lock}, nil
 }
 
-// block is forge's block, naming the skill folder agents should read:
-// .agents/skills when that target is installed, otherwise .claude/skills.
-func (a *applier) block(targets []string) (string, error) {
+// block is forge's block, naming the skill folder agents should read
+// (.agents/skills when that target is installed, otherwise .claude/skills)
+// and the conventions installed.
+func (a *applier) block(want Want) (string, error) {
 	data, err := fs.ReadFile(a.src, "AGENTS.md")
 	if err != nil {
 		return "", err
 	}
 	dir := ".agents/skills"
-	if !slices.Contains(targets, TargetAgents) {
+	if !slices.Contains(want.Targets, TargetAgents) {
 		dir = ".claude/skills"
 	}
-	return strings.ReplaceAll(string(data), "{{skills}}", dir), nil
+	text := strings.ReplaceAll(string(data), "{{skills}}", dir)
+	return strings.ReplaceAll(text, "{{conventions}}", conventions(want)), nil
 }
 
 // checkForeign refuses a skill folder at a target that forge didn't install,
@@ -307,30 +270,22 @@ func (a *applier) checkForeign(t Target, s skill) error {
 	if slices.Contains(a.old.Wrote, t.Name) && slices.Contains(a.old.Skills, s.name) {
 		return nil
 	}
-	if !a.isLink(rel) && a.sameAs(rel, s.dir) {
+	if !a.isLink(rel) && a.sameAs(rel, &s) {
 		return nil
 	}
 	return fmt.Errorf("%s exists and wasn't installed by forge; move or remove it first", rel)
 }
 
-// sync makes the folder rel hold exactly the files of dir in src.
-func (a *applier) sync(rel, dir string) error {
+// sync makes the folder rel hold exactly the skill's files.
+func (a *applier) sync(rel string, s skill) error {
 	if a.isLink(rel) {
 		if err := a.removeAll(rel); err != nil {
 			return err
 		}
 	}
 	want := map[string]bool{}
-	err := fs.WalkDir(a.src, dir, func(p string, d fs.DirEntry, err error) error {
-		if err != nil || d.IsDir() {
-			return err
-		}
-		sub := strings.TrimPrefix(p, dir+"/")
+	err := s.walk(a.src, func(sub string, data []byte) error {
 		want[sub] = true
-		data, err := fs.ReadFile(a.src, p)
-		if err != nil {
-			return err
-		}
 		dest := path.Join(rel, sub)
 		have, err := os.ReadFile(a.abs(dest))
 		status := OK
@@ -462,19 +417,15 @@ func (a *applier) isLink(rel string) bool {
 	return err == nil && info.Mode()&fs.ModeSymlink != 0
 }
 
-// sameAs reports whether the folder rel holds exactly the files of dir in src.
-func (a *applier) sameAs(rel, dir string) bool {
-	if dir == "" {
+// sameAs reports whether the folder rel holds exactly the skill's files.
+func (a *applier) sameAs(rel string, s *skill) bool {
+	if s == nil {
 		return false
 	}
 	want := map[string][]byte{}
-	err := fs.WalkDir(a.src, dir, func(p string, d fs.DirEntry, err error) error {
-		if err != nil || d.IsDir() {
-			return err
-		}
-		data, err := fs.ReadFile(a.src, p)
-		want[strings.TrimPrefix(p, dir+"/")] = data
-		return err
+	err := s.walk(a.src, func(sub string, data []byte) error {
+		want[sub] = data
+		return nil
 	})
 	if err != nil {
 		return false
@@ -524,15 +475,15 @@ func (a *applier) report(rel, status string) {
 	a.changes = append(a.changes, Change{Path: rel, Status: status})
 }
 
-// skillDir is where the skill called name is in src, or "" when forge
-// doesn't install it now.
-func skillDir(skills []skill, name string) string {
-	for _, s := range skills {
-		if s.name == name {
-			return s.dir
+// skillNamed is the skill called name, or nil when forge doesn't install it
+// now.
+func skillNamed(skills []skill, name string) *skill {
+	for i := range skills {
+		if skills[i].name == name {
+			return &skills[i]
 		}
 	}
-	return ""
+	return nil
 }
 
 // removeEmptyDirs removes the empty folders under dir, deepest first.

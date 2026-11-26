@@ -41,7 +41,7 @@ func runStatus(ctx context.Context, cmd *cli.Command) error {
 		}
 		return nil
 	}
-	res, err := install.Apply(root, forge.Files, install.Want{Targets: lock.Targets, Stacks: lock.Stacks}, version(), true)
+	res, err := install.Apply(root, forge.Files, install.Want{Targets: lock.Targets, Languages: lock.Languages, Stacks: lock.Stacks}, version(), true)
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func runStatus(ctx context.Context, cmd *cli.Command) error {
 	if cmd.Bool("json") {
 		writeJSON(out, map[string]any{
 			"installed": true, "binary": version(), "lockVersion": lock.Version, "lock": lock.Path,
-			"targets": targets, "stacks": lock.Stacks, "upToDate": !res.Stale(), "files": res.Changes, "notes": notes,
+			"targets": targets, "languages": lock.Languages, "stacks": lock.Stacks, "upToDate": !res.Stale(), "files": res.Changes, "notes": notes,
 		})
 		return nil
 	}
@@ -80,11 +80,7 @@ func runStatus(ctx context.Context, cmd *cli.Command) error {
 		_, _ = fmt.Fprintf(w, "%s\t%s/\t%s\t%s\n", t.Name, t.Skills, strings.Join(t.Agents, ", "), yesNo(t.UpToDate))
 	}
 	_ = w.Flush()
-	stacks := strings.Join(lock.Stacks, ", ")
-	if stacks == "" {
-		stacks = "none"
-	}
-	_, _ = fmt.Fprintf(out, "\nStacks: %s\n", stacks)
+	_, _ = fmt.Fprintf(out, "\nLanguages: %s\nStacks: %s\n", listOrNone(lock.Languages), listOrNone(lock.Stacks))
 	if res.Stale() {
 		_, _ = fmt.Fprintln(out, "\nNot up to date: forge update would change these:")
 		for _, c := range res.Changes {
@@ -97,6 +93,13 @@ func runStatus(ctx context.Context, cmd *cli.Command) error {
 	}
 	printNotes(out, notes)
 	return nil
+}
+
+func listOrNone(list []string) string {
+	if len(list) == 0 {
+		return "none"
+	}
+	return strings.Join(list, ", ")
 }
 
 func yesNo(b bool) string {

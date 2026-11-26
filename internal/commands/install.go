@@ -10,19 +10,22 @@ import (
 	"github.com/exalynt/forge/internal/install"
 )
 
-// InstallCommand installs forge into a repository, or adds agents and stacks
-// to an install.
+// InstallCommand installs forge into a repository, or adds agents, languages
+// and stacks to an install.
 func InstallCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "install",
-		Usage:     "Install forge, or add agents and stacks to an install",
+		Usage:     "Install forge, or add agents, languages and stacks to an install",
 		ArgsUsage: "[dir]",
-		Description: `Writes forge's block, its skills, and its lock into the repository at dir,
-the current folder by default. A first install with no --agent installs for
-every agent that reads AGENTS.md and .agents/skills/. On an existing install,
-it adds the targets of the agents named and the stacks named, and rewrites
-everything installed. --no-stacks removes every stack.`,
-		Flags:  []cli.Flag{jsonFlag, agentFlag, stackFlag, noStacksFlag},
+		Description: `Writes forge's block, its skills, its standards, and its lock into the
+repository at dir, the current folder by default. A first install with no
+--agent installs for every agent that reads AGENTS.md and .agents/skills/.
+--language adds a language's conventions, and --stack a stack's, with its
+language: --stack go/http installs go and go-http. On an existing install, it
+adds the targets of the agents named and the languages and stacks named, and
+rewrites everything installed. --no-languages removes every language and
+stack.`,
+		Flags:  []cli.Flag{jsonFlag, agentFlag, languageFlag, stackFlag, noLanguagesFlag},
 		Action: runInstall,
 	}
 }
@@ -47,14 +50,15 @@ func runInstall(ctx context.Context, cmd *cli.Command) error {
 		agents = []string{install.TargetAgents}
 		targets = []string{install.TargetAgents}
 	}
-	stacks, given, err := stacksWanted(cmd, lock)
+	languages, stacks, given, err := languagesWanted(cmd, lock)
 	if err != nil {
 		return err
 	}
-	if given && !cmd.Bool("no-stacks") && lock != nil {
+	if given && !cmd.Bool("no-languages") && lock != nil {
+		languages = union(lock.Languages, languages)
 		stacks = union(lock.Stacks, stacks)
 	}
-	res, err := install.Apply(root, forge.Files, install.Want{Targets: targets, Stacks: stacks}, version(), false)
+	res, err := install.Apply(root, forge.Files, install.Want{Targets: targets, Languages: languages, Stacks: stacks}, version(), false)
 	if err != nil {
 		return err
 	}
