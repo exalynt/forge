@@ -74,12 +74,14 @@ level: draft, prototype, alpha, beta, or ga. A feature is a group of
 capabilities.
 
 **With Docqet**, when there's a `docqet.yaml` at the working directory or
-above it, within the repository: the Docqet kit, its block in this file and
-its `docqet` skill, is the authority on each capability's level, its business
-rules, the personas it serves, its gaps, tradeoffs, and open decisions, and
-what each level expects (`docqet rubric`). Read them with `docqet touches`,
-`docqet show`, and `docqet list`. Forge's skills record intention only the
-kit's way, and only after a person confirms it.
+above it, within the repository: each capability's level, its business rules,
+the personas it serves, its gaps, tradeoffs, and open decisions are recorded
+in Docqet, and `docqet rubric` says what each level generally expects. Docqet
+is the tool that holds them, not the authority on what they mean. The Docqet
+kit, its block in this file and its `docqet` skill, says how to read and
+record them. Read them with `docqet touches`, `docqet show`, and
+`docqet list`. Forge's skills record intention only the kit's way, and only
+after a person confirms it.
 
 **Without Docqet**: a capability's level is whatever the user says. Ask only
 when the answer changes the work. Nothing about intention is recorded: no
@@ -89,7 +91,7 @@ Docqet, and say so.
 
 ### Precedence
 
-On intention, Docqet's instructions win over forge's. This project's own
+On how intention is recorded, Docqet's instructions win over forge's. This project's own
 instructions win over both, except for Docqet's rule that nothing an agent
 infers counts as declared until a person confirms it. Project-specific
 architecture and domain rules belong in the project's own instructions,
