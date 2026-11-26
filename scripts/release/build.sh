@@ -22,7 +22,7 @@ for target in $targets; do
   [[ $os == windows ]] && bin=forge.exe
   mkdir -p "build/$name"
   GOOS=$os GOARCH=$arch CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o "build/$name/$bin" ./cmd/forge
-  cp README.md "build/$name/"
+  cp -r README.md docs "build/$name/"
   if [[ $os == windows ]]; then
     (cd build && zip -qr "../dist/$name.zip" "$name")
   else

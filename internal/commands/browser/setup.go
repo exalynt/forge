@@ -56,7 +56,7 @@ func runSetup(ctx context.Context, cmd *cli.Command) error {
 	_, _ = fmt.Fprintf(out, `
 Servers already registered with this command use it the next time they start.
 Otherwise, register these five MCP servers with your agent, each with the same
-command (README.md shows how for Codex and Cursor):
+command (docs/browser.md in forge shows how for Codex and Cursor):
 
   names:    %s
   command:  %s
