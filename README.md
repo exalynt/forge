@@ -16,9 +16,8 @@ code and tests the user approves.
 
 ```text
 forge/
-├── AGENTS.md                 # the block written into a repository's AGENTS.md
-├── install.sh                # installs forge into a repository
-├── skills/
+├── AGENTS.md                 # the block written into a repository's instructions
+├── skills/                   # each skill forge installs
 │   ├── implement/            # build a feature, improvement, or fix; a worktree and PR when asked
 │   ├── commit/               # small, related commits
 │   ├── pr/                   # commit, push, and open or update a PR labeled with its level
@@ -32,54 +31,118 @@ forge/
 ├── stacks/
 │   ├── go-http/              # Go HTTP APIs: SKILL.md and references/
 │   └── react/                # React + MUI frontends: SKILL.md and references/
+├── forge.go                  # embeds AGENTS.md, skills/, and stacks/ in the binary
+├── cmd/forge/                # the forge command
+├── internal/install/         # where each agent's files go, and how they're written
 └── scripts/playwright/       # browser tools for qa, ux, and use
 ```
+
+## Installing forge
+
+Forge is a Go command that carries its skills and stacks with it. The
+repository is private, so tell Go not to look for it through the public proxy:
+
+```bash
+export GOPRIVATE=github.com/exalynt
+go install github.com/exalynt/forge/cmd/forge@latest
+```
+
+It needs Go and access to `github.com/exalynt/forge` through git.
 
 ## Installing it in a repository
 
 ```bash
-./install.sh path/to/repo
-./install.sh path/to/repo --stack go-http
-./install.sh path/to/repo --stack go-http --stack react
-```
-
-In a repository with Docket, install Docket's kit as well. They sit side by
-side, and neither touches the other's files:
-
-```bash
 cd path/to/repo
-docket kit
-path/to/forge/install.sh . --stack go-http
+forge install                              # for every agent that reads AGENTS.md
+forge install --stack go-http              # with a stack
+forge install --agent claude --agent codex # for the agents the repository uses
 ```
 
-It writes these into the repository, to be committed with it:
+Commit what it writes, so everyone working on the repository gets it. In a
+repository with Docket, install Docket's kit as well. They sit side by side,
+and neither touches the other's block or skill.
 
-| Written                        | What for                                                                       |
-| ------------------------------ | ------------------------------------------------------------------------------ |
-| `AGENTS.md`                    | Forge's block, between `<!-- forge:start -->` and `<!-- forge:end -->` markers |
-| `.agents/skills/<name>/`       | A copy of each skill, where Codex, Cursor, Gemini CLI, and others look         |
-| `.agents/forge.lock`           | Forge's version, the stacks, and each skill it installed                       |
-| `CLAUDE.md`                    | An `@AGENTS.md` line, if the file exists without one                           |
+### Choosing agents
 
-Claude Code finds the skills through forge's block in `AGENTS.md` until it
-reads `.agents/skills/`. It reads `AGENTS.md` itself only when a repository has
-no `CLAUDE.md`, so where there is one, the import line makes it read
-`AGENTS.md` too. The script never creates `CLAUDE.md`. Copies an earlier forge
-put in `.claude/skills/` are removed.
+Each agent reads its own place, so forge installs to **targets**, one per
+place, and `--agent` names the agents you use. A first install with no
+`--agent` installs the `agents` target. On an existing install, `install
+--agent` adds targets. `forge agents` lists every name.
 
-An existing `AGENTS.md` keeps everything it had: forge's block is added at the
-end, or replaced where it already is. If the markers are unbalanced, the script
-stops and changes nothing. It changes only what's forge's: its block, and the
-skill folders it installed, which it makes match forge exactly. It never
-touches another skill, such as `docket`, or another block, such as Docket's.
-If a skill folder with one of forge's names is already there and forge didn't
-install it, it stops rather than overwrite it.
+| Target   | `--agent` names                                         | Skills                   | Block                                                                       |
+| -------- | ------------------------------------------------------- | ------------------------ | --------------------------------------------------------------------------- |
+| `agents` | `codex`, `cursor`, `gemini`, `windsurf`, `copilot`, `agents` | `.agents/skills/<name>/` | `AGENTS.md`                                                                 |
+| `claude` | `claude`                                                | `.claude/skills/<name>/` | `CLAUDE.md`, or `AGENTS.md` through an `@AGENTS.md` line with `agents` too |
 
-It reports each file as `added`, `updated`, `removed`, or `ok`, then a summary.
+- With the `agents` target, forge's block goes in `AGENTS.md`. With `claude`
+  as well, `CLAUDE.md` gets an `@AGENTS.md` line, and is created if it's
+  missing. Claude Code reads `AGENTS.md` itself only in a repository with no
+  `CLAUDE.md`, so a repository's own `CLAUDE.md` gets the line with `agents`
+  alone too.
+- With `claude` alone, the block goes in `CLAUDE.md`, and `AGENTS.md` isn't
+  touched.
+- The block says where the skills are: `.agents/skills` when the `agents`
+  target is installed, otherwise `.claude/skills`.
 
-Don't hand-edit the copies or the block, since the next install overwrites
+It writes these, to be committed with the repository:
+
+| Written                                    | What for                                                                       |
+| ------------------------------------------ | ------------------------------------------------------------------------------ |
+| `AGENTS.md` or `CLAUDE.md`                 | Forge's block, between `<!-- forge:start -->` and `<!-- forge:end -->` markers |
+| `.agents/skills/<name>/`                   | A copy of each skill, for the `agents` target                                  |
+| `.claude/skills/<name>/`                   | A copy of each skill, for the `claude` target                                  |
+| `CLAUDE.md`                                | An `@AGENTS.md` line, with both targets, or with `agents` when it exists       |
+| `.agents/forge.lock`, or `.claude/forge.lock` with `claude` alone | Forge's version, the targets, the stacks, and each skill it installed |
+
+An existing `AGENTS.md` or `CLAUDE.md` keeps everything it had: forge's block
+is added at the end, or replaced where it already is. If the markers are
+unbalanced, forge stops and changes nothing. It changes only what's forge's:
+its block, the `@AGENTS.md` line when it added it, and the skill folders it
+installed, which it makes match the binary exactly. It never touches another
+skill, such as `docket`, or another block, such as Docket's. If a skill folder
+with one of forge's names is already in a target and forge didn't install it,
+forge stops rather than overwrite it. Copies an earlier forge left in
+`.claude/skills/`, from before the `claude` target, are removed, while a
+project's own skill of the same name stays.
+
+Don't hand-edit the copies or the block, since the next update overwrites
 them. Anything particular to a project goes in its own instructions, outside
 forge's block, and wins over forge's.
+
+### Supported agents
+
+Last checked against each agent's docs on 2026-11-25. These change often.
+`forge agents` prints the same list from the code.
+
+| Agent                                         | `--agent`  | Reads                                                                 | Target   | What you do                                                                                  | Can't do yet                                                                                   |
+| --------------------------------------------- | ---------- | --------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Claude Code                                   | `claude`   | `CLAUDE.md`, `.claude/skills/`                                        | `claude` | Nothing                                                                                      | Reading `.agents/skills/`, so without the `claude` target it reads skills only through the block |
+| Codex                                         | `codex`    | `AGENTS.md`, `.agents/skills/`                                        | `agents` | Nothing                                                                                      |                                                                                                |
+| Cursor                                        | `cursor`   | `AGENTS.md`, `.agents/skills/`                                        | `agents` | Nothing                                                                                      |                                                                                                |
+| Gemini CLI                                    | `gemini`   | `GEMINI.md` by default, `.agents/skills/`                             | `agents` | Add `"context": {"fileName": ["AGENTS.md", "GEMINI.md"]}` to `.gemini/settings.json`         | Reading `AGENTS.md` without that setting                                                       |
+| GitHub Copilot (CLI, cloud agent, VS Code)    | `copilot`  | `AGENTS.md`; `.agents/skills/` in the CLI and cloud agent             | `agents` | Nothing                                                                                      | In VS Code, reading skills anywhere but `.github/skills/`, so there it reads them through the block |
+| Windsurf                                      | `windsurf` | `AGENTS.md`, `.agents/skills/`                                        | `agents` | Nothing                                                                                      |                                                                                                |
+| Any agent that reads `AGENTS.md`              | `agents`   | `AGENTS.md`, and `.agents/skills/` if it loads skills                 | `agents` | Nothing                                                                                      | Loading skills, for one that doesn't: it reads them through the block                         |
+| Aider                                         | use `agents` | `AGENTS.md` only when it's passed in                                | `agents` | Run it with `--read AGENTS.md`, or add that to `.aider.conf.yml`                             | Loading skills: it reads them through the block                                                |
+| Zed                                           | use `agents` | The first rules file it finds, `AGENTS.md` among them               | `agents` | Make sure no other rules file, such as a stray `.rules`, shadows `AGENTS.md`                 | Loading skills: it reads them through the block                                                |
+
+## Commands
+
+Every command takes the repository's folder, the current one by default, and
+`--json`. Each file is reported as `added`, `updated`, `removed`, or `ok`.
+
+| Command                                                      | Does                                                                                                                                          |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `forge install [dir] [--agent NAME]... [--stack NAME]... [--no-stacks]` | The first install, `agents` by default. On an existing install, adds the agents' targets and the stacks, and rewrites everything installed. |
+| `forge update [dir] [--stack NAME]... [--no-stacks]`        | Rewrites every installed target with this binary's forge, keeping the lock's stacks unless told otherwise.                                     |
+| `forge remove [dir] [--agent NAME]... [--stack NAME]...`    | Removes those agents' targets and those stacks, moving the block when its file's target goes. With neither, removes everything forge installed. |
+| `forge status [dir]`                                        | The targets installed and the agents they serve, whether they match this binary, the stacks, the lock's version, and agent notes. Exits 0.   |
+| `forge check [dir]`                                         | Exits 1 when the install doesn't match this binary, for CI.                                                                                    |
+| `forge agents`                                              | The supported agents, their targets, and where their files go.                                                                                 |
+| `forge version [--check]`                                   | This binary's version. `--check` compares it with the latest: exit 1 when it's older, 2 when it can't tell.                                   |
+
+Any other failure, such as unbalanced markers or a skill folder forge didn't
+install, exits 2 and changes nothing.
 
 ## With and without Docket
 
@@ -100,12 +163,12 @@ it.
 
 `stability-review` and `promote` are about levels, so they need Docket.
 Without it they stop and say so: a repository adopts it with `docket init` and
-`docket kit`. Every other skill works either way.
+Docket's kit. Every other skill works either way.
 
 ## Stacks
 
 A stack is the conventions for one kind of project, installed as one more
-skill with `--stack`. `go-http` covers Go HTTP API projects: preferred
+skill, in every target, with `--stack`. `go-http` covers Go HTTP API projects: preferred
 packages, layers and boundaries, repositories, service errors, REST API
 design, pagination, health checks, configuration, tests, and CI. `react` covers React + MUI frontends:
 page and component layout, reusing MUI and existing components, mobile
@@ -119,25 +182,37 @@ each project's own instructions.
 
 ## Updating
 
-Re-run the script. Without `--stack`, it keeps the stacks the lock lists. With
-any `--stack`, it installs exactly those, so passing a different set is how
-you drop one, and `--no-stacks` removes them all. Any skill forge no longer
-has is removed too. The lock records forge's version, so you can see which one
-a repository has.
+When forge changes, update the binary, then each repository:
 
 ```bash
-path/to/forge/install.sh .                 # update, keeping the stacks
-path/to/forge/install.sh . --stack react   # swap the stacks for react
-path/to/forge/install.sh . --no-stacks     # remove every stack
+go install github.com/exalynt/forge/cmd/forge@latest
+forge update
 ```
 
-To check in CI that a repository's copy matches forge, run it with `--check`.
-It changes nothing, and exits 1 if anything would change. Like an update, it
-checks the stacks the lock lists unless given others.
+`forge version --check` says whether the binary is the latest. It asks Go, so
+it needs `GOPRIVATE` set and access to the repository, and exits 2 when it
+can't tell.
 
-```bash
-path/to/forge/install.sh . --check
+`forge update` keeps the stacks the lock lists. With any `--stack`, it
+installs exactly those, so passing a different set is how you swap one, and
+`--no-stacks` removes them all. `forge install --stack` adds a stack, and
+`forge remove --stack` removes one. Any skill forge no longer has is removed
+too. The lock records the version of forge that last changed what it lists.
+
+## Checking in CI
+
+`forge check` changes nothing, and exits 1 when the repository's copy doesn't
+match the binary:
+
+```yaml
+- run: go install github.com/exalynt/forge/cmd/forge@<version>
+  env:
+    GOPRIVATE: github.com/exalynt
+- run: forge check
 ```
+
+Pin the version the repository was last updated with, or `latest` to be told
+whenever forge moves on.
 
 ## Browser tools for qa, ux, and use
 
@@ -148,7 +223,7 @@ browser for each person in a test.
 Set it up once per machine:
 
 ```bash
-./scripts/playwright/setup.sh
+./scripts/playwright/setup.sh   # from a checkout of forge
 ```
 
 It installs `@playwright/mcp` globally with npm, installs Google Chrome if it's
@@ -221,16 +296,25 @@ a page. Set that in your agent's permissions.
 
 ## Uninstalling
 
-Delete forge's block from `AGENTS.md`, from `<!-- forge:start -->` to
-`<!-- forge:end -->`; each skill folder `.agents/forge.lock` lists, from
-`.agents/skills/`; and `.agents/forge.lock` itself.
-Remove the `@AGENTS.md` line from `CLAUDE.md` if nothing else in `AGENTS.md`
-needs it.
+```bash
+forge remove
+```
+
+It removes everything forge installed: its block, its skills in every target,
+the `@AGENTS.md` line if forge added it, its lock, and the folders that leaves
+empty. A file left with nothing in it, such as a `CLAUDE.md` forge created, is
+removed too. `forge remove --agent NAME` removes one target instead.
 
 ## Known gaps
 
-- **Claude Code doesn't load forge's skills by itself.** It doesn't read
-  `.agents/skills/` yet, so it reads a skill only because forge's block in
-  `AGENTS.md` says where it is, and `/implement`, `/qa` and the rest aren't in
-  its slash menu: ask for one by name instead, such as "use implement". Once
-  Claude Code reads `.agents/skills/`, this closes with no change here.
+- **Agents without their own target read skills through the block.** Claude
+  Code doesn't read `.agents/skills/`, so where the `claude` target isn't
+  installed, it reads a skill only because forge's block says where it is, and
+  `/implement`, `/qa` and the rest aren't in its slash menu: ask for one by
+  name, such as "use implement". Install `--agent claude` to give it its own
+  copies. The same holds for Aider, Zed, and others that don't load skills.
+- **Gemini CLI reads `AGENTS.md` only with its `context.fileName` setting.**
+  Forge doesn't write that setting: `forge status` and `forge agents` say what
+  to add.
+- **Copilot in VS Code reads skills only from `.github/skills/`.** There's no
+  target for it yet, so in VS Code it reads skills through the block.

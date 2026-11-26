@@ -97,10 +97,9 @@ outside this block.
 
 ### Skills
 
-Forge's skills are in `.agents/skills/<name>/SKILL.md`. An agent that doesn't
-load skills from there, such as Claude Code today, reads a skill's `SKILL.md`
-when its work comes up, or when someone asks for it by name ("use implement",
-"/implement"). The ones marked "on request" run only when someone asks.
+Forge's skills are in `{{skills}}/<name>/SKILL.md`. An agent that doesn't
+load skills from there reads a skill's `SKILL.md` when its work comes up, or
+when someone asks for it by name ("use implement", "/implement"). The ones marked "on request" run only when someone asks.
 
 - `implement` (on request): build a feature, improvement, or fix on the
   current branch, or in its own worktree and pull request when asked.
