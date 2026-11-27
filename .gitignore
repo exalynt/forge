@@ -2,3 +2,6 @@
 /forge
 /build/
 /dist/
+
+# Playwright MCP output: snapshots, screenshots and logs
+/.playwright-mcp/
